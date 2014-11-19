@@ -202,6 +202,17 @@ function showScoreGameGrupo(type,idMMJogos){
 	UtilDWR.getInclude('/changeOrderGame.do?method=changeOrderGame&type='+type+'&idMMJogos='+idMMJogos,
  		function(data) {
 			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
+<<<<<<< HEAD
+		}
+  	);
+}
+
+function showScoreGameIndividual(type,idMMJogos,idUser){
+	UtilDWR.getInclude('/changeOrderGame.do?method=changeOrderGame&type='+type+'&idMMJogos='+idMMJogos+'&idUser='+idUser,
+ 		function(data) {
+			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
+=======
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		}
   	);
 }
@@ -212,6 +223,45 @@ function showScoreGameIndividual(type,idMMJogos,idUser){
 			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
 		}
   	);
+}
+
+
+function modalGameWin(gameId) {
+	window.open('playGameActivity.do?method=showPlayGame&gameId='+gameId,'Game',
+	'height=800,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes,directories=no');
+}
+
+function openGameExternal(gameUrl){
+
+	var external = window.open(gameUrl,'Game',
+		'height=800,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no ,modal=yes');
+
+	//resize para a tela não ficar preta
+	external.onload = resizeExternal(external);
+}
+
+function resizeExternal(win)
+{
+	win.resizeTo(10,10);
+	win.resizeTo(811,611);	
+}
+
+
+function modalVisualizacaoWin(gameId) {
+	if (window.showModalDialog) {
+	window.showModalDialog('graphicGameActivity.do?method=showGraphicGame&gameId='+gameId+'&graphic=sel',"Game Graphic",
+	"dialogWidth:800px;dialogHeight:600px");
+	} else {
+	window.open('graphicGameActivity.do?method=showGraphicGame&gameId='+gameId+'&graphic=sel','Game Graphic',
+	'height=800,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	}
+}
+
+function log(idGame, numFases, tempo, pontuacao, meta)
+{
+	window.open('saveLog.do?method=saveLog&jogo='+idGame+'&fases='+numFases+'&tempo='+tempo+'&pontuacao='+pontuacao+'&metaAlternativa='+meta,'Game Graphic',
+		'height=100,width=100,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
+
 }
 
 

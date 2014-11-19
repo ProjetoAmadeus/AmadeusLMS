@@ -18,7 +18,13 @@ import java.util.List;
 import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 public interface GameDAO extends GenericDAO <Game, Integer>{
+<<<<<<< HEAD
 	public List<Game> getAllGameFromCourse(Course course);
+=======
+	public List<Game> getAllGameFromCourse(Course course);	
+	boolean verificarStatusPorGame(List<Person> alunos, Game game);
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }

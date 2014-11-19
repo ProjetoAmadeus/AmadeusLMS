@@ -17,9 +17,15 @@ import java.util.List;
 
 import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 public interface ForumDAO extends GenericDAO <Forum, Integer> {
 	
 	List<Forum> getListForum();
+<<<<<<< HEAD
+=======
+	
+	boolean verificarStatusPorForum(List<Person> alunos, Forum forum);
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 }

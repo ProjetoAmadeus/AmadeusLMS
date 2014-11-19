@@ -1388,7 +1388,12 @@ public class UserActions extends SystemActions {
 
 				DynaActionForm dynaForm = (DynaActionForm) form;
 				Person person = new Person();
+<<<<<<< HEAD
 				//person.setId(Integer.parseInt(request.getParameter("userId")));
+=======
+				
+				person.setId(Integer.parseInt(request.getParameter("userId")));
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				person.setName(dynaForm.getString("name"));
 				person.setCity(dynaForm.getString("city"));
 				person.setState(dynaForm.getString("state"));
@@ -1519,9 +1524,13 @@ public class UserActions extends SystemActions {
 
 				Person person = new Person();
 				
+<<<<<<< HEAD
 				//person.getAccessInfo().setId(Integer.parseInt(request.getParameter("userId")));
 				AccessInfo accessInfoOld = facade.searchUserById(Integer.parseInt(request.getParameter("userId")));
 				person.setId(accessInfoOld.getPerson().getId());
+=======
+				person.setId(Integer.parseInt(request.getParameter("userId")));
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				person.setName(dynaForm.getString("name"));
 				person.setCity(dynaForm.getString("city"));
 				person.setState(dynaForm.getString("state"));
@@ -1562,8 +1571,12 @@ public class UserActions extends SystemActions {
 				}
 
 				AccessInfo accessInfo = new AccessInfo();
+<<<<<<< HEAD
 				accessInfo.setLogin(accessInfoOld.getLogin());
 				accessInfo.setTypeProfile(accessInfoOld.getTypeProfile());
+=======
+				accessInfo.setLogin(dynaForm.getString("login"));
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				accessInfo.setPassword(dynaForm.getString("password"));
 				
 				String profileType = request.getParameter("userType");
@@ -1603,10 +1616,17 @@ public class UserActions extends SystemActions {
 
 				person.setResume(resume);
 
+<<<<<<< HEAD
 				/*if (facade.existLogin(person.getAccessInfo().getLogin())) {
 					messages.add("error", new ActionMessage(
 					"errors.login.alreadyExists"));
 				}*/
+=======
+				if (facade.existLogin(person.getAccessInfo().getLogin())) {
+					messages.add("error", new ActionMessage(
+					"errors.login.alreadyExists"));
+				}
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				/*if (facade.existEmail(person.getEmail())) {
 					messages.add("error", new ActionMessage(
 					"errors.email.alreadyExists"));

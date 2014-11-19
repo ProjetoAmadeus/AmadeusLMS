@@ -50,9 +50,13 @@
    						 /WEB-INF/struts/struts-config-mobile.xml,
    						 /WEB-INF/struts/struts-config-openid.xml,
    						 /WEB-INF/struts/struts-config-settings.xml,
+<<<<<<< HEAD
    						 /WEB-INF/struts/struts-config-log.xml,
    						 /WEB-INF/struts/struts-config-messenger.xml,
    						 /WEB-INF/struts/struts-config-twittertool.xml</param-value>
+=======
+   						 /WEB-INF/struts/struts-config-log.xml</param-value>
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
   </init-param>
   <load-on-startup>2</load-on-startup>
  </servlet>

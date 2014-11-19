@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <web>
+<<<<<<< HEAD
 	<system>
 		<general.version>00.96.60</general.version>
+=======
+    <system>
+	<general.version>00.96.30</general.version>
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
     	<general.language>Português-Brasil</general.language>
     	<general.encoding>UTF-8</general.encoding>
     	<general.themes>default</general.themes>
@@ -9,8 +14,13 @@
     </system>
     <mailsender>
     	<mail.description>Conta de e-mail padrão</mail.description>
+<<<<<<< HEAD
     	<mail.from>exemploamadeus@gmail.com</mail.from>
     	<mail.password>amadeus2012!</mail.password>
+=======
+    	<mail.from>exemplo@email.com</mail.from>
+    	<mail.password>senha</mail.password>
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
     	<mail.smtp.host>smtp.gmail.com</mail.smtp.host>
     	<mail.smtp.auth>true</mail.smtp.auth>
     	<mail.debug>false</mail.debug>

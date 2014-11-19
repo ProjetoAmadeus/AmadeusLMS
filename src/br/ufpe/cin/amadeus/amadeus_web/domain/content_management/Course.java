@@ -81,6 +81,8 @@ public class Course implements Serializable {
 	private Date initialCourseDate;
 
 	private Date finalCourseDate;
+	
+	private boolean flag_habilitar_grupo;
 
 	@OneToOne
 	@JoinColumn(name="PROFESSOR_ID")
@@ -101,7 +103,7 @@ public class Course implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name = "COURSE_ID", nullable = false)
 	@org.hibernate.annotations.Cascade(
-			value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN )
+			value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private List<Module> modules = new ArrayList<Module>();
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
@@ -292,6 +294,14 @@ public class Course implements Serializable {
 		}
 		
 		return retorno;
+	}
+
+	public void setFlag_habilitar_grupo(boolean flag_habilitar_grupo) {
+		this.flag_habilitar_grupo = flag_habilitar_grupo;
+	}
+
+	public boolean isFlag_habilitar_grupo() {
+		return flag_habilitar_grupo;
 	}
 
 

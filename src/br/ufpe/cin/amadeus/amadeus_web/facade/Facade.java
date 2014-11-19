@@ -23,11 +23,18 @@ import javax.mail.MessagingException;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
+<<<<<<< HEAD
+=======
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GroupsDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.PersonRoleCourseDAO;
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.HistoryLearningObject;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Homework;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword;
@@ -66,6 +73,12 @@ import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidUserException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidVideoException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.RequestException;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.Archive;
+<<<<<<< HEAD
+=======
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.LogVisualizacao;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 public class Facade {
 	
@@ -520,10 +533,13 @@ public class Facade {
 		return this.controller.getForumById(forumId);
 	}
 	
+<<<<<<< HEAD
 	public Message getMessageById(int idMessage){
 		return this.controller.getMessageById(idMessage);
 	}
 	
+=======
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> getListForumSyncronize(){
 		return this.controller.getListForum();
 	}
@@ -835,6 +851,7 @@ public class Facade {
 	
 	public String getJSONArrayGameGridByUser(int idGame, int idUser) {
 		return this.controller.getJSONArrayGameGridByUser(idGame, idUser);
+<<<<<<< HEAD
 	}
 	
 	public String getJSONArrayTagCloudForum(int idModule){
@@ -955,6 +972,125 @@ public class Facade {
 
 	public List<Tweet> getTweetBetweenDates(Date inicio, Date fim) {
 		return this.controller.getTweetBetweenDates(inicio,fim);
+=======
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	}
 	
+	public String getJSONArrayTagCloudForum(int idModule){
+		return this.controller.getJSONArrayTagCloudForum(idModule);
+	}
+	
+	public String getJSONArrayPostsPerModule(int idModule){
+		return this.controller.getJSONArrayPostsPerModule(idModule);
+	}
+	
+	public String getJSONArraySizeMessagePerModule(int idModule){
+		return this.controller.getJSONArraySizeMessagePerModule(idModule);
+	}
+	
+	public String getJSONArrayPersonGameTimePerModule(int idPerson, int idModule){
+		return this.controller.getJSONArrayPersonGameTimePerModule(idPerson, idModule);
+	}
+	
+	public String getJSONObjectTempoLevelPontuacao(int idGame)
+	{
+		return this.controller.getJSONObjectTempoLevelPontuacao(idGame);
+	}
+	
+	public String getJSONObjectTempoQuantidadePartidas(int idGame)
+	{
+		return this.controller.getJSONObjectTempoQuantidadePartidas(idGame);
+	}
+	
+	public String getJSONObjectQuantidadeTamanhoMSG(int idModule)
+	{
+		return this.controller.getJSONObjectQuantidadeTamanhoMSG(idModule);
+	}
+	
+	public String getJSONObjectLevelPontuacao(int idGame)
+	{
+		return this.controller.getJSONObjectLevelPontuacao(idGame);
+	}
+	
+	public String getJSONArrayGameMeta(int idGame){
+		return this.controller.getJSONArrayGameMeta(idGame);
+	}
+	
+	public String getJSONArrayPersonTimeOnline(int idPerson){
+		return this.controller.getJSONArrayPersonTimeOnline(idPerson);
+	}
+	
+	public String getJSONArrayForumVisualizacao(int idModule, int idAluno){
+		return this.controller.getJSONArrayForumVisualizacao(idModule, idAluno);
+	}
+	public String getJSONArrayPostsPerUser(int idModule, int idUser){
+		return this.controller.getJSONArrayPostsPerUser(idModule, idUser);
+	}
+	public String getJSONArrayMaterialView(int idUsuario, int idModule){
+		return this.controller.getJSONArrayMaterialView(idUsuario, idModule);
+	}
+	public String getJSONArrayPollAnswered(int moduleID, int idAluno){
+		return this.controller.getJSONArrayPollAnswered(moduleID, idAluno);
+	}
+	public String getJSONArrayGameOpen(int idModule, int idAluno){
+		return this.controller.getJSONArrayGameOpen(idModule, idAluno);
+	}
+	
+	public List<Groups> getGroups(int idCourse){
+		return this.controller.getGroups(idCourse);
+	}
+	
+	public List<Person> getPersonByGroupsID(int groupID){
+		return this.controller.getPersonByGroupsID(groupID);
+	}
+	
+	public List<StudentHaveGroup> getStudentsHaveGroup(Course course, Person person)
+	{	
+		return this.controller.getStudentsHaveGroup(course, person);
+	}
+	
+	public Module getUltimoModulo(int courseID){
+		return this.controller.getUltimoModulo(courseID);
+	}
+	
+	public List<LogVisualizacao> getLogsByDayAndGroup(String data, int groupId)
+	{
+		return this.controller.getLogsByDayAndGroup(data, groupId);
+	}
+	
+	public List<LogVisualizacao> getLogsByDayAndPerson(String data, int groupID, int personID)
+	{
+		return this.controller.getLogsByDayAndPerson(data, groupID, personID);
+	}
+	
+	public Groups inserGroups(Groups g) throws CourseInvalidException {
+		return this.controller.inserGroups(g);
+	}
+	
+	public List<TimelineItem> listarTimelineGroup(Groups g){
+		return this.controller.listarTimelineGroup(g);
+	}
+	
+	public List<TimelineItem> listarTimelinePerson(Person p, Groups g){
+		return this.controller.listarTimelinePerson(p, g);
+	}
+	
+	public Groups getGroupsById(int id) {
+		return this.controller.getGroupsById(id);
+	}
+	
+	public boolean pesronHaveGroup(int courseId, int personId)
+	{
+		return this.controller.pesronHaveGroup(courseId, personId);
+	}
+	
+	public boolean verificarStatusPorForum(List<Person> alunos, Forum forum)
+	{
+		return this.controller.verificarStatusPorForum(alunos, forum);
+	}
+	
+	public boolean verificarStatusPorGame(List<Person> alunos, Game game)
+	{
+		return this.controller.verificarStatusPorGame(alunos, game);
+	}
 }

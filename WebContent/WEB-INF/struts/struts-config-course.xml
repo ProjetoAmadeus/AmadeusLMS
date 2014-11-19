@@ -101,6 +101,7 @@
 			<form-property name="keywords" type="java.lang.String" />
 		</form-bean>
 		
+<<<<<<< HEAD
 		
 		<form-bean name="formSocialInteractionMonitoring" 
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -132,6 +133,13 @@
 		<form-bean name="formSocialInteractionMonitoringReports" 
 			type="org.apache.struts.validator.DynaValidatorForm">
 			
+=======
+		<form-bean name="formCriarGrupo" type="org.apache.struts.action.DynaActionForm">
+			<form-property name="courseId" type="java.lang.Integer"/>
+			<form-property name="nomeGrupo" type="java.lang.String"/>
+			<form-property name="listaAlunos" type="java.lang.String"/>
+			<form-property name="Concluir" type="java.lang.String"/>
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		</form-bean>
 
 	</form-beans>
@@ -161,6 +169,17 @@
 		<forward name="fShowViewCourseEvaluations" path="/jsp/course/viewCourseEvaluations.jsp"/>
 		<forward name="fShowViewSendMail" path="/jsp/course/viewSendMail.jsp"/>
 		<forward name="fShowViewGraphic" path="/jsp/course/viewGraphic.jsp"/>
+<<<<<<< HEAD
+=======
+		<forward name="fShowViewGroups" path="/jsp/course/viewGroups.jsp"/>
+		<forward name="fShowGroupDayTimeline" path="/jsp/course/viewGroupDayTimeline.jsp"/>
+		<forward name="fShowPersonDayTimeline" path="/jsp/course/viewPersonDayTimeline.jsp"/>
+		<forward name="fShowViewGroupTimeline" path="/jsp/course/viewGroupTimeline.jsp"/>
+		<forward name="fShowViewPersonTimeline" path="/jsp/course/ViewPersonTimeline.jsp"/>
+		<forward name="fShowViewOneGroup" path="/jsp/course/viewOneGroup.jsp"/>
+		<forward name="fShowViewGroupsRelatorio" path="/jsp/course/viewGroupsRelatorio.jsp"/>
+		
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		
 	</global-forwards>
 	<action-mappings>
@@ -230,6 +249,7 @@
 		<action name="formEditCourse" input="/course.do?method=showViewEditCourse"
 			path="/editCourse" parameter="editCourse" scope="request"
 			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
+<<<<<<< HEAD
 		</action>
 		
 		<action name="formSocialInteractionMonitoring" input="/course.do?method=showViewSocialInteractionMonitoring"
@@ -241,6 +261,14 @@
 			path="/socialInteractionMonitoringReports" parameter="socialInteractionMonitoringReports" scope="request"
 			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
 		</action>
+=======
+			</action>
+			
+		<action name="formCriarGrupo" input="/course.do?method=showViewCreateGroup"
+			path="/course.do?method=showViewCreateGroup" parameter="criarGrupo" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
+			</action>
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 		<action path="/fViewDeleteConfirmation"
 			parameter="/jsp/course/viewCourseDeleteConfirmation.jsp"

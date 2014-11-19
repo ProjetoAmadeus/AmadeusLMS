@@ -36,6 +36,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ArchiveDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.CourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GameDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GroupsDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HistoryLearningObjectDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HomeworkDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.KeywordDAO;
@@ -64,6 +65,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.HistoryLearningObject;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Homework;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword;
@@ -105,6 +107,12 @@ import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidVideoException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.RequestException;
 import br.ufpe.cin.amadeus.amadeus_web.struts.messages.Messages;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.Archive;
+<<<<<<< HEAD
+=======
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.LogVisualizacao;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import br.ufpe.cin.amadeus.amadeus_web.util.Cryptography;
 import br.ufpe.cin.amadeus.amadeus_web.util.DateConstructor;
 import br.ufpe.cin.amadeus.amadeus_web.util.MailSender;
@@ -670,7 +678,11 @@ public class Controller {
 		try {
 			
 			if (person.getResume().getYear() == null || yearTitulation <= yearNowadays) {			
+<<<<<<< HEAD
 				System.out.println("CHAMOUUUUU2");
+=======
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				PersonDAO personDAO = factory.getPersonDAO();
 				personDAO.merge(person);
 			} else {
@@ -1859,11 +1871,14 @@ public class Controller {
 		return forum.findById(forumId, false);
 	}
 	
+<<<<<<< HEAD
 	public Message getMessageById(int idMessage) {
 		MessageDAO messageDao = factory.getMessageDAO();
 		return messageDao.findById(idMessage, false);
 	}
 	
+=======
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> getListForum(){
 		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> listForum = new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum>();
 		ForumDAO forum = factory.getForumDAO();
@@ -3603,7 +3618,11 @@ public class Controller {
 				"WHERE " +
 				"l.codigo =  7 " +
 				"AND l.idobjeto =   g.id " +
+<<<<<<< HEAD
 				"AND l.person_id =  " + 130 +" " +
+=======
+				"AND l.person_id =  " + idAluno +" " +
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				"AND g.module_id =  " + idModule +" " +
 				"AND prc.person_id = l.person_id " +
 				"AND prc.role_id = 1 " +
@@ -3631,6 +3650,7 @@ public class Controller {
 		
 		return array;
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Método criado para persistir as mensagens enviadas, como primeira mensagem (não resposta a outra)
@@ -3732,4 +3752,301 @@ public class Controller {
 		return factory.getTweetDAO().getTweetBetweenDates(inicio,fim);
 	}
 
+=======
+	/*
+	 * TODO - Métodos para recuperar grupo
+	 */
+	public List<Groups> getGroups(int id) {
+		List<Groups> grupo = null;
+		try {
+			
+			 GroupsDAO groupsDAO = factory.getGroupsDAO();
+			 grupo = groupsDAO.getGroupsByCourseID(id);
+			 
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return grupo;
+	}
+	
+	public List<Person> getPersonByGroupsID(int id) {
+		List<Person> grupo = null;
+		try {
+			
+			 GroupsDAO groupsDAO = factory.getGroupsDAO();
+			 grupo = groupsDAO.getPersonByGroupsID(id);
+			 
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return grupo;
+	}
+	
+	public List<StudentHaveGroup> getStudentsHaveGroup(Course course, Person person)
+	{				
+		PersonRoleCourseDAO personRoleCourseDAO = factory.getPersonRoleCourseDAO();
+		List<StudentHaveGroup> result = personRoleCourseDAO.getStudentHaveGroupByCourse(course, person);
+		
+		return result;
+	}
+	
+	public Module getUltimoModulo(int courseID)
+	{				
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		Module result  = groupsDAO.getUltimoModulo(courseID);
+		
+		return result;
+	}
+	
+	public List<LogVisualizacao> getLogsByDayAndGroup(String data, int groupId)
+	{
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		List<Log> list = groupsDAO.getLogsByDayAndGroup(data, groupId);
+		
+		List<LogVisualizacao> result = new ArrayList<LogVisualizacao>();
+		for(Log log : list)
+		{
+			LogVisualizacao logVisualizacao = null;
+			Facade facade = Facade.getInstance();
+			
+			
+			if(log.getCodigo() == Log.LOG_CODIGO_VISUALIZACAO_MATERIAL)
+			{
+				Material material = facade.getMaterialByID(log.getIdObjeto());
+				
+				String materialName = "";
+				if(material !=null)
+				{
+					materialName = material.getArchiveName();
+				}
+				else
+				{
+					ExternalLink link = facade.getExternalLinkById(log.getIdObjeto());
+					materialName = link.getName();
+				}
+				
+				logVisualizacao = new LogVisualizacao(log, materialName);
+			}
+			else
+			{
+				logVisualizacao = new LogVisualizacao(log);
+			}
+			
+			result.add(logVisualizacao);
+		}
+		
+		return result;
+	}
+	
+	public List<LogVisualizacao> getLogsByDayAndPerson(String data, int groupID, int personID)
+	{
+		PersonDAO personDAO = factory.getPersonDAO();
+		List<Log> list = personDAO.getLogsByDayAndPerson(data, groupID, personID);
+		List<LogVisualizacao> result = new ArrayList<LogVisualizacao>();
+		for(Log log : list)
+		{
+			LogVisualizacao logVisualizacao = null;
+			Facade facade = Facade.getInstance();
+			
+			
+			if(log.getCodigo() == Log.LOG_CODIGO_VISUALIZACAO_MATERIAL)
+			{
+				String materialName = "";
+				
+				try
+				{
+					Material material = facade.getMaterialByID(log.getIdObjeto());
+					materialName = material.getArchiveName();					
+				}
+				catch(Exception e)
+				{
+					ExternalLink link = facade.getExternalLinkById(log.getIdObjeto());
+					materialName = link.getName();					
+				}
+				logVisualizacao = new LogVisualizacao(log, materialName);
+			}
+			else
+			{
+				logVisualizacao = new LogVisualizacao(log);
+			}
+			
+			result.add(logVisualizacao);
+		}
+		
+		return result;
+	}
+	
+	public Groups inserGroups(Groups g) throws CourseInvalidException {
+		Groups result;
+		try {			
+			GroupsDAO groupsDAO = factory.getGroupsDAO();
+			result = groupsDAO.makePersistent(g);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public List<TimelineItem> listarTimelineGroup(Groups g){
+		
+		List<TimelineItem> result = null;
+		try {			
+			GroupsDAO groupsDAO = factory.getGroupsDAO();
+			result = groupsDAO.getTimelineByGroupsID(g.getId());
+			
+			int max = 0;
+			int min = 10000000;
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max < result.get(i).getFrequency()){
+					max = result.get(i).getFrequency();
+				}
+				if(min > result.get(i).getFrequency()){
+					min = result.get(i).getFrequency();
+				}
+			}
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max == min){
+					result.get(i).setClasse("class3");
+				}else
+				{
+					int classe = (int) (((double)(result.get(i).getFrequency()-min))/(((double)(max-min))/9));
+					
+					switch (classe)
+					{
+					case 0:
+						result.get(i).setClasse("class1");
+						break;
+					case 1:
+						result.get(i).setClasse("class2");
+						break;
+					case 2:
+						result.get(i).setClasse("class3");
+						break;
+					case 3:
+						result.get(i).setClasse("class4");
+						break;
+					case 4:
+						result.get(i).setClasse("class5");
+						break;
+					case 5:
+						result.get(i).setClasse("class6");
+						break;
+					case 6:
+						result.get(i).setClasse("class7");
+						break;
+					case 7:
+						result.get(i).setClasse("class8");
+						break;
+					case 8:
+						result.get(i).setClasse("class9");
+						break;
+					case 9:
+						result.get(i).setClasse("class10");
+						break;
+					}
+				}
+			}
+			
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+public List<TimelineItem> listarTimelinePerson(Person p, Groups g){
+		
+		List<TimelineItem> result = null;
+		try {			
+			PersonDAO personDAO = factory.getPersonDAO();
+			result = personDAO.getTimelineByPersonID(p.getId(), g.getId());
+			
+			int max = 0;
+			int min = 10000000;
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max < result.get(i).getFrequency()){
+					max = result.get(i).getFrequency();
+				}
+				if(min > result.get(i).getFrequency()){
+					min = result.get(i).getFrequency();
+				}
+			}
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max == min){
+					result.get(i).setClasse("class3");
+				}else
+				{
+					int classe = (int) (((double)(result.get(i).getFrequency()-min))/(((double)(max-min))/9));
+					
+					switch (classe)
+					{
+					case 0:
+						result.get(i).setClasse("class1");
+						break;
+					case 1:
+						result.get(i).setClasse("class2");
+						break;
+					case 2:
+						result.get(i).setClasse("class3");
+						break;
+					case 3:
+						result.get(i).setClasse("class4");
+						break;
+					case 4:
+						result.get(i).setClasse("class5");
+						break;
+					case 5:
+						result.get(i).setClasse("class6");
+						break;
+					case 6:
+						result.get(i).setClasse("class7");
+						break;
+					case 7:
+						result.get(i).setClasse("class8");
+						break;
+					case 8:
+						result.get(i).setClasse("class9");
+						break;
+					case 9:
+						result.get(i).setClasse("class10");
+						break;
+					}
+				}
+			}
+			
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public Groups getGroupsById(int id)
+	{
+		Groups result = null;
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		result = groupsDAO.findById(id, false);
+		return result;
+	}
+	
+	public boolean pesronHaveGroup(int courseId, int personId)
+	{
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		return groupsDAO.personHaveGroup(courseId, personId);
+	}
+	
+	public boolean verificarStatusPorForum(List<Person> alunos, Forum forum)
+	{
+		ForumDAO forumDAO = factory.getForumDAO();
+		return forumDAO.verificarStatusPorForum(alunos, forum);
+	}
+	
+	public boolean verificarStatusPorGame(List<Person> alunos, Game game)
+	{
+		GameDAO gameDAO = factory.getGameDAO();
+		return gameDAO.verificarStatusPorGame(alunos, game);
+	}
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }

@@ -13,15 +13,19 @@ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿
 
 package br.ufpe.cin.amadeus.amadeus_web.dao;
 
+<<<<<<< HEAD
 import java.util.Date;
 import java.util.List;
 
+=======
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.AmadeusDroidHistoricDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ArchiveDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.CourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.DeliveryDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GameDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GroupsDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HistoryLearningObjectDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HomeworkDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.KeywordDAO;
@@ -45,7 +49,14 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.register.PersonDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.register.ResumeDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.register.TweetDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.register.UserRequestDAO;
+<<<<<<< HEAD
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Tweet;
+=======
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.evaluation.EvaluationDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.evaluation.EvaluationRealizedDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.externallink.ExternalLinkDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups;
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 public abstract class DAOFactory {
 
@@ -98,7 +109,11 @@ public abstract class DAOFactory {
 	public abstract ExternalLinkDAO getExternalLinkDAO();
 	public abstract AmadeusDroidHistoricDAO getAmadeusDroidHistoricDAO();
 	public abstract LogDAO getLogDAO();
+<<<<<<< HEAD
 	public abstract MessengerMessageDAO getMessengerMessageDAO(); //Added by Nailson Cunha
 	public abstract TweetDAO getTweetDAO(); //Added by Nailson Cunha
+=======
+	public abstract GroupsDAO getGroupsDAO();
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }
 

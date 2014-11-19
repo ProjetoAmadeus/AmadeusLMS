@@ -35,6 +35,11 @@ public class Course implements Serializable{
 	
 	private Person professor;
 	
+<<<<<<< HEAD
+=======
+	private boolean flag_habilitar_grupo;
+	
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	private List<Material> materials = new ArrayList<Material>();
 	
 	private List<Forum> foruns = new ArrayList<Forum>();
@@ -151,6 +156,17 @@ public class Course implements Serializable{
 	public void setForuns(List<Forum> foruns) {
 		this.foruns = foruns;
 	}
+<<<<<<< HEAD
+=======
+
+	public void setFlag_habilitar_grupo(boolean flag_habilitar_grupo) {
+		this.flag_habilitar_grupo = flag_habilitar_grupo;
+	}
+
+	public boolean isFlag_habilitar_grupo() {
+		return flag_habilitar_grupo;
+	}
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	
 
 }

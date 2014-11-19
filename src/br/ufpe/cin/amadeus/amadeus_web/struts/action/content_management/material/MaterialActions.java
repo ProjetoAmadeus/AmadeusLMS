@@ -666,6 +666,13 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 			os.flush();
 			os.write(swf);
 			os.close();
+			
+			//TODO - LOG - Visualizacao de Material - OK
+			Log log = SystemActions.getLogUser(request);
+			log.setCodigo(Log.LOG_CODIGO_VISUALIZACAO_MATERIAL);
+			log.setIdObjeto(material.getId());
+			this.facade.saveLog(log);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

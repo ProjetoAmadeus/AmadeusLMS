@@ -25,6 +25,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.CourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.DeliveryDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GameDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GroupsDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HistoryLearningObjectDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HomeworkDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.KeywordDAO;
@@ -47,6 +48,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.CourseHib
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.DeliveryHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.ForumHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.GameHibernateDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.GroupsHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.HistoryLearningObjectHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.HomeworkHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment.KeywordHibernateDAO;
@@ -206,6 +208,7 @@ public class HibernateDAOFactory extends DAOFactory {
 	public LogDAO getLogDAO() {
 		return (LogDAO) instantiateDAO(LogHibernateDAO.class);
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Método que retorna o MessengerMessageDAO
@@ -221,6 +224,13 @@ public class HibernateDAOFactory extends DAOFactory {
 		return (TweetDAO) instantiateDAO(TweetHibernateDAO.class);
 	}
 	
+=======
+	
+	@Override
+	public GroupsDAO getGroupsDAO() {
+		return (GroupsDAO) instantiateDAO(GroupsHibernateDAO.class);
+	}
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }
 
 

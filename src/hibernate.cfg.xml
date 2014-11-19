@@ -11,9 +11,16 @@
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/amadeus_web</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">postgres</property>
+<<<<<<< HEAD
 		<property name="hibernate.current_session_context_class">thread</property>		
 		
 			<property name="hibernate.hbm2ddl.auto">update</property>		
+=======
+		<property name="hibernate.current_session_context_class">thread</property>
+<!--	Senha de Paulo	-->
+<!--	<property name="hibernate.connection.password">mcplparp</property> -->
+		
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		
 		<property name="hibernate.c3p0.max_size">10</property>
 		<property name="hibernate.c3p0.min_size">2</property>
@@ -85,6 +92,11 @@
 	
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log" />
+<<<<<<< HEAD
+=======
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Person_Groups" />
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	
 	</session-factory>
 </hibernate-configuration>

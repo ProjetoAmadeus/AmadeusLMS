@@ -131,6 +131,49 @@ public class CoursePermissions {
 		
 		return userCanViewGraphic; 
 	}
+<<<<<<< HEAD
+=======
+	
+	public static boolean userCanViewGroups(HttpServletRequest request, Course course) {
+		boolean userCanViewGroups = false;
+		
+		AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
+		
+		Role userRoleInCourse;
+		
+		try {
+			userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
+			if(userRoleInCourse != null) {				
+				userCanViewGroups = true;				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return userCanViewGroups; 
+	}
+	
+	public static boolean userCanCreateGroups(HttpServletRequest request, Course course) {
+		boolean userCanCreateGroups = true;		
+
+		try {
+			AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
+			
+			Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
+			
+			if(userRoleInCourse != null) {
+				if(userRoleInCourse.getRoleType() == RoleType.STUDENT)
+				{
+					userCanCreateGroups = Facade.getInstance().pesronHaveGroup(course.getId(), user.getPerson().getId());
+				}				
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return userCanCreateGroups; 
+	}
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 	
 }

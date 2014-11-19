@@ -15,9 +15,16 @@ package br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment;
 
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import org.apache.poi.hssf.record.formula.functions.Int;
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.GenericHibernateDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 public class ForumHibernateDAO extends GenericHibernateDAO<Forum, Integer> implements ForumDAO {
 
@@ -32,4 +39,35 @@ public class ForumHibernateDAO extends GenericHibernateDAO<Forum, Integer> imple
 		return results;
 	}
 
+<<<<<<< HEAD
+=======
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean verificarStatusPorForum(List<Person> alunos, Forum forum) {
+
+		String persons = " AND l.idUser.id IN (";
+		
+		String ids = "";
+		
+		for (int i = 0; i < alunos.size(); i++)
+		{
+			if(ids.length() != 0)
+			{
+				ids += ",";
+			}
+			ids += alunos.get(i).getId();
+		}
+		
+		persons += ids + ")";
+		
+		String hql = "select distinct l.idUser.id from Log l where l.codigo = 4 AND l.idObjeto = " + forum.getId() + persons;
+		List<Int> posts = getSession().createQuery(hql).list();
+		
+		boolean retorno = alunos.size() == posts.size();
+		
+		
+		return retorno;
+	}
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }

@@ -109,14 +109,24 @@ public class ForumActions extends SystemActions {
 
 		request.setAttribute("forum", forum);
 		request.setAttribute("module", module);
+<<<<<<< HEAD
 		// request.setAttribute("canAnswerForum", canAnswerForum);
 
 		// TODO - LOG - Visualizacao de um topico - OK
+=======
+		//request.setAttribute("canAnswerForum", canAnswerForum);
+		
+		//TODO - LOG - Visualizacao de um topico - OK
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		Log log = SystemActions.getLogUser(request);
 		log.setCodigo(Log.LOG_CODIGO_FORUM_TOPICO);
 		log.setIdObjeto(forum.getId());
 		facade.saveLog(log);
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		return mapping.findForward(FORWARD_SHOW_VIEW_FORUM_ACTIVITY);
 	}
 

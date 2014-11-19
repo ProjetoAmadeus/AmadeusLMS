@@ -89,8 +89,13 @@ public class ModuleActions extends SystemActions {
 			int positionModule = facade.getNextPositionModule(course);
 			
 			Module module = new Module();
+<<<<<<< HEAD
 			module.setName("Nome do Módulo - "+(positionModule));
 			module.setDescription("Descrição");
+=======
+			module.setName("Nome do MÃ³dulo - "+(positionModule));
+			module.setDescription("DescriÃ§Ã£o");
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			module.setVisible(true);
 			module.setPosition(positionModule);		
 			module.setCourse(course);

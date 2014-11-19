@@ -20,12 +20,16 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	
 	<link href="themes/default/css/css.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/css/amadeus.css" rel="stylesheet" type="text/css" />
+<<<<<<< HEAD
 	<link href="themes/default/css/messenger.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/css/twittertool.css" rel="stylesheet" type="text/css" />
+=======
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	<link href="themes/default/css/content_management.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/css/jqueryui/smoothness/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/imgs/favicon.ico" rel="shortcut icon" />
 	
+<<<<<<< HEAD
 	<!-- <link href="themes/default/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
 	<link href="themes/default/css/bootstrap.min.css" rel="stylesheet" type="text/css"/> -->
 	<link href="themes/default/css/nyroModal.css" rel="stylesheet" type="text/css"/>
@@ -48,6 +52,15 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	<script type="text/javascript" src="js/amadeus.js"></script>
 	<script type="text/javascript" src="js/messenger.js"></script>
 	<script type="text/javascript" src="js/twittertool.js"></script>
+=======
+	<script type='text/javascript' src='dwr/interface/UtilDWR.js'></script>
+	<script type='text/javascript' src='dwr/engine.js'></script>
+	<script type='text/javascript' src='dwr/util.js'></script>
+	<script type="text/javascript" src="js/jqueryui/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="js/jqueryui/jquery-ui-1.7.1.custom.min.js"></script>
+	<script type="text/javascript" src="js/openid.js"></script>
+	<script type="text/javascript" src="js/amadeus.js"></script>
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	<script type="text/javascript">		
 	
 	

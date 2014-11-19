@@ -1,15 +1,15 @@
 /**
 Copyright 2008, 2009 UFPE - Universidade Federal de Pernambuco
- 
+
 Este arquivo � parte do programa Amadeus Sistema de Gest�o de Aprendizagem, ou simplesmente Amadeus LMS
- 
+
 O Amadeus LMS � um software livre; voc� pode redistribui-lo e/ou modifica-lo dentro dos termos da Licen�a P�blica Geral GNU como
 publicada pela Funda��o do Software Livre (FSF); na vers�o 2 da Licen�a.
- 
+
 Este programa � distribu�do na esperan�a que possa ser �til, mas SEM NENHUMA GARANTIA; sem uma garantia impl�cita de ADEQUA��O a qualquer MERCADO ou APLICA��O EM PARTICULAR. Veja a Licen�a P�blica Geral GNU para maiores detalhes.
- 
+
 Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral GNU, sob o t�tulo "LICENCA.txt", junto com este programa, se n�o, escreva para a Funda��o do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
-**/
+ **/
 
 package br.ufpe.cin.amadeus.amadeus_web.struts.action;
 
@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -43,18 +44,24 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.PersonRoleCourseDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Answer;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Choice;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Person_Groups;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Poll;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ProfileType;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
@@ -68,12 +75,19 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Ques
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionGap;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionMultiple;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionTrueFalse;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.EvaluationRealized;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.MessengerMessage;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.amadeus.amadeus_web.exception.CourseInvalidException;
 import br.ufpe.cin.amadeus.amadeus_web.facade.Facade;
 import br.ufpe.cin.amadeus.amadeus_web.permissions.content_management.CoursePermissions;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.GroupPlusStatus;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.LogVisualizacao;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonGroupPlusStatus;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.RelatorioGrupo;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 import br.ufpe.cin.amadeus.amadeus_web.util.DateValidator;
 import br.ufpe.cin.amadeus.amadeus_web.util.SocialInteractionMethods;
 import br.ufpe.cin.amadeus.amadeus_web.util.SocialInteractions;
@@ -94,8 +108,18 @@ public class CourseActions extends SystemActions {
 	private final String FORWARD_SHOW_VIEW_NEW_EXTERNAL_LINK = "fshowViewNewExternalLink";
 	private final String FORWARD_SHOW_VIEW_REPLICATE_COURSE = "fReplicateCourseStepOne";
 	private final String FORWARD_SHOW_VIEW_GRAPHIC = "fShowViewGraphic";
+<<<<<<< HEAD
 	private final String FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING = "fShowViewSocialInteractionMonitoring";
 	private final String FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING_REPORTS = "fShowViewSocialInteractionMonitoringReports";
+=======
+	private final String FORWARD_SHOW_VIEW_GROUPS = "fShowViewGroups";
+	private final String FORWARD_SHOW_VIEW_GROUPS_RELATORIO = "fShowViewGroupsRelatorio";
+	private final String FORWARD_SHOW_GROUP_DAY_TIMELINE = "fShowGroupDayTimeline";
+	private final String FORWARD_SHOW_PERSON_DAY_TIMELINE = "fShowPersonDayTimeline";
+	private final String FORWARD_SHOW_VIEW_GROUP_TIMELINE = "fShowViewGroupTimeline";
+	private final String FORWARD_SHOW_VIEW_PERSON_TIMELINE = "fShowViewPersonTimeline";
+	private final String FORWARD_SHOW_VIEW_ONE_GROUP = "fShowViewOneGroup";
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 	@Override
 	protected Map<String, String> getKeyMethodMap() {
@@ -113,10 +137,10 @@ public class CourseActions extends SystemActions {
 		map.put("viewCourse.registration", "viewCourse");
 		map.put("course.delete", "deleteCourse");
 		map.put("course.viewDeleteConfirmation", "viewDeleteCourseConfirmation");
-		
-		
+
+
 		map.put("course.unregisterStudentCourse", "unregisterStudentCourse");
-		
+
 		map.put("course.showViewCourseParticipants", "showViewCourseParticipants");
 		map.put("course.showViewCourse", "showViewCourse");
 		map.put("course.showViewCourseNotLogged", "showViewCourseNotLogged");
@@ -127,15 +151,33 @@ public class CourseActions extends SystemActions {
 		map.put("course.showViewShowModules", "showViewShowModules");
 		map.put("course.showViewCourseEvaluations", "showViewCourseEvaluations");
 		map.put("course.showViewGraphic", "showViewGraphic");
+<<<<<<< HEAD
 		map.put("course.showViewSendMail", "showViewSendMail");
 		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
 		map.put("course.changeTeacher", "changeTeacher");
 		map.put("course.viewChangeTeacher", "viewChangeTeacher");
 		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
 		
+=======
+		map.put("course.showViewGroups", "showViewGroups");
+		map.put("course.showViewOneGroup", "showViewOneGroup");
+		map.put("course.habilitarDesabilitarCriarGrupos", "habilitarDesabilitarCriarGrupos");
+		map.put("course.showViewSendMail", "showViewSendMail");
+		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
+		map.put("course.changeTeacher", "changeTeacher");
+		map.put("course.viewChangeTeacher", "viewChangeTeacher");
+		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
+		map.put("course.showViewGroupDayTimeline","showViewGroupDayTimeline");
+		map.put("course.showViewPersonDayTimeline","showViewPersonDayTimeline");
+		map.put("course.showViewCreateGroup","showViewCreateGroup");
+		map.put("course.showViewGroupTimeline", "showViewGroupTimeline");
+		map.put("course.showViewPersonTimeline", "showViewPersonTimeline");
+		map.put("course.showViewGroupsRelatorio", "showViewRelatorioAtividade");
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		return map;
 	}
-	
+
 	public ActionForward changeTeacher(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -157,15 +199,15 @@ public class CourseActions extends SystemActions {
 		return null;
 	}
 
-	
+
 	public ActionForward replicateCourseStepOne(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws CourseInvalidException, IOException {
-		
+
 		DynaActionForm myForm = (DynaActionForm) form;
-		
+
 		String lala = myForm.getString("keywords");
-		
+
 		ActionMessages messages = new ActionMessages();
 		int id = (Integer) myForm.get("courseId");
 		Course newCourse = new Course();
@@ -204,7 +246,7 @@ public class CourseActions extends SystemActions {
 		Date finalReg = fr.getDate();
 		Date initCourse = ic.getDate();
 		Date finalCourse = fc.getDate();
-		
+
 		if (initReg.after(finalReg)) {
 			messages.add("invalidDate", new ActionMessage("errors.initialRegistrationDate"));
 		} else if (initCourse.after(finalCourse)) {
@@ -223,7 +265,7 @@ public class CourseActions extends SystemActions {
 
 		Set<Keyword> keywords = new HashSet<Keyword>();
 		String rawKeywords = myForm.getString("keywords");
-		
+
 		if(rawKeywords != null) {
 			String[] keywordsOfCourse = rawKeywords.split(",");
 			for (String kw : keywordsOfCourse) {
@@ -239,15 +281,15 @@ public class CourseActions extends SystemActions {
 						keywords.add(keyword);
 					}
 				}
-				
+
 			}
 		}
-		
+
 		synchronized (this) {
 			facade.incrementPopularityKeyword(c.getId(), keywords);
 			facade.decrementPopularityKeyword(c.getId(), keywords);	
 		}
-		
+
 		newCourse.setKeywords(keywords);
 
 		if (!messages.isEmpty()) {
@@ -288,7 +330,7 @@ public class CourseActions extends SystemActions {
 					materialRequest.setModule(newModule);
 					newModule.getMaterialRequests().add(materialRequest);
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getMaterials().size(); j++) {
 					//System.out.println("j2: "+j);
 					Material material = new Material();
@@ -303,7 +345,7 @@ public class CourseActions extends SystemActions {
 					material.setArchive(newArchive);
 					newModule.getMaterials().add(material);
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getPolls().size(); j++) {
 					//System.out.println("j3: "+j);
 					Poll newPoll = new Poll();
@@ -322,22 +364,22 @@ public class CourseActions extends SystemActions {
 						newChoice.setPoll(newPoll);
 						newModule.getPolls().get(j).getChoices().add(newChoice);
 					}
-					
+
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getForums().size(); j++) {
 					Forum newForum = new Forum();
-					
+
 					newForum.setName(c.getModules().get(i).getForums().get(j).getName());
 					newForum.setDescription(c.getModules().get(i).getForums().get(j).getDescription());
 					newForum.setCreationDate(new Date());
 					newForum.setModule(newModule);
 					newModule.getForums().add(newForum);
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getExternalLinks().size(); j++) {
 					ExternalLink newExternalLink = new ExternalLink();
-					
+
 					newExternalLink.setName(c.getModules().get(i).getExternalLinks().get(j).getName());
 					newExternalLink.setUrl(c.getModules().get(i).getExternalLinks().get(j).getUrl());
 					newExternalLink.setDescription(c.getModules().get(i).getExternalLinks().get(j).getDescription());
@@ -345,50 +387,50 @@ public class CourseActions extends SystemActions {
 					newExternalLink.setModule(newModule);
 					newModule.getExternalLinks().add(newExternalLink);
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getVideos().size(); j++) {
 					VideoIriz newVideo = new VideoIriz();
-					
+
 					newVideo.setName(c.getModules().get(i).getVideos().get(j).getName());
 					newVideo.setDescription(c.getModules().get(i).getVideos().get(j).getDescription());
 					newVideo.setYoutubeId(c.getModules().get(i).getVideos().get(j).getYoutubeId());
 					newVideo.setCreationDate(new Date());
 					newVideo.setModule(newModule);
-					
+
 					newModule.getVideos().add(newVideo);
-					
+
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getLearningObjects().size(); j++) {
 					LearningObject newLearningObject = new LearningObject();
-					
+
 					newLearningObject.setName(c.getModules().get(i).getLearningObjects().get(j).getName());
 					newLearningObject.setDescription(c.getModules().get(i).getLearningObjects().get(j).getDescription());
 					newLearningObject.setUrl(c.getModules().get(i).getLearningObjects().get(j).getUrl());
 					newLearningObject.setCreationDate(new Date());
 					newLearningObject.setModule(newModule);
-					
+
 					newModule.getLearningObjects().add(newLearningObject);
 				}
-				
+
 				for (int j = 0; j < c.getModules().get(i).getEvaluations().size(); j++) {
 					Evaluation newEvaluation = new Evaluation();
-					
+
 					newEvaluation.setDescription(c.getModules().get(i).getEvaluations().get(j).getDescription());
 					newEvaluation.setStart(new Date());
 					newEvaluation.setFinish(new Date());
 					newEvaluation.setAfterdeadlineachieved(c.getModules().get(i).getEvaluations().get(j).isAfterdeadlineachieved());
-					
-					
-					
-					
+
+
+
+
 					for (int k = 0; k < c.getModules().get(i).getEvaluations().get(j).getQuestions().size(); k++) {
 						Question question = c.getModules().get(i).getEvaluations().get(j).getQuestions().get(k);
-						
+
 						if (question instanceof QuestionAssociation){
 							QuestionAssociation oldQuestion = (QuestionAssociation)question;
 							QuestionAssociation newQuestion = new QuestionAssociation();
-							
+
 							newQuestion.setDescription(oldQuestion.getDescription());
 							//newQuestion.setAssociations(oldQuestion.getAssociations());
 							newQuestion.setCourse(newCourse);
@@ -396,29 +438,29 @@ public class CourseActions extends SystemActions {
 							newEvaluation.getQuestions().add((Question)newQuestion);
 							newQuestion.getEvaluations().add(newEvaluation);
 						}
-						
+
 						if (question instanceof QuestionGap){
 							QuestionGap oldQuestionGap = (QuestionGap)question;
 							QuestionGap newQuestionGap = new QuestionGap();
-							
+
 							newQuestionGap.setDescription(oldQuestionGap.getDescription());
 							newQuestionGap.setCourse(newCourse);
 							newCourse.getQuestions().add(newQuestionGap);
 							newEvaluation.getQuestions().add((Question)newQuestionGap);
 							newQuestionGap.getEvaluations().add(newEvaluation);
 						}
-						
+
 						if(question instanceof QuestionDiscursive){
 							QuestionDiscursive oldQuestionDiscursive = (QuestionDiscursive)question;
 							QuestionDiscursive newQuestionDiscursive = new QuestionDiscursive();
-							
+
 							newQuestionDiscursive.setDescription(oldQuestionDiscursive.getDescription());
 							newQuestionDiscursive.setCourse(newCourse);
 							newCourse.getQuestions().add(newQuestionDiscursive);
 							newEvaluation.getQuestions().add((Question)newQuestionDiscursive);
 							newQuestionDiscursive.getEvaluations().add(newEvaluation);
 						}
-						
+
 						if(question instanceof QuestionMultiple){
 							QuestionMultiple oldQuestionMultiple = (QuestionMultiple)question;
 							QuestionMultiple newQuestionMultiple = new QuestionMultiple();
@@ -435,7 +477,7 @@ public class CourseActions extends SystemActions {
 								newQuestionMultiple.getEvaluations().add(newEvaluation);
 							}
 						}
-						
+
 						if(question instanceof QuestionTrueFalse){
 							QuestionTrueFalse oldQuestionTrueFalse = (QuestionTrueFalse)question;
 							QuestionTrueFalse newQuestionTrueFalse = new QuestionTrueFalse();
@@ -444,34 +486,34 @@ public class CourseActions extends SystemActions {
 							newQuestionTrueFalse.getEvaluations().add(newEvaluation);
 							newEvaluation.getQuestions().add((Question)newQuestionTrueFalse);
 							newCourse.getQuestions().add(newQuestionTrueFalse);
-							
+
 							for (int l = 0; l < oldQuestionTrueFalse.getAlternatives().size(); l++) {
 								Alternative newAlternative = new Alternative();
 								newAlternative.setCorrect(oldQuestionTrueFalse.getAlternatives().get(l).isCorrect());
 								newAlternative.setDescription(oldQuestionTrueFalse.getAlternatives().get(l).getDescription());
 								newAlternative.setQuestion(newQuestionTrueFalse);
 								newQuestionTrueFalse.getAlternatives().add(newAlternative);
-								
+
 							}
-							
+
 						}
-						
+
 					}
-					
+
 					newEvaluation.setModule(newModule);
 					newModule.getEvaluations().add(newEvaluation);
 					newEvaluation.setEvaluationsRealized(null);
-					
+
 				}
-				
+
 				moduleList.add(newModule);
-				
+
 			}
 
 			newCourse.setModules(moduleList);
-			
+
 			Role teacherRole = facade.searchRoleByConstant(RoleType.TEACHER);
-			
+
 			PersonRoleCourse prc = new PersonRoleCourse();
 			prc.setCourse(newCourse);
 			prc.setPerson(newCourse.getProfessor());
@@ -480,17 +522,17 @@ public class CourseActions extends SystemActions {
 			newCourse.getPersonsRolesCourse().add(prc);
 			facade.validateCourseStepOne(newCourse);
 			facade.insertCourse(newCourse);
-			
+
 			facade.flush();
 		} catch (CourseInvalidException e) {
 			messages.add("confirmationCourse",	new ActionMessage(e.getMessage()));
 			saveErrors(request, messages);
 			return mapping.getInputForward();
 		}
-		
+
 		response.sendRedirect("course.do?method=showViewCourse&courseId="+newCourse.getId());
 		return null;
-		
+
 	}
 
 	public ActionForward insertCourseStepOne(ActionMapping mapping,
@@ -501,7 +543,7 @@ public class CourseActions extends SystemActions {
 		ActionMessages messages = new ActionMessages();
 
 		AccessInfo user = (AccessInfo) request.getSession()
-				.getAttribute("user");
+		.getAttribute("user");
 		Person p = new Person();
 		if (user != null) {
 			p = user.getPerson();
@@ -517,15 +559,15 @@ public class CourseActions extends SystemActions {
 		String initialRegistrationDay = (String) myForm.get("initialRegistrationDay");
 		String initialRegistrationMonth = (String) myForm.get("initialRegistrationMonth");
 		String initialRegistrationYear = (String) myForm.get("initialRegistrationYear");
-		
+
 		String finalRegistrationDay = (String) myForm.get("finalRegistrationDay");
 		String finalRegistrationMonth = (String) myForm.get("finalRegistrationMonth");
 		String finalRegistrationYear = (String) myForm.get("finalRegistrationYear");
-		
+
 		String initialCourseDay = (String) myForm.get("initialCourseDay");
 		String initialCourseMonth = (String) myForm.get("initialCourseMonth");
 		String initialCourseYear = (String) myForm.get("initialCourseYear");
-		
+
 		String finalCourseDay = (String) myForm.get("finalCourseDay");
 		String finalCourseMonth = (String) myForm.get("finalCourseMonth");
 		String finalCourseYear = (String) myForm.get("finalCourseYear");
@@ -550,7 +592,7 @@ public class CourseActions extends SystemActions {
 		Date finalReg = fr.getDate();
 		Date initCourse = ic.getDate();
 		Date finalCourse = fc.getDate();
-		
+
 		if (initReg.before(today))
 			messages.add("invalidDate", new ActionMessage("errors.todayRegistrationDate"));
 		else if (initReg.after(finalReg))
@@ -584,21 +626,21 @@ public class CourseActions extends SystemActions {
 		return mapping.findForward(FORWARD_INSERT_COURSE_STEP_TWO);
 
 	}
-	
+
 	public ActionForward viewChangeTeacher(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws CourseInvalidException, IOException, Exception {
-		
+
 		ActionForward forward = null;
 		int courseId = Integer.parseInt(request.getParameter("courseId"));
-		
+
 		Course course = facade.getCoursesById(courseId);
 
 		boolean isOwner = false;
-		
+
 		AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
 		loggedUser = facade.searchUserById(loggedUser.getId());
-		
+
 		ProfileType loggedProfile = loggedUser.getTypeProfile();
 
 
@@ -608,7 +650,7 @@ public class CourseActions extends SystemActions {
 				isOwner = true;
 			}
 		}
-		
+
 		if (loggedProfile == ProfileType.ADMIN) {
 			isOwner = true;
 		}
@@ -621,7 +663,7 @@ public class CourseActions extends SystemActions {
 		}else{
 			forward = this.showViewMenu(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
 
@@ -634,10 +676,10 @@ public class CourseActions extends SystemActions {
 
 		Course c = (Course) request.getSession().getAttribute("incompleteCourse");
 		request.getSession().removeAttribute("incompleteCourse");
-		
+
 		Set<Keyword> keywords = new HashSet<Keyword>();
 		String rawKeywords = myForm.getString("keywords");
-		
+
 		if(rawKeywords != null) {
 			String[] keywordsOfCourse = rawKeywords.split(",");
 			for (String kw : keywordsOfCourse) {
@@ -653,15 +695,15 @@ public class CourseActions extends SystemActions {
 						keywords.add(keyword);
 					}
 				}
-				
+
 			}
 		}
-		
+
 		synchronized (this) {
 			facade.incrementPopularityKeyword(c.getId(), keywords);
 			facade.decrementPopularityKeyword(c.getId(), keywords);	
 		}
-		
+
 		c.setKeywords(keywords);
 
 		c.setModules(new ArrayList<Module>());
@@ -672,27 +714,27 @@ public class CourseActions extends SystemActions {
 			prc.setCourse(c);
 			prc.setPerson(c.getProfessor());
 			prc.setRole(teacherRole);
-			
+
 			c.getPersonsRolesCourse().add(prc);
-			
+
 			facade.insertCourse(c);
-			
+
 			facade.flush();
 		} catch (CourseInvalidException e) {
 			messages.add("confirmationCourse",new ActionMessage(e.getMessage()));
 			saveErrors(request, messages);
 			return mapping.getInputForward();
 		}
-		
+
 		response.sendRedirect("course.do?method=showViewShowModules&idCourse="+c.getId());
-		
+
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	public ActionForward searchCourse(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	throws Exception {
 		DynaActionForm dyna = (DynaActionForm) form;
 		String courseName = dyna.getString("courseName").trim();
 		System.out.println("LALA");
@@ -700,16 +742,16 @@ public class CourseActions extends SystemActions {
 		if (!courseName.equals("") && courseName != null) {
 			results = facade.getCoursesByRule(courseName);
 			if(results[0].size() == 0 && results[1].size() == 0 
-				&& results[2].size() == 0 && results[3].size() == 0 ){
+					&& results[2].size() == 0 && results[3].size() == 0 ){
 				results = facade.getCoursesByRule(facade.searchString(courseName));
 			}
-		
+
 		}
-		
-		
+
+
 
 		int numberOfResults = results[0].size() + results[1].size()
-				+ results[2].size() + results[3].size();
+		+ results[2].size() + results[3].size();
 		int numberOfPages = 1;
 		if (numberOfResults % 10 == 0) {
 			numberOfPages = numberOfResults / 10;
@@ -719,7 +761,7 @@ public class CourseActions extends SystemActions {
 
 		List<Course>[][] resultsClassified = new ArrayList[4][numberOfResults];
 		resultsClassified = facade
-				.classifyCoursesByPage(results, numberOfPages);
+		.classifyCoursesByPage(results, numberOfPages);
 
 		request.setAttribute("criteria", courseName);
 		request.setAttribute("foundCourses", resultsClassified);
@@ -732,51 +774,51 @@ public class CourseActions extends SystemActions {
 
 	public ActionForward viewCourse(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
+	throws Exception {
+
 		DynaActionForm myForm = (DynaActionForm) form;
-		
+
 		Course c = facade.getCoursesById((Integer) myForm.get("id"));
-		
+
 		AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 		user = facade.searchUserById(user.getId());
 
 		Person person = user.getPerson();
-		
+
 		facade.registerStudentCourse(c, person);
 
 		facade.updateCourse(c);
-		
+
 		return this.showViewMenu(mapping, myForm, request, response);
 	}
 
 	public ActionForward unregisterStudentCourse(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
+	throws Exception {
+
 		Integer idStudent = Integer.valueOf(request.getParameter("studentId"));
 		Person student = facade.getPersonByID(idStudent);
-		
+
 		Integer idCourse = Integer.valueOf(request.getParameter("courseId"));
 		Course course = facade.getCoursesById(idCourse);
-		
+
 		facade.unregisterStudentCourse(course, student);
 		facade.updateCourse(course);
 		request.setAttribute("courseId", idCourse);
-		
+
 		return this.showViewCourseParticipants(mapping, form, request, response);
 	}
-	
+
 	public ActionForward editCourse(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
-		
-		
+	throws Exception {
+
+
+
 		DynaActionForm myForm = (DynaActionForm) form;
 		ActionMessages messages = new ActionMessages();
 		int id = (Integer) myForm.get("id");
-		
+
 		Course c = facade.getCoursesById(id);
 		c.setName(myForm.getString("name"));
 		c.setObjectives(myForm.getString("objectives"));
@@ -812,7 +854,7 @@ public class CourseActions extends SystemActions {
 		Date finalReg = fr.getDate();
 		Date initCourse = ic.getDate();
 		Date finalCourse = fc.getDate();
-		
+
 		if (initReg.after(finalReg)) {
 			messages.add("invalidDate", new ActionMessage("errors.initialRegistrationDate"));
 		} else if (initCourse.after(finalCourse)) {
@@ -831,7 +873,7 @@ public class CourseActions extends SystemActions {
 
 		Set<Keyword> keywords = new HashSet<Keyword>();
 		String rawKeywords = myForm.getString("keywords");
-		
+
 		if(rawKeywords != null) {
 			String[] keywordsOfCourse = rawKeywords.split(",");
 			for (String kw : keywordsOfCourse) {
@@ -847,15 +889,15 @@ public class CourseActions extends SystemActions {
 						keywords.add(keyword);
 					}
 				}
-				
+
 			}
 		}
-		
+
 		synchronized (this) {
 			facade.incrementPopularityKeyword(c.getId(), keywords);
 			facade.decrementPopularityKeyword(c.getId(), keywords);	
 		}
-		
+
 		c.setKeywords(keywords);
 
 		if (!messages.isEmpty()) {
@@ -872,9 +914,9 @@ public class CourseActions extends SystemActions {
 			saveErrors(request, messages);
 			return mapping.getInputForward();
 		}
-		
+
 		response.sendRedirect("course.do?method=showViewCourse&courseId="+c.getId());
-		
+
 		return null;
 	}
 	
@@ -1015,36 +1057,36 @@ public class CourseActions extends SystemActions {
 
 	public ActionForward cancelEdition(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	throws Exception {
 		return mapping.findForward("cancel");
 	}
-	
+
 	public ActionForward deleteCourse(ActionMapping mapping, ActionForm form, 
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
+	throws Exception {
+
 		int courseId = Integer.valueOf(request.getParameter("courseId"));
-		
+
 		Course course = facade.getCoursesById(courseId);
-		
+
 		AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
 		loggedUser = facade.searchUserById(loggedUser.getId());
-		
+
 		ProfileType loggedProfile = loggedUser.getTypeProfile();
-		
+
 		boolean isOwner = false;
-		
+
 		Role userRole = facade.getRoleByPersonInCourse(loggedUser.getPerson(), course);
 		if(userRole != null){
 			if(userRole.getRoleType() == RoleType.TEACHER || userRole.getRoleType() == RoleType.ASSISTANT){
 				isOwner = true;
 			}
 		}
-		
+
 		if (loggedProfile == ProfileType.ADMIN) {
 			isOwner = true;
 		}
-		
+
 		if(isOwner) {
 			for (Keyword k : course.getKeywords()) {
 				k.setPopularity(k.getPopularity()-1);
@@ -1052,23 +1094,23 @@ public class CourseActions extends SystemActions {
 			facade.deleteCourse(course);	
 			facade.deleteKeywordsOrphan();
 		} 
-		
+
 		return this.showViewMenu(mapping, form, request, response);
 	}
-	
+
 	public ActionForward viewReplicateCourse(ActionMapping mapping, ActionForm form, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		int courseId = Integer.valueOf(request.getParameter("courseId"));
 		Course course = facade.getCoursesById(courseId);
-		
+
 		boolean isOwner = false;
-		
+
 		AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
 		loggedUser = facade.searchUserById(loggedUser.getId());
-		
+
 		ProfileType loggedProfile = loggedUser.getTypeProfile();
 
 
@@ -1078,26 +1120,26 @@ public class CourseActions extends SystemActions {
 				isOwner = true;
 			}
 		}
-		
+
 		if (loggedProfile == ProfileType.ADMIN) {
 			isOwner = true;
 		}
-		
+
 		if(isOwner) {
 			ArrayList<String> wordList = new ArrayList<String>();
-			
-			
-			
+
+
+
 			request.setAttribute("course", course);
 			Set<Keyword> setKeywork = course.getKeywords();
 			Iterator<Keyword> it = setKeywork.iterator();
-			
+
 			while(it.hasNext()){
 				wordList.add(it.next().getName());
 			}
-				
+
 			String keywordStr = new String();
-			
+
 			for (int i = 0; i < wordList.size(); i++) {
 				keywordStr = keywordStr.concat(wordList.get(i)+", ");
 			}
@@ -1106,77 +1148,82 @@ public class CourseActions extends SystemActions {
 		} else {
 			forward = this.showViewMenu(mapping, form, request, response);
 		}
-			
+
 		return forward;
-		
+
 	}
 
 	public ActionForward viewDeleteCourseConfirmation(ActionMapping mapping, ActionForm form, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		ActionForward forward = null;
-		
+
 		int courseId = Integer.valueOf(request.getParameter("courseId"));
-		
+
 		Course course = facade.getCoursesById(courseId);
-		
+
 		AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
 		loggedUser = facade.searchUserById(loggedUser.getId());
-		
+
 		ProfileType loggedProfile = loggedUser.getTypeProfile();
-		
+
 		boolean isOwner = false;
-		
+
 		Role userRole = facade.getRoleByPersonInCourse(loggedUser.getPerson(), course);
 		if(userRole != null){
 			if(userRole.getRoleType() == RoleType.TEACHER || userRole.getRoleType() == RoleType.ASSISTANT){
 				isOwner = true;
 			}
 		}
-		
+
 		if (loggedProfile == ProfileType.ADMIN) {
 			isOwner = true;
 		}
-		
+
 		if(isOwner) {
 			request.setAttribute("course", course);
 			forward = mapping.findForward(FORWARD_VIEW_DELETE_CONFIRMATION);
 		} else {
 			forward = this.showViewMenu(mapping, form, request, response);
 		}
-			
+
 		return forward;
 	}
-	
+
 	public ActionForward showViewCourse(ActionMapping mapping, ActionForm form, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)) {
 			AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 			user = facade.searchUserById(user.getId());
-			
+
 			int courseId;
-		    
-		    if(request.getParameter("courseId") == null) {
-		    	courseId = (Integer) request.getAttribute("courseId");
-		    } else {
-		    	courseId = Integer.parseInt(request.getParameter("courseId"));
-		    }
-			
+
+			if(request.getParameter("courseId") == null) {
+				courseId = (Integer) request.getAttribute("courseId");
+			} else {
+				courseId = Integer.parseInt(request.getParameter("courseId"));
+			}
+
 			Course course = facade.getCoursesById(courseId);
 			List<Person> teachers = facade.getTeachersByCourse(course);
 			List<Person> assistants = facade.listAssistantsByCourse(course);
+<<<<<<< HEAD
 			List<Person> participants = facade.listStudentsByCourse(course); //added by Nailson
 			List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 			
+=======
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			int studentsNumber = facade.getNumberOfStudentsInCourse(course);
 			course.setNumberOfStudentsInCourse(studentsNumber);
-			
+
 			Set<Keyword> keywords = course.getKeywords();
-			
+
 			boolean canRegisterUser = false;
+<<<<<<< HEAD
 			boolean canMonitorSocialInteractions = false;
 			
 			if (facade.canRegisterUser(user, course)) {
@@ -1186,8 +1233,15 @@ public class CourseActions extends SystemActions {
 				canMonitorSocialInteractions = true;
 			}
 			
+=======
+
+			if (facade.canRegisterUser(user, course)) {
+				canRegisterUser = true;
+			}
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
-			
+
 			SystemActions.setMenuPermissionsForUserInRequest(request, course);
 			request.setAttribute("userRoleInCourse", ( userRoleInCourse != null) ? userRoleInCourse.getRoleType() : null );
 			request.setAttribute("canRegisterUser", canRegisterUser);
@@ -1198,29 +1252,29 @@ public class CourseActions extends SystemActions {
 			request.setAttribute("participants", participants); //added by Nailson
 			request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 			request.setAttribute("keywords", keywords);
-			
+
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_COURSE);
 		} else {
 			forward = this.showViewCourseNotLogged(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
 
 	public ActionForward showViewCourseNotLogged(ActionMapping mapping, ActionForm form, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-	    int courseId = Integer.parseInt(request.getParameter("courseId"));
-		
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
+
 		Course course = facade.getCoursesById(courseId);
 		List<Person> teachers = facade.getTeachersByCourse(course);
 
 		int studentsNumber = facade.getNumberOfStudentsInCourse(course);
 		course.setNumberOfStudentsInCourse(studentsNumber);
-		
+
 		Set<Keyword> keywords = course.getKeywords();
 		List<Person> assistants = facade.listAssistantsByCourse(course);
-		
+
 		request.setAttribute("course", course);
 		request.setAttribute("teachers", teachers);
 		request.setAttribute("assistants", assistants);
@@ -1229,63 +1283,72 @@ public class CourseActions extends SystemActions {
 
 		return mapping.findForward(FORWARD_SHOW_VIEW_COURSE_NOT_LOGGED);
 	}
-	
+
 	public ActionForward showViewCourseParticipants(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)){
 			AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 			user = facade.searchUserById(user.getId());
 
-		    int courseId = Integer.parseInt(request.getParameter("courseId"));
-		    
-		    Course course = facade.getCoursesById(courseId);
-			
-		    Role userRoleInCourse = facade.getRoleByPersonInCourse(user.getPerson(), course);
-		    
+			int courseId = Integer.parseInt(request.getParameter("courseId"));
+
+			Course course = facade.getCoursesById(courseId);
+
+			Role userRoleInCourse = facade.getRoleByPersonInCourse(user.getPerson(), course);
+
 			List<Person> participants = facade.listStudentsByCourse(course);
 			List<Person> teachers = facade.listTeachersByCourse(course);
 			List<Person> assistants = facade.listAssistantsByCourse(course);
+<<<<<<< HEAD
 			List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 			
 			
+=======
+
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			SystemActions.setMenuPermissionsForUserInRequest(request, course);
 			request.setAttribute("course", course);
 			request.setAttribute("participants", participants);
 			request.setAttribute("teachers", teachers);
 			request.setAttribute("assistants", assistants);
 			request.setAttribute("userRoleInCourse", userRoleInCourse);
+<<<<<<< HEAD
 			request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 			
+=======
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_COURSE_PARTICIPANTS);
 		} else {
 			forward = showViewWelcome(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
-	
+
 	public ActionForward showViewEditCourse(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)) {
 			String courseIdStr = request.getParameter("courseId");
-			
+
 			if(courseIdStr == null){
 				courseIdStr = request.getParameter("id");
 			}
-			
-		    int courseId = Integer.parseInt(courseIdStr);
-			
+
+			int courseId = Integer.parseInt(courseIdStr);
+
 			Course course = facade.getCoursesById(courseId);
-			
+
 			ArrayList<AccessInfo> teacherList = (ArrayList<AccessInfo>) facade.searchUsers("", 2, 0);
 			//System.out.println("########: " + teacherList.get(0).getLogin());
-			
+
 			Set<Keyword> keywords = course.getKeywords();
 			Iterator<Keyword> ikeywords = keywords.iterator();
 			String keywordsStr = ""; 
@@ -1298,10 +1361,10 @@ public class CourseActions extends SystemActions {
 					keywordsStr = keywordsStr + ikeywords.next().getName();
 				}
 			}
-			
+
 			GregorianCalendar gc = new GregorianCalendar();
 			HashMap<String, Object> data = new HashMap<String, Object>();
-			
+
 			gc.setTime(course.getInitialRegistrationDate());
 			data.put("initialRegistrationDay", gc.get(Calendar.DAY_OF_MONTH));
 			data.put("initialRegistrationMonth", gc.get(Calendar.MONTH) + 1);
@@ -1318,29 +1381,30 @@ public class CourseActions extends SystemActions {
 			data.put("finalCourseDay", gc.get(Calendar.DAY_OF_MONTH));
 			data.put("finalCourseMonth", gc.get(Calendar.MONTH) + 1);
 			data.put("finalCourseYear", gc.get(Calendar.YEAR));
-			
+
 			boolean canAssistanceRequest = false;
-			
+
 			AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
 			loggedUser = facade.searchUserById(loggedUser.getId());
-			
+
 			if(facade.canAssistanceRequest(loggedUser.getPerson(), course)) {
 				canAssistanceRequest = true;
 			}
-			
+
 			request.setAttribute("canAssistanceRequest", canAssistanceRequest);
 			request.setAttribute("data", data);
 			request.setAttribute("keywordsStr", keywordsStr);
 			request.setAttribute("course", course);
 			request.setAttribute("teacherList", teacherList);
-			
+
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_EDIT_COURSE);
 		} else {
 			forward = new SystemActions().showViewWelcome(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
+<<<<<<< HEAD
 	
 	public ActionForward showViewSocialInteractionMonitoring(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1415,23 +1479,27 @@ public class CourseActions extends SystemActions {
 		return forward;
 	}
 	
+=======
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	public ActionForward showViewShowModules(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)) { 
 			AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 			user = facade.searchUserById(user.getId());
-			
+
 			int idCourse = Integer.parseInt(request.getParameter("idCourse"));
-			
+
 			Course course = facade.getCoursesById(idCourse);
-			
+
 			if(CoursePermissions.userCanShowViewShowModules(request, course)) {
 				Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
-				
+
 				List<Module> modules = course.getModules();
+<<<<<<< HEAD
 				
 				List<PersonForum> forunsperson = user.getPerson().getForuns();
 				
@@ -1440,18 +1508,27 @@ public class CourseActions extends SystemActions {
 				List<Person> participants = facade.listStudentsByCourse(course); //added by Nailson
 				List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 		
+=======
+
+				List<Person> assistances = facade.getAssistanceInCourse(course);
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				SystemActions.setMenuPermissionsForUserInRequest(request, course);
 				request.setAttribute("userRoleInCourse", ( userRoleInCourse != null) ? userRoleInCourse.getRoleType() : null );
 				request.setAttribute("course", course);
 				request.setAttribute("modules", modules);
 				request.setAttribute("forunsperson",forunsperson);
 				request.setAttribute("assistants", assistances);
+<<<<<<< HEAD
 				
 				request.setAttribute("teachers", teachers); //added by Nailson
 				request.setAttribute("participants", participants); //added by Nailson
 				request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 				
 				
+=======
+
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				forward = mapping.findForward(FORWARD_SHOW_VIEW_SHOW_MODULES);
 			} else {
 				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
@@ -1459,26 +1536,26 @@ public class CourseActions extends SystemActions {
 		} else {
 			forward = this.showViewWelcome(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
-	
+
 	public ActionForward showViewCourseEvaluations(ActionMapping mapping, ActionForm form, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)) {
 			int courseId = Integer.parseInt(request.getParameter("courseId"));
 			Course course = facade.getCoursesById(courseId);
-			
+
 			if(CoursePermissions.userCanShowViewCourseEvaluations(request, course)) {
 				List<Person> participants = facade.listStudentsByCourse(course);
-				
+
 				SystemActions.setMenuPermissionsForUserInRequest(request, course);
 				request.setAttribute("participants", participants);
 				request.setAttribute("course", course);
-				
+
 				forward = mapping.findForward(FORWARD_SHOW_VIEW_COURSE_EVALUATIONS);
 			} else {
 				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
@@ -1486,19 +1563,19 @@ public class CourseActions extends SystemActions {
 		} else {
 			forward = this.showViewWelcome(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
-	
+
 	public ActionForward showViewSendMail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)) {
 			int courseId = Integer.parseInt(request.getParameter("courseId"));
 			Course course = facade.getCoursesById(courseId);
-		
+
 			if(CoursePermissions.userCanShowViewSendMail(request, course)) {
 				request.setAttribute("course", course);
 				forward = mapping.findForward(FORWARD_SHOW_VIEW_SEND_MAIL);
@@ -1508,33 +1585,33 @@ public class CourseActions extends SystemActions {
 		} else {
 			forward = this.showViewWelcome(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
-	
+
 	public ActionForward sendMailForCourseParticipants(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		ActionForward forward = null;
-		
+
 		if(SystemActions.isLoggedUser(request)) {
 			int courseId = Integer.parseInt(request.getParameter("courseId"));
 			Course course = facade.getCoursesById(courseId);
-			
+
 			if(CoursePermissions.userCanSendMailForCourseParticipants(request, course)) {
 				List<String> emails = null;
 				String subject = request.getParameter("subject");
 				String message = request.getParameter("message");
-				
+
 				emails = facade.getEmailUsersOfCourse(courseId);
-				
+
 				facade.sendMail(emails, subject, message);
-				
+
 				request.setAttribute("course", course);
 				request.setAttribute("subject", subject);
 				request.setAttribute("message", message);
 				request.setAttribute("success", Boolean.TRUE);
-				
+
 				forward = mapping.findForward(FORWARD_SHOW_VIEW_SEND_MAIL);
 			} else {
 				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
@@ -1542,9 +1619,814 @@ public class CourseActions extends SystemActions {
 		} else {
 			forward = this.showViewWelcome(mapping, form, request, response);
 		}
-		
+
 		return forward;
 	}
+
+	public ActionForward habilitarDesabilitarCriarGrupos (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
+		Course course = facade.getCoursesById(courseId);
+
+		course.setFlag_habilitar_grupo(!course.isFlag_habilitar_grupo());		
+
+		facade.updateCourse(course);
+
+		return showViewGroups(mapping, form, request, response);
+	}
+
+	public ActionForward showViewCreateGroup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {		
+
+
+		AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
+		Person fundador = user.getPerson();
+
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
+		Course course = facade.getCoursesById(courseId);
+
+		Groups groups = new Groups();
+		groups.setDate(new Date());
+		groups.setName(request.getParameter("nomeCourse"));
+		groups.setFundador(fundador);
+		groups.setCurso(course);
+
+		int qtdAlunos = Integer.parseInt(request.getParameter("qtdAlunos"));
+
+		for(int i=0;i<qtdAlunos;i++)
+		{
+			int alunoTempId = Integer.parseInt(request.getParameter("alunoId"+i));
+			Person alunoTemp = facade.getPersonByID(alunoTempId);
+
+			Person_Groups person_Groups = new Person_Groups();
+			person_Groups.setPessoa(alunoTemp);
+			person_Groups.setGroups(groups);
+			person_Groups.setDate(new Date());
+
+			if(alunoTempId == fundador.getId())
+			{
+				person_Groups.setPapel(Person_Groups.PAPEL_FUNDADOR);
+			}
+			else
+			{
+				person_Groups.setPapel(Person_Groups.PAPEL_MEMBRO);
+			}
+
+			groups.getMembros().add(person_Groups);
+		}		
+
+		facade.inserGroups(groups);
+
+		return showViewGroups(mapping, form, request, response);
+	}
+
+	public ActionForward showViewGroups(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+			int courseId = Integer.parseInt(request.getParameter("courseId"));
+			Course course = facade.getCoursesById(courseId);
+
+			if(CoursePermissions.userCanViewGroups(request, course)) {
+				SystemActions.setMenuPermissionsForUserInRequest(request, course);
+				
+				request.setAttribute("canCreateGroups", CoursePermissions.userCanCreateGroups(request,course));
+
+				request.setAttribute("course", course);
+
+				String viewCreateGroup = request.getParameter("viewCreateGroup");
+
+				if(viewCreateGroup != null)
+				{
+					if (viewCreateGroup.equals("1")){					
+						request.setAttribute("viewCreateGroup", "1");
+						//codigo alocado no lugar errado
+						//pregui�a de mapear uma nova fun��o
+						AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
+						List<StudentHaveGroup> list = facade.getStudentsHaveGroup(course, user.getPerson());
+						request.setAttribute("students", list);
+					}
+					else
+					{
+						List<Groups> grupos = facade.getGroups(courseId);						
+						request.setAttribute("viewCreateGroup", "2");
+						
+						List<GroupPlusStatus> gruposStatus = new ArrayList<GroupPlusStatus>();
+						
+						Module module = facade.getUltimoModulo(courseId);
+						
+						for(Groups g : grupos)
+						{
+							boolean status = verificarStatusModulo(g.getPersons(), module);
+							GroupPlusStatus groupPlusStatus = new GroupPlusStatus(g.getId(),g.getName(),g.getMembros().size(), status);
+							gruposStatus.add(groupPlusStatus);
+						}
+						request.setAttribute("groups", gruposStatus);
+					}
+				}
+
+				request.setAttribute("domain", SystemActions.webSettings.getSystemGeneralDomain());
+				forward = mapping.findForward(FORWARD_SHOW_VIEW_GROUPS);
+
+			}
+			else
+			{
+				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
+			}
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;
+	}
+	
+	public ActionForward showViewRelatorioAtividade(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception 
+	{
+		ActionForward forward = null;
+		if(SystemActions.isLoggedUser(request)) {
+			int courseId = Integer.parseInt(request.getParameter("courseId"));
+			Course course = facade.getCoursesById(courseId);
+
+			if(CoursePermissions.userCanViewGroups(request, course))
+			{
+				List<Groups> grupos = facade.getGroups(courseId);
+				List<RelatorioGrupo> relatorios = new ArrayList<RelatorioGrupo>();
+				List<String> modulos = new ArrayList<String>();
+				
+				boolean primeiraVez = true;
+				
+				for(Groups g : grupos)
+				{
+					List<Boolean> status = new ArrayList<Boolean>();
+					
+					for(Module module : course.getModules())
+					{
+						if(primeiraVez)
+						{
+							modulos.add(module.getName());
+						}
+						
+						boolean moduleStatus = verificarStatusModulo(g.getPersons(), module);
+						
+						status.add(moduleStatus);						
+					}
+					primeiraVez = false;
+					
+					RelatorioGrupo relatorioGrupo = new RelatorioGrupo(g.getName(), status);
+					relatorios.add(relatorioGrupo);
+				}
+				
+				request.setAttribute("domain", SystemActions.webSettings.getSystemGeneralDomain());
+				request.setAttribute("modulos", modulos);
+				request.setAttribute("relatorios", relatorios);
+				
+				forward = mapping.findForward(FORWARD_SHOW_VIEW_GROUPS_RELATORIO);
+			}
+			else
+			{
+				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
+			}
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;
+	}
+	
+	public boolean verificarStatusModulo(List<Person> alunos, Module module)
+	{
+		boolean status = true;
+		
+		if(module != null)
+		{
+			List<Forum> forums = module.getForums();
+			List<Game> games = module.getGames();
+			List<Poll> enquetes = module.getPolls();
+			List<Evaluation> evaluations = module.getEvaluations();
+			List<MaterialRequest> materialRequests = module.getMaterialRequests();
+			
+			for(int i=0; i < materialRequests.size() && status; i++)
+			{
+				MaterialRequest materialRequest = materialRequests.get(i);
+				status = verificarStatusPorMaterialRequest(new ArrayList<Person>(alunos), materialRequest);			
+			}
+			
+			for(int i=0; i < evaluations.size() && status; i++)
+			{
+				Evaluation evaluation = evaluations.get(i);
+				status = verificarStatusPorEvaluation(new ArrayList<Person>(alunos), evaluation);			
+			}
+			
+			for(int i=0; i < enquetes.size() && status; i++)
+			{
+				Poll enquete = enquetes.get(i);
+				status = verificarStatusPorEnquete(new ArrayList<Person>(alunos), enquete);			
+			}
+			
+			for(int i=0; i < forums.size() && status; i++)
+			{
+				Forum forum = forums.get(i);
+				status = verificarStatusPorForum(new ArrayList<Person>(alunos), forum);			
+			}
+			
+			for(int i=0; i < games.size() && status; i++)
+			{
+				Game game = games.get(i);
+				status = verificarStatusPorGame(new ArrayList<Person>(alunos), game);			
+			}
+		}
+		
+		return status;
+	}
+	
+	public boolean verificarStatusPorGame(List<Person> alunos, Game game)
+	{
+		return facade.verificarStatusPorGame(alunos, game);
+	}
+	
+	public boolean verificarStatusPorForum(List<Person> alunos, Forum forum)
+	{
+		return facade.verificarStatusPorForum(alunos, forum);
+	}
+	
+	public boolean verificarStatusPorEnquete (List<Person> alunos, Poll enquete)
+	{
+		List<Answer> respostas = enquete.getAnswers();
+		boolean temTodos = false;
+		for(int i=0; i< respostas.size() && !temTodos; i++)
+		{
+			Answer resposta = respostas.get(i);
+			
+			Person alunoReposta = resposta.getPerson();
+			
+			boolean achou = false;
+			for(int j=0; j < alunos.size() && !achou; j++)
+			{
+				Person aluno = alunos.get(j);
+				
+				if(aluno.getId() == alunoReposta.getId())
+				{
+					alunos.remove(j);
+					achou = true;					
+				}
+			}
+			
+			if(alunos.size() == 0)
+			{
+				temTodos = true;
+			}
+			
+		}
+		return temTodos;
+	}
+	
+	public boolean verificarStatusPorMaterialRequest (List<Person> alunos, MaterialRequest materialRequest)
+	{
+		List<Material> materiais = materialRequest.getMaterials();
+		boolean temTodos = false;
+		for(int i=0; i< materiais.size() && !temTodos; i++)
+		{
+			Material material = materiais.get(i);
+			
+			Person alunoReposta = material.getAuthor();
+			
+			boolean achou = false;
+			for(int j=0; j < alunos.size() && !achou; j++)
+			{
+				Person aluno = alunos.get(j);
+				
+				if(aluno.getId() == alunoReposta.getId())
+				{
+					alunos.remove(j);
+					achou = true;					
+				}
+			}
+			
+			if(alunos.size() == 0)
+			{
+				temTodos = true;
+			}
+			
+		}
+		return temTodos;
+	}
+	
+	public boolean verificarStatusPorEvaluation (List<Person> alunos, Evaluation evaluation)
+	{
+		List<EvaluationRealized> evaluationsRealized  = evaluation.getEvaluationsRealized();
+		boolean temTodos = false;
+		for(int i=0; i< evaluationsRealized.size() && !temTodos; i++)
+		{
+			EvaluationRealized evaluationRealized = evaluationsRealized.get(i);
+			
+			Person alunoReposta = evaluationRealized.getStudent();
+			
+			boolean achou = false;
+			for(int j=0; j < alunos.size() && !achou; j++)
+			{
+				Person aluno = alunos.get(j);
+				
+				if(aluno.getId() == alunoReposta.getId())
+				{
+					alunos.remove(j);
+					achou = true;					
+				}
+			}
+			
+			if(alunos.size() == 0)
+			{
+				temTodos = true;
+			}
+			
+		}
+		return temTodos;
+	}
+
+	public ActionForward showViewGroupDayTimeline (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+			int groupID = Integer.parseInt(request.getParameter("groupId"));
+			Groups groups = facade.getGroupsById(groupID);
+			String data = request.getParameter("data");
+
+			List<LogVisualizacao> list = facade.getLogsByDayAndGroup(data, groupID);
+			request.setAttribute("logs", list);
+			request.setAttribute("data", data);
+			request.setAttribute("nomeGrupo", groups.getName());
+
+			forward = mapping.findForward(FORWARD_SHOW_GROUP_DAY_TIMELINE);
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;
+	}
+	
+	public ActionForward showViewPersonDayTimeline (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+			int personID = Integer.parseInt(request.getParameter("personID"));
+			int groupID = Integer.parseInt(request.getParameter("groupID"));
+			Person person = facade.getPersonByID(personID);
+			Groups group = facade.getGroupsById(groupID);
+			String data = request.getParameter("data");
+
+			List<LogVisualizacao> list = facade.getLogsByDayAndPerson(data, groupID, personID);
+			request.setAttribute("logs", list);
+			request.setAttribute("data", data);
+			request.setAttribute("nomeGrupo", group.getName());
+			request.setAttribute("idGrupo", groupID);
+			request.setAttribute("nomePessoa", person.getName());
+
+			forward = mapping.findForward(FORWARD_SHOW_PERSON_DAY_TIMELINE);
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;
+	}
+
+	public ActionForward showViewOneGroup(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+			int courseId = Integer.parseInt(request.getParameter("courseId"));
+			Course course = facade.getCoursesById(courseId);
+
+			if(CoursePermissions.userCanViewGroups(request, course)) {
+				SystemActions.setMenuPermissionsForUserInRequest(request, course);
+
+				int groupID = Integer.parseInt(request.getParameter("groupID"));
+
+				Groups groups = facade.getGroupsById(groupID);
+
+				List<PersonGroupPlusStatus> list = new ArrayList<PersonGroupPlusStatus>();
+				
+				Module module = facade.getUltimoModulo(courseId);
+				
+				for(Person_Groups aluno : groups.getMembros())
+				{
+					List<Person> list2 = new ArrayList<Person>();
+					list2.add(aluno.getPessoa());
+					
+					boolean status = verificarStatusModulo(list2, module);
+					PersonGroupPlusStatus personGroupPlusStatus = new PersonGroupPlusStatus(aluno.getPessoa().getId(),aluno.getPessoa().getName(), aluno.getPapel(), status);
+					list.add(personGroupPlusStatus);
+				}
+				request.setAttribute("alunos", list);
+
+				request.setAttribute("nomeGrupo", groups.getName());
+				
+				request.setAttribute("group", groups);
+
+				request.setAttribute("domain", SystemActions.webSettings.getSystemGeneralDomain());
+				forward = mapping.findForward(FORWARD_SHOW_VIEW_ONE_GROUP);
+
+			}
+			else
+			{
+				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
+			}
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;
+	}
+
+	public ActionForward showViewGraphic(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+
+			int courseId = Integer.parseInt(request.getParameter("courseId"));
+			Course course = facade.getCoursesById(courseId);
+
+
+			if(CoursePermissions.userCanViewGraphic(request, course)) {
+				SystemActions.setMenuPermissionsForUserInRequest(request, course);
+
+				String graphic = request.getParameter("graphic");
+				Integer moduleSel = Integer.parseInt(request.getParameter("moduleSel"));
+				Integer idAluno = Integer.parseInt(request.getParameter("idAluno"));
+				Integer idGame = Integer.parseInt(request.getParameter("idGame"));
+				Integer idForum;// = Integer.parseInt(request.getParameter("idForum"));
+
+				request.setAttribute("course", course);
+				request.setAttribute("graphic", graphic);
+				request.setAttribute("moduleSel", moduleSel);
+				request.setAttribute("idAluno", idAluno);
+				request.setAttribute("idGame", idGame);
+				//request.setAttribute("idForum", idForum);
+
+				if(graphic.equals("g1"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayModuleGameTotalTime(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g2"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayModuleGameTimePerDay(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g3"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayTagCloudForum(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g4"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayPostsPerModule(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g5"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArraySizeMessagePerModule(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g6"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPersonGameTimePerModule(idAluno, moduleSel);
+							//							String data = "[{\"Aluno\":\"GameTest\",\"Tempo\":18}]";
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Código dos Gráficos de Danilo Começa aqui
+				//Tempo de permanência no sistema - Diferença entre os horários de login e logout.
+				else if(graphic.equals("g7"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPersonGameTimePerModule(idAluno, moduleSel);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Quantidade de visualizações dos fóruns - Número de vezes que o usuário abriu um fórum de determinado módulo.
+				else if(graphic.equals("g8"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{						
+							String data = facade.getJSONArrayForumVisualizacao(moduleSel, idAluno);
+							request.setAttribute("xml", data);							
+						}
+					}
+
+				}
+				//Quantidade de posts em um fórum - Número de vezes que o usuário respondeu ao fórum.
+				else if(graphic.equals("g9"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPostsPerUser(moduleSel, idAluno);
+							request.setAttribute("xml", data);						
+						}						
+					}
+				}
+				//Quantidade de acessos à materiais - Número de vezes que o usuário abriu um material presente no módulo.
+				else if(graphic.equals("g10"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayMaterialView(idAluno, moduleSel);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Quantidade de enquetes respondidas - Número de repostas a enquetes de um módulo feitas pelo usuário.
+				else if(graphic.equals("g11"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPollAnswered(moduleSel, idAluno);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Quantidade de acesso aos jogos - Número de vezes que o usuário abriu um jogo do módulo.
+				else if(graphic.equals("g12"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayGameOpen(moduleSel, idAluno);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				else if(graphic.equals("g13"))
+				{
+					request.setAttribute("modules", course.getModules());					
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONObjectQuantidadeTamanhoMSG(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				//Graficos do jogo
+				//Pontuação
+				else if(graphic.equals("g14")||graphic.equals("g15"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONArrayGameScore(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Level
+				else if(graphic.equals("g16")||graphic.equals("g17"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONArrayGameLevel(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//tempo X level X pontuacao
+				else if(graphic.equals("g18"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONObjectTempoLevelPontuacao(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				// tempo X quantidade de partidas
+				else if(graphic.equals("g19"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONObjectTempoQuantidadePartidas(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//level X pontuacao
+				else if(graphic.equals("g20"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONObjectLevelPontuacao(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+
+				}
+
+				request.setAttribute("domain", SystemActions.webSettings.getSystemGeneralDomain());
+				forward = mapping.findForward(FORWARD_SHOW_VIEW_GRAPHIC);
+			} else {
+				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
+			}
+		} else {
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+
+		return forward;
+
+	}	 
+
+	public ActionForward showViewGroupTimeline(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception 
+			{
+
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+			int groupId = Integer.parseInt(request.getParameter("groupID"));
+			Groups group = facade.getGroupsById(groupId);
+
+			List<TimelineItem> timeline = facade.listarTimelineGroup(group);
+
+			request.setAttribute("groupId", groupId);
+			request.setAttribute("timeline", timeline);
+			request.setAttribute("nomeGroup", group.getName());
+
+			forward = mapping.findForward(FORWARD_SHOW_VIEW_GROUP_TIMELINE);
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;	
+			}
+
+
+	public ActionForward showViewPersonTimeline(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+			int personID = Integer.parseInt(request.getParameter("personID"));
+			int groupID = Integer.parseInt(request.getParameter("groupID"));
+			Person pessoa = facade.getPersonByID(personID);
+			Groups grupo = facade.getGroupsById(groupID);
+
+			List<TimelineItem> timeline = facade.listarTimelinePerson(pessoa, grupo);
+
+			request.setAttribute("personID", personID);
+			request.setAttribute("groupID", groupID);
+			request.setAttribute("timeline", timeline);
+			request.setAttribute("nomePerson", pessoa.getName());
+			request.setAttribute("nomeGroup", grupo.getName());
+
+			forward = mapping.findForward(FORWARD_SHOW_VIEW_PERSON_TIMELINE);
+		}
+		else
+		{
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		return forward;	
+	}
+<<<<<<< HEAD
 
 	public ActionForward showViewGraphic(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1870,3 +2752,6 @@ public class CourseActions extends SystemActions {
 	}	 
 
 }
+=======
+}
+>>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
