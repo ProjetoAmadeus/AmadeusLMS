@@ -14,7 +14,7 @@ Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral GNU, sob o t�
 package br.ufpe.cin.amadeus.amadeus_web.facade;
 
 import java.io.IOException;
-
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -33,13 +33,17 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
 import br.ufpe.cin.amadeus.amadeus_web.dao.DAOFactory;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.AmadeusDroidHistoricDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ArchiveDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.CourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GameDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GroupsDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HistoryLearningObjectDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HomeworkDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.KeywordDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.LearningObjectDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.LogDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.MaterialDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.MaterialRequestDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.MessageDAO;
@@ -57,14 +61,17 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.register.OpenIDDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.register.PersonDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.register.ResumeDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.register.UserRequestDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.HistoryLearningObject;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Homework;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message;
@@ -98,6 +105,10 @@ import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidUserException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidVideoException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.RequestException;
 import br.ufpe.cin.amadeus.amadeus_web.struts.messages.Messages;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.Archive;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.LogVisualizacao;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 import br.ufpe.cin.amadeus.amadeus_web.util.Cryptography;
 import br.ufpe.cin.amadeus.amadeus_web.util.DateConstructor;
 import br.ufpe.cin.amadeus.amadeus_web.util.MailSender;
@@ -205,6 +216,13 @@ public class Controller {
 			}
 			CourseDAO courseRep = factory.getCourseDAO();
 			result = courseRep.makePersistent(c);
+			LogDAO logRep = factory.getLogDAO();
+			Log log = new Log();
+			log.setDate(new Date());
+			PersonDAO personDAO = factory.getPersonDAO();
+			Person person = personDAO.findById(4, false);
+			log.setIdUser(person);
+			logRep.makePersistent(log);
 		} catch (RuntimeException e) {
 			throw e;
 		}
@@ -343,6 +361,29 @@ public class Controller {
 		}
 		return person;
 	}
+	
+	public Person getPersonByLogin(String login){
+		Person person = null;
+		try {
+			PersonDAO personDAO = factory.getPersonDAO();
+			person = personDAO.getPersonByLogin(login);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return person;
+	}
+	
+	public Person getPersonByUserName(String userName){
+		Person person = null;
+		try {
+			PersonDAO personDAO = factory.getPersonDAO();
+			person = personDAO.getPersonByUserName(userName);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return person;
+	}
+
 
 	public String remindPassword(String email) throws MessagingException,
 			IOException {
@@ -630,12 +671,8 @@ public class Controller {
 						
 			if (person.getResume().getYear() == null || yearTitulation <= yearNowadays) {			
 
-				if (this.verifyEmail(person)) {
-					PersonDAO personDAO = factory.getPersonDAO();
-					personDAO.merge(person);
-				} else {
-					throw new Exception("errors.email.alreadyExists");
-				}	
+				PersonDAO personDAO = factory.getPersonDAO();
+				personDAO.merge(person);
 			} else {
 				throw new Exception("errors.yearTitulation");
 			}
@@ -674,6 +711,29 @@ public class Controller {
 		}
 			
 		return result;
+	}
+	
+	public boolean validateUser(AccessInfo accessInfo){
+		boolean validate = true;
+		
+		AccessInfo aInfo = null;
+		try {
+			if (accessInfo.getLogin() != null && accessInfo.getPassword() != null) {
+				aInfo = this.searchUserByLogin(accessInfo.getLogin());
+				if(aInfo != null)
+					if(aInfo.getTypeProfile() == (ProfileType.INACTIVE)){
+						validate = false;
+					}
+				if ((aInfo == null)
+						|| (!accessInfo.getPassword().equals(aInfo.getPassword())))
+					validate = false;
+					
+			}
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		
+		return validate;
 	}
 
 	public AccessInfo logon(AccessInfo accesssInfo)
@@ -789,7 +849,163 @@ public class Controller {
 		
 		return courses;
 	}
-
+	
+	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonRoleCourse> getStudentByUser(AccessInfo userInfo){
+		List<PersonRoleCourse> prcList;
+		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonRoleCourse> newPrcList = 
+			new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonRoleCourse>();
+		try {
+			PersonRoleCourseDAO prcDAO = factory.getPersonRoleCourseDAO();
+			prcList = prcDAO.getStudentByUser(userInfo);
+			for (PersonRoleCourse prc : prcList) {
+				br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonRoleCourse obj = new br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonRoleCourse();
+				obj.setId(prc.getId());
+				obj.setCourse(new br.ufpe.cin.amadeus.amadeus_web.syncronize.Course());
+				obj.getCourse().setId(prc.getCourse().getId());
+				obj.setPerson(new br.ufpe.cin.amadeus.amadeus_web.syncronize.Person());
+				obj.getPerson().setId(prc.getPerson().getId());
+				obj.getPerson().setName(prc.getPerson().getName());
+				obj.setRole(new br.ufpe.cin.amadeus.amadeus_web.syncronize.Role());
+				obj.getRole().setId(prc.getRole().getId());
+				
+				if (prc.getRole().getRoleType().equals(RoleType.ADMIN)) {
+					obj.getRole().setRoleType(0);
+				}else if (prc.getRole().getRoleType().equals(RoleType.STUDENT)) {
+					obj.getRole().setRoleType(1);
+				}else if (prc.getRole().getRoleType().equals(RoleType.ASSISTANT)) {
+					obj.getRole().setRoleType(2);
+				}else if (prc.getRole().getRoleType().equals(RoleType.TEACHER)) {
+					obj.getRole().setRoleType(3);
+				}
+				newPrcList.add(obj);
+			}
+			
+			return newPrcList;
+		} catch (RuntimeException e) {
+			throw e;
+		}
+	}
+	
+	public Archive getArchiveByMaterial(int material_id){
+		
+		ArchiveDAO arcDao = factory.getArchiveDAO();
+		br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive oldArchive = arcDao.getArchiveByMaterial(material_id);
+		Archive newArchive = new Archive();
+		newArchive.setId(oldArchive.getId());
+		newArchive.setArchive(oldArchive.getArchive());
+		
+		return newArchive;
+	}
+	
+	public Material findMaterialById(int material_id) {
+		MaterialDAO matDAO = factory.getMaterialDAO();
+		return matDAO.getMaterialByID(material_id);
+	}
+		
+	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Course> getCoursesByUser(AccessInfo userInfo) {
+		List<Course> courses = null;
+		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Course> newListCourse = new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Course>();
+		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Material> newListMaterial = null;
+		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> newListForum = null;
+		br.ufpe.cin.amadeus.amadeus_web.syncronize.AccessInfo newAccessInfo = null;
+		br.ufpe.cin.amadeus.amadeus_web.syncronize.Person newPerson = null;
+		
+		try {
+			CourseDAO courseRequest = factory.getCourseDAO();
+			courses = courseRequest.getCoursesByUser(userInfo);
+			for (Course course : courses) {
+				newListMaterial = new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Material>();
+				newListForum = new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum>();
+				
+				br.ufpe.cin.amadeus.amadeus_web.syncronize.Course c = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Course();
+				c.setContent(course.getContent());
+				c.setFinalCourseDate(course.getFinalCourseDate());
+				c.setFinalRegistrationDate(course.getFinalRegistrationDate());
+				c.setId(course.getId());
+				c.setInitialCourseDate(course.getInitialCourseDate());
+				c.setInitialRegistrationDate(course.getInitialRegistrationDate());
+				c.setMaxAmountStudents(course.getMaxAmountStudents());
+				c.setName(course.getName());
+				c.setNumberOfStudentsInCourse(course.getNumberOfStudentsInCourse());
+				c.setObjectives(course.getObjectives());
+				
+				newPerson = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Person();
+				newPerson.setBirthDate(course.getProfessor().getBirthDate());
+				newPerson.setCity(course.getProfessor().getCity());
+				newPerson.setCpf(course.getProfessor().getCpf());
+				newPerson.setEmail(course.getProfessor().getEmail());
+				newPerson.setGender(course.getProfessor().getGender());
+				newPerson.setId(course.getProfessor().getId());
+				newPerson.setName(course.getProfessor().getName());
+				newPerson.setPhoneNumber(course.getProfessor().getPhoneNumber());
+				newPerson.setState(course.getProfessor().getState());
+				newAccessInfo = new br.ufpe.cin.amadeus.amadeus_web.syncronize.AccessInfo();
+				newAccessInfo.setId(course.getProfessor().getAccessInfo().getId());
+				newAccessInfo.setPassword(course.getProfessor().getAccessInfo().getPassword());
+				newAccessInfo.setLogin(course.getProfessor().getAccessInfo().getLogin());
+												
+				newPerson.setAccessInfo(newAccessInfo);
+				c.setProfessor(newPerson);
+				
+				List<Module> modules = course.getModules();
+				for (Module module : modules) {
+					
+					List<Material> materials = module.getMaterials();
+					for (Material material : materials) {
+						br.ufpe.cin.amadeus.amadeus_web.syncronize.Material mat = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Material();
+						mat.setId(material.getId());
+						mat.setGrade(material.getGrade());
+						mat.setExtension(material.getExtension());
+						mat.setCreationDate(material.getCreationDate());
+						mat.setCorrectedDate(material.getCorrectedDate());
+						mat.setArchiveName(material.getArchiveName());
+						mat.setCourse_id(c.getId());
+						
+						newListMaterial.add(mat);
+					}
+					
+					List<Forum> foruns = module.getForums();
+					for (Forum obj : foruns) {
+						br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum forum = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum();
+						forum.setId(obj.getId());
+						forum.setName(obj.getName());
+						forum.setDescription(obj.getDescription());
+						forum.setCreationDate(obj.getCreationDate());
+						forum.setModule_id(module.getId());
+						
+						List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Message> newListMessage = 
+							new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Message>();
+						List<Message> messages = obj.getMessages();
+						for (Message obj2 : messages) {
+							br.ufpe.cin.amadeus.amadeus_web.syncronize.Message message = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Message();
+							message.setId(obj2.getId());
+							message.setBody(obj2.getBody());
+							message.setDate(obj2.getDate());
+							message.setForum_id(obj2.getForum().getId());
+							message.setPersonName(obj2.getAuthor().getName());
+							message.setPersonLogin(obj2.getAuthor().getAccessInfo().getLogin());
+							
+							newListMessage.add(message);
+						}
+						
+						forum.setMessages(newListMessage);
+						newListForum.add(forum);
+					}
+					
+				}
+				
+				c.setMaterials(newListMaterial);
+				c.setForuns(newListForum);
+				newListCourse.add(c);
+			}
+			
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		
+		return newListCourse;
+	}
+	
 	private void initializeSystem() {
 		try {
 			RoleDAO roleRep = factory.getRoleDAO();
@@ -958,6 +1174,28 @@ public class Controller {
 		try {
 			ModuleDAO moduleRep = factory.getModuleDAO();
 			result = moduleRep.makePersistent(module);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public AmadeusDroidHistoric insertSocialHitory(AmadeusDroidHistoric historic){
+		AmadeusDroidHistoric result;
+		try {
+			AmadeusDroidHistoricDAO historyDAO = factory.getAmadeusDroidHistoricDAO();
+			result = historyDAO.makePersistent(historic);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public List<AmadeusDroidHistoric> getSocialHistory(){
+		List<AmadeusDroidHistoric> result;
+		try {
+			AmadeusDroidHistoricDAO historyDAO = factory.getAmadeusDroidHistoricDAO();
+			result = historyDAO.getHistoric();
 		} catch (RuntimeException e) {
 			throw e;
 		}
@@ -1603,6 +1841,51 @@ public class Controller {
 		ForumDAO forum = factory.getForumDAO();
 		return forum.findById(forumId, false);
 	}
+	
+	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> getListForum(){
+		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> listForum = new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum>();
+		ForumDAO forum = factory.getForumDAO();
+		
+		List<Forum> forumList = forum.getListForum();
+		for (Forum obj : forumList) {
+			br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum f = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum();
+			f.setId(obj.getId());
+			f.setName(obj.getName());
+			f.setDescription(obj.getDescription());
+			f.setCreationDate(obj.getCreationDate());
+			List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Message> listMessage = 
+				new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Message>();
+			List<Message> messages = obj.getMessages();
+			for (Message message : messages) {
+				br.ufpe.cin.amadeus.amadeus_web.syncronize.Message m = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Message();
+				m.setId(message.getId());
+				m.setBody(message.getBody());
+				m.setDate(message.getDate());
+				m.setPersonName(message.getAuthor().getName());
+				m.setForum_id(obj.getId());
+				m.setPersonLogin(message.getAuthor().getAccessInfo().getLogin());
+				listMessage.add(m);
+			}
+			f.setMessages(listMessage);
+			listForum.add(f);
+		}
+		
+		return listForum;
+	}
+	
+	public br.ufpe.cin.amadeus.amadeus_web.syncronize.Message getLastMessage(){
+		MessageDAO mDAO = factory.getMessageDAO();
+		
+		Message m = mDAO.getLastMessage();
+		br.ufpe.cin.amadeus.amadeus_web.syncronize.Message message = new br.ufpe.cin.amadeus.amadeus_web.syncronize.Message();
+		message.setId(m.getId());
+		message.setBody(m.getBody());
+		message.setDate(m.getDate());
+		message.setForum_id(m.getForum().getId());
+		message.setPersonName(m.getAuthor().getName());
+		
+		return message;
+	}
 
 	public List<Message> searchMessageByPaging(int tamanhoBloco, int qtdBloco, Forum forum) {
 		qtdBloco = qtdBloco - 1;
@@ -1610,6 +1893,15 @@ public class Controller {
 		
 		MessageDAO request = factory.getMessageDAO();
 		return request.searchMessageByPaging(tamanhoBloco, qtdBloco, forum);
+	}
+	
+	public void saveMessage(Message message){
+		try {
+			MessageDAO request = factory.getMessageDAO();
+			request.makePersistent(message);
+		} catch (RuntimeException e) {
+			throw(e);
+		}
 	}
 
 	public int getSizeSearchMessageByForum(Forum forum) {
@@ -1707,11 +1999,11 @@ public class Controller {
 		  if ( c.equals("a") || c.equals("e") || c.equals("i") || c.equals("o") 
 				  || c.equals("u")){
 			 
-			  if(i == length - 1 && length > 1){ // quando � o �ltimo char
+			  if(i == length - 1 && length > 1){ // quando � o �ltimo char
 				  
 				  newString = newString.substring(0, i) + "%";
 				  
-			  } else if (i == 0 && length > 1) { // quando � o primeiro
+			  } else if (i == 0 && length > 1) { // quando � o primeiro
 				  newString = "%" +  
 				  newString.substring(1, length);
 			  } else { 							// no meio da string 
@@ -2007,7 +2299,6 @@ public class Controller {
 			}	
 			
 			count++;
-			
 			content += "<a "+keyworksClass[pop]+" href=\"fSearchCourse.do?keyword_course="+k.getName()+"\">"+k.getName()+"</a>";
 			if (count <= keywords.size() - 1) {
 				content +=", ";
@@ -2236,6 +2527,11 @@ public class Controller {
 		return accessInfoDAO.searchUsers(userName, userType, courseId);
 	}
 	
+	public List<AccessInfo> searchUsers(Integer userType) {
+		AccessInfoDAO accessInfoDAO = factory.getAccessInfoDAO();
+		return accessInfoDAO.searchUsers(userType);
+	}
+	
 	
 	//external link
 	public ExternalLink getExternalLinkById(int idLink){
@@ -2251,4 +2547,1361 @@ public class Controller {
 		externalLinkDAO.makeTransient(externalLink);
 	}
 	
+	//Log
+	public void saveLog(Log log){
+		LogDAO logRep = factory.getLogDAO();
+		logRep.makePersistent(log);
+	}
+
+	public Log getLog() throws Exception {
+		LogDAO logRep = factory.getLogDAO();
+		Log log = new Log();
+		log.setDate(new Date());
+		PersonDAO personDAO = factory.getPersonDAO();
+		Person pessoa = personDAO.findById(4, false);
+		log.setIdUser(pessoa);
+		logRep.makePersistent(log);
+		
+		return log;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameScore(int idGame)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, (MAX( l.pontuacao)) as pontuacao FROM log l, person p "+
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " "+
+				"AND idobjeto = " + idGame + " " +
+				"AND l.person_id = p.id " +
+				"GROUP BY p.name").list();
+		
+		String array = "";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Aluno\":\""+temp[0]+"\",\"Pontuação\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameScoreVisualizacao(int idGame)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, (MAX( l.pontuacao)) as pontuacao FROM log l, person p "+
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " "+
+				"AND idobjeto = " + idGame + " " +
+				"AND l.person_id = p.id " +
+				"GROUP BY p.name").list();
+		
+		String array = "";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{'Aluno':'"+temp[0]+"','Pontuação':"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getXmlGameScore(int idGame)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, (MAX( l.pontuacao)) as pontuacao FROM log l, person p "+
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " "+
+				"AND idobjeto = " + idGame + " " +
+				"AND l.person_id = p.id " +
+				"GROUP BY p.name").list();
+		
+		String array = "<clazzes>";
+		
+		int maxScore = 0;
+		int minScore = Integer.MAX_VALUE;
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			
+			int tempScore = 0;
+			
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				tempScore = ((BigInteger)temp[1]).intValue();				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				tempScore = ((Integer)temp[1]).intValue();
+			}
+			
+			
+			if(tempScore>maxScore)
+			{
+				maxScore = tempScore;
+			}
+			if(tempScore<minScore)
+			{
+				minScore = tempScore;
+			}
+		}
+		
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			double color = 0;
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				color = interpolacaoCor(((BigInteger)temp[1]).intValue(), minScore, maxScore);				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				color = interpolacaoCor(((Integer)temp[1]).intValue(), minScore, maxScore);				
+			}
+			array+="<clazz name=\""+temp[0]+"\" score=\""+temp[1]+"\" color=\""+color+"\"/>";			
+		}		
+		array+="</clazzes>";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameLevel(int idGame)
+	{
+		List gameLevel = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, (MAX( l.fases)) as pontuacao FROM log l, person p "+
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " "+
+				"AND idobjeto = " + idGame + " " +
+				"AND l.person_id = p.id " +
+				"GROUP BY p.name").list();
+		
+		String array = "";
+		
+		for(int i=0; i<gameLevel.size(); i++)
+		{
+			Object[] temp = (Object[]) gameLevel.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Aluno\":\""+temp[0]+"\",\"Level\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getXmlGameLevel(int idGame)
+	{
+		List gameLevel = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, (MAX( l.fases)) as pontuacao FROM log l, person p "+
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " "+
+				"AND idobjeto = " + idGame + " " +
+				"AND l.person_id = p.id " +
+				"GROUP BY p.name").list();
+		
+		String array = "<clazzes>";
+		
+		int maxScore = 0;
+		int minScore = Integer.MAX_VALUE;
+		
+		for(int i=0; i<gameLevel.size(); i++)
+		{
+			Object[] temp = (Object[]) gameLevel.get(i);
+			
+			int tempScore = 0;
+			
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				tempScore = ((BigInteger)temp[1]).intValue();				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				tempScore = ((Integer)temp[1]).intValue();
+			}
+			
+			if(tempScore>maxScore)
+			{
+				maxScore = tempScore;
+			}
+			if(tempScore<minScore)
+			{
+				minScore = tempScore;
+			}
+		}
+		
+		
+		for(int i=0; i<gameLevel.size(); i++)
+		{
+			Object[] temp = (Object[]) gameLevel.get(i);
+			double color = 0;
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				color = interpolacaoCor(((BigInteger)temp[1]).intValue(), minScore, maxScore);				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				color = interpolacaoCor(((Integer)temp[1]).intValue(), minScore, maxScore);				
+			}
+			array+="<clazz name=\""+temp[0]+"\" score=\""+temp[1]+"\" color=\""+color+"\"/>";			
+		}		
+		array+="</clazzes>";
+		
+		return array;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayModuleGameTotalTime(int idModule)
+	{
+		List moduleGameTime = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT g.name, (SUM( l.tempo)) as pontuacao FROM log l, game g, module m " +
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " " +
+				"AND m.id = " +idModule + " " +
+				"AND g.module_id = m.id " +
+				"AND l.idobjeto = g.id " + 
+				"GROUP BY g.name").list();
+		
+		String array = "";
+		
+		for(int i=0; i<moduleGameTime.size(); i++)
+		{
+			Object[] temp = (Object[]) moduleGameTime.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+
+			array+="{\"Jogo\":\""+temp[0]+"\",\"Tempo\":"+temp[1]+"}";				
+			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayModuleGameTimePerDay(int idModule)
+	{
+		List moduleGameTime  = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT g.name, (date(l.date)) as data, (SUM(l.tempo)) as tempo FROM log l, game g, module m " +
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " " +
+				"AND m.id = " + idModule + " " +
+				"AND g.module_id = m.id " +
+				"AND l.idobjeto = g.id " +
+				"GROUP BY data, g.name " +
+				"ORDER BY data").list();
+		
+		String array = "";
+		
+		Date timeAtual = null;
+		
+		for(int i=0; i<moduleGameTime.size(); i++)
+		{
+			Object[] temp = ((Object[]) moduleGameTime.get(i));
+			Date timeTemp = (Date) temp[1];
+			
+			if(timeAtual != null)
+			{
+				if(timeAtual.equals(timeTemp))
+				{
+					array += ",";
+				}
+				else
+				{
+					timeAtual = timeTemp;
+					array += "},{\"Dia\":\"" + timeAtual.toString() + "\",";
+				}
+			}
+			else
+			{
+				timeAtual = timeTemp;
+				array += "[{\"Dia\":\"" + timeAtual.toString() + "\",";
+			}
+			
+			array += "\"" + temp[0] + "\":" + temp[2];
+			
+		}		
+		array+="}]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameGrid(int idGame)
+	{
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT date(l.date) as data, p.name, l.fases, l.tempo, l.pontuacao " +
+				"FROM log l, person p WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " AND l.idobjeto = " + idGame + 
+				" AND l.person_id = p.id ORDER BY data").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+
+			array+="{'data':'"+temp[0].toString()+"','nome':'"+temp[1]+"','level':"+temp[2]+",'tempo':"+temp[3]+",'score':"+temp[4]+"}";				
+			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameGridByUser(int idGame,int idUser)
+	{
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT date(l.date) as data, p.name, l.fases, l.tempo, l.pontuacao " +
+				"FROM log l, person p WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " AND l.idobjeto = " + idGame + 
+				" AND l.person_id = p.id AND p.access_info_id = " + idUser + " ORDER BY data").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+
+			array+="{'data':'"+temp[0].toString()+"','nome':'"+temp[1]+"','level':"+temp[2]+",'tempo':"+temp[3]+",'score':"+temp[4]+"}";				
+			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayTagCloudForum(int idModule)
+	{
+		/*String select = "SELECT (REGEXP_SPLIT_TO_TABLE(m.body,E'\\\\s+')) as word , " +
+		"COUNT(REGEXP_SPLIT_TO_TABLE(m.body,E'\\\\s+')) as count " +
+		"FROM message m, forum f " +
+		"WHERE f.module_id = " + idModule + 
+		" AND m.forum_id = f.id " +
+		"GROUP BY word " +
+		"ORDER BY count DESC " +
+		"LIMIT 20";*/
+
+		String select = "Select tag.word as word , Count(tag.word) as count from " +
+			"(SELECT (REGEXP_SPLIT_TO_TABLE(m.body,E'\\\\s+')) as word " + 
+			"FROM message m, forum f " +
+			"WHERE f.module_id = "  + idModule + " " +
+			"AND m.forum_id = f.id ) tag " +
+			"where char_length(tag.word )>3 " +	 
+			"GROUP BY word " +
+			"ORDER BY count DESC " + 
+			"LIMIT 20 ";
+		
+		List tags = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery(select).list();
+		
+		if(tags.size()>0)
+		{
+			Object[] temp = (Object[]) tags.get(0);
+
+			int tempSize = 0;
+
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				tempSize = ((BigInteger)temp[1]).intValue();				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				tempSize = ((Integer)temp[1]).intValue();
+			}
+
+			double max = tempSize;
+
+			temp = (Object[]) tags.get(tags.size()-1);
+
+			tempSize = 0;
+
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				tempSize = ((BigInteger)temp[1]).intValue();				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				tempSize = ((Integer)temp[1]).intValue();
+			}
+
+			double min = tempSize;		
+
+			String array = "{\"tags\":{\"tag\":[";
+
+			for(int i=0; i<tags.size(); i++)
+			{
+				temp = (Object[]) tags.get(i);
+
+				if(i != 0)
+				{			
+					array += ",";
+				}
+
+				double size = 0;
+				if(temp[1].getClass().equals(BigInteger.class))
+				{
+					size = interpolacaoFontSize(((BigInteger)temp[1]).intValue(), min, max);				
+				}
+				else if(temp[1].getClass().equals(Integer.class))
+				{
+					size = interpolacaoFontSize(((Integer)temp[1]).intValue(), min, max);				
+				}
+
+				array+="{\"color\":\"0x000000\",\"counter\":"+temp[1]+",\"meuPeso\":70,\"name\":\""+temp[0]+"\",\"repetead\":2,\"size\":" + size + ",\"tid\":2,\"weight\":20}";				
+
+			}		
+			array+="]}}";
+			return array;
+		}
+		else
+		{
+			return "";
+		}
+	}
+	private double interpolacaoFontSize(int val, double min, double max) {
+		
+		double retorno = 0;
+		
+		if(min != max)
+		{
+			retorno = (val-min)/(max-min);
+			
+			retorno += 1;
+			
+			retorno = retorno*70-60;			
+		}
+		else
+		{
+			retorno = 80;
+		}
+		
+		
+		return retorno;
+	}
+	
+	
+	private double interpolacaoCor(int val, int min, int max) {
+	
+		double metade = (max-min)/2 + min;
+		double retorno = 0;
+		
+		if(val>metade)
+		{
+			retorno = (val-metade)/(max-metade);
+		}
+		else if(val<metade)
+		{
+			retorno = -((metade-val)/(metade-min));
+		}
+		else
+		{
+			retorno = 0;
+		}
+		
+		return retorno;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayPostsPerModule(int idModule){
+		
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name as nome, count(l.*) as postagens " +
+				"from person p, log l, message m, forum f where " +
+				"p.id = l.person_id and l.codigo = "+Log.LOG_CODIGO_FORUM_POST+" and l.idobjeto = m.id " +
+				"and m.forum_id = f.id and f.module_id = "+idModule+" group by p.name;").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Aluno\":\""+temp[0]+"\",\"Quantidade de Posts\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArraySizeMessagePerModule(int idModule){
+		
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name as nome, (sum(l.tamanhomensagem)/count(l.tamanhomensagem)) as mensagens " +
+				"from person p, log l, message m, forum f where " +
+				"p.id = l.person_id and l.codigo = "+Log.LOG_CODIGO_FORUM_POST+" and l.idobjeto = m.id " +
+				"and m.forum_id = f.id and f.module_id = "+idModule+" group by p.name;").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Aluno\":\""+temp[0]+"\",\"Tamanho de Mensagem\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayPersonGameTimePerModule(int idPerson, int idModule){
+		
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT g.name as nome, sum(l.tempo) as tempo from " +
+				"game g, log l where l.person_id = "+idPerson+" and l.codigo = "+Log.LOG_CODIGO_JOGAR+" " +
+				"and l.idobjeto = g.id and g.module_id = "+idModule+" group by g.name;").list();
+		
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Aluno\":\""+temp[0]+"\",\"Tempo\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		//System.out.println(array);
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONObjectTempoLevelPontuacao(int idGame)
+	{
+		String query = "SELECT  p.name,  SUM(tempo) as tempo, MAX(fases) as level, SUM(pontuacao) as pontuacao FROM log l, person p " +
+			"WHERE l.person_id = p.id AND l.idobjeto = " + idGame + " " +
+			"AND l.codigo = " + Log.LOG_CODIGO_JOGAR + " GROUP BY p.name;";
+		
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery(query).list();
+		String eixoX = "Tempo";
+		String eixoY = "Level";
+		String eixoRadius = "Pontuacao";
+		
+		String array = "[[{\"eixoX\":\"" + eixoX + "\",\"eixoY\":\"" + eixoY + "\", \"eixoRadius\":\"" + eixoRadius + "\",\"titulo\":\"Tempo x Level X Pontuação\"}]";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			
+			array+=",[{\"name\":\""+temp[0]+"\",\"" + eixoX +""+i+ "\":"+temp[1]+",\"" + eixoY +""+i+ "\":"+temp[2]+",\"" + eixoRadius +""+i+ "\":"+temp[3]+"}]";			
+		}		
+		array+="]";
+		
+		//System.out.println(array);
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONObjectLevelPontuacao(int idGame)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, fases, MAX(pontuacao) FROM log l, person p " +
+				"WHERE l.person_id = p.id AND l.idobjeto = " + idGame + " " +
+				"AND l.codigo = " + Log.LOG_CODIGO_JOGAR + " GROUP BY fases, p.name ORDER BY fases;").list();
+		String eixoX = "Level";
+		String eixoY = "Pontuacao";
+		
+		String array = "{\"eixoX\":\"" + eixoX + "\",\"eixoY\":\"" + eixoY + "\", \"titulo\":\"Level x Pontuação\", \"source\":[";
+		
+		Object[] temp = null;
+		if(gameScores.size()>0)
+		{
+			temp = (Object[]) gameScores.get(gameScores.size()-1);
+		}
+		
+		int tempLevel = 0;
+		int anteriorLevel = 0;
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			temp = (Object[]) gameScores.get(i);
+			
+			int atualLevel = 0;
+			if(temp[1].getClass().equals(BigInteger.class))
+			{
+				atualLevel = ((BigInteger)temp[1]).intValue();				
+			}
+			else if(temp[1].getClass().equals(Integer.class))
+			{
+				atualLevel = ((Integer)temp[1]).intValue();				
+			}
+			
+			if(anteriorLevel<atualLevel && anteriorLevel!=0)
+			{
+				tempLevel++;
+				array+="}";
+			}
+			
+			if(i>0)
+			{
+				while(tempLevel < atualLevel)
+				{
+					array+=",{\"" + eixoX +"\":"+tempLevel+"}";
+					tempLevel++;
+				}				
+			}
+			else
+			{
+				if(temp[1].getClass().equals(BigInteger.class))
+				{
+					tempLevel = ((BigInteger)temp[1]).intValue();				
+				}
+				else if(temp[1].getClass().equals(Integer.class))
+				{
+					tempLevel = ((Integer)temp[1]).intValue();				
+				} 
+			}
+			if(anteriorLevel!=0)
+			{
+				if(anteriorLevel==tempLevel)
+				{
+					array+=",\""+temp[0]+"\":" + temp[2] + "";
+				}
+				else
+				{
+					array+=",{\""+temp[0]+"\":" + temp[2] + ",\"" + eixoX + "\":"+temp[1];
+					anteriorLevel = tempLevel;					
+				}				
+			}
+			else
+			{
+				array+="{\""+temp[0]+"\":" + temp[2] + ",\"" + eixoX + "\":"+temp[1];
+				anteriorLevel = tempLevel;
+			}
+		}		
+		array+="}]}";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONObjectQuantidadeTamanhoMSG(int idModule)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT  p.name,  (SUM(tamanhomensagem)/COUNT(p.name)) as tamanho_msg, COUNT(p.name) as qdt_msg " +
+				"FROM log l, person p, message m, forum f " +
+				"WHERE l.person_id = p.id  AND l.codigo = " + Log.LOG_CODIGO_FORUM_POST + " " +
+				"AND l.idobjeto = m.id	AND m.forum_id = f.id AND f.module_id = " + idModule + " " +
+				"GROUP BY p.name;").list();
+		String eixoX = "Tamanho";
+		String eixoY = "Quantidade";
+		
+		String array = "[[{\"eixoX\":\"" + eixoX + "\",\"eixoY\":\"" + eixoY + "\", \"titulo\":\"Tamanho Medio das Mensagens x Quantidade de Mensagens\"}]";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			
+			array+=",[{\"name\":\""+temp[0]+"\",\"" + eixoX +""+i+ "\":"+temp[1]+",\"" + eixoY + ""+i+"\":"+temp[2]+"}]";
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONObjectTempoQuantidadePartidas(int idGame)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT  p.name,  SUM(tempo), COUNT(p.name) " +
+				"FROM log l, person p " +
+				"WHERE l.person_id = p.id " +
+				"AND l.idobjeto = " + idGame + " " +
+				"AND l.codigo = " + Log.LOG_CODIGO_JOGAR + " " +
+				"GROUP BY p.name;").list();
+		String eixoX = "Tempo";
+		String eixoY = "Quantidade";
+		
+		String array = "[[{\"eixoX\":\"" + eixoX + "\",\"eixoY\":\"" + eixoY + "\", \"titulo\":\"Tempo Total Jogado x Quantidade de Partidas\"}]";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			
+			array+=",[{\"name\":\""+temp[0]+"\",\"" + eixoX +""+i+ "\":"+temp[1]+",\"" + eixoY + ""+i+"\":"+temp[2]+"}]";
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameMeta(int idGame)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.name, (MAX( l.metaalternativa)) as meta FROM log l, person p "+
+				"WHERE l.codigo = " + Log.LOG_CODIGO_JOGAR + " "+
+				"AND idobjeto = " + idGame + " " +
+				"AND l.person_id = p.id " +
+				"GROUP BY p.name").list();
+		
+		String array = "";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Aluno\":\""+temp[0]+"\",\"Meta\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	//Tempo logado
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayPersonTimeOnline(int idPerson){
+
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT p.id, p.name, l.codigo, l.date "+
+				"FROM log l, person p "+ 
+				"WHERE (l.codigo = 1 OR l.codigo = 2)AND p.id = l.person_id "+
+		"ORDER BY l.date").list();
+
+
+		String array = "";
+
+		ArrayList<Long> listaTempo = new ArrayList();
+		ArrayList<String> listaNomes = new ArrayList();
+		ArrayList<Integer> listaID = new ArrayList();
+
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+
+			if((Integer)temp[2] == Log.LOG_CODIGO_LOGIN)
+			{
+				int contador = i+1;
+
+				if(!(listaID.contains((Integer)temp[0])))
+				{
+					listaID.add((Integer)temp[0]);
+					listaNomes.add((String)temp[1]);
+				}
+
+				while(true)
+				{
+					if(((Integer)((Object[]) logs.get(contador))[0]).intValue() == ((Integer)temp[0]).intValue()
+							&& ((Integer)((Object[]) logs.get(contador))[2]).intValue() == Log.LOG_CODIGO_LOGOUT)
+					{
+						break;
+					}else
+					{
+						contador = contador + 1;
+					}
+				}
+
+				Object[] temporario = (Object[])logs.get(contador);
+
+				Date primeira = (Date)temp[3];
+				Date segunda = (Date)temporario[3];
+				if(listaID.lastIndexOf(listaID.lastIndexOf((Integer)temp[0])) > -1 &&
+						listaTempo.get(listaID.lastIndexOf(listaID.lastIndexOf((Integer)temp[0]))) != null)
+				{
+					if(listaTempo.get(listaID.lastIndexOf(listaID.lastIndexOf((Integer)temp[0])))== null)
+					{
+						listaTempo.set(listaID.lastIndexOf(listaID.lastIndexOf((Integer)temp[0])), segunda.getTime() - primeira.getTime());
+
+					}else
+					{
+						listaTempo.set(listaID.lastIndexOf(listaID.lastIndexOf((Integer)temp[0])), listaTempo.get(listaID.lastIndexOf((Integer)temp[0]))+ (segunda.getTime() - primeira.getTime()));
+					}
+				}else
+				{
+					listaTempo.add(segunda.getTime() - primeira.getTime());
+				}
+			}
+
+
+		}
+		for(int i=0; i<listaID.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}
+
+			array+="{\"Aluno\":\""+listaNomes.get(listaID.lastIndexOf((Integer)temp[0]))+"\",\"Tempo\":"+listaTempo.get(listaID.lastIndexOf((Integer)temp[0]))+"}";
+		}
+
+
+		array+="]";
+
+		//System.out.println(array);
+
+		return array;
+	}
+
+	//Visualização do Fórum
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayForumVisualizacao(int idModule, int idAluno)
+	{
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT nome, sum(count) as postagens " +
+				"FROM ((SELECT DISTINCT f.name as nome, COUNT(l.*) " +
+				"FROM log l, person_role_course prc, forum f " +
+				"WHERE " +
+				"l.codigo =  4 " +
+				"AND l.idobjeto =   f.id " +
+				"AND l.person_id =  "+ idAluno +" " +
+				"AND f.module_id =  "+ idModule +" " +
+				"AND prc.person_id = l.person_id " +
+				"AND prc.role_id = 1 " +
+				"GROUP BY nome) UNION " +
+				"(SELECT f.name as nome, (0) as count from forum f   " +
+				"where f.module_id =  "+ idModule +"" +
+				"group by nome)) as pas group by nome;").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Topico\":"+temp[0]+"\",\"Quantidade\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	//Posts em Fórum
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayPostsPerUser(int idModule, int idUser){
+		
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery(
+				"select nome, sum(count) as postagens " +
+				"FROM ((select f.name as nome, (0) as count from forum f " +
+				"where f.module_id = " + idModule + " " +
+				"group by nome)  union "   +
+				"(SELECT f.name as nome, count(l.*) " + 
+				"from person p, log l, message m, forum f " +  
+				"where (p.id = "+idUser+" AND p.id = l.person_id and l.codigo = "+Log.LOG_CODIGO_FORUM_POST+" " +
+				"and l.idobjeto = m.id and m.forum_id = f.id and f.module_id = "+idModule+ ") " +
+		"group by f.name, p.name)) as pas group by nome;").list();
+
+		String array = "";
+
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Topico\":\""+temp[0]+"\",\"Quantidade\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	//Visualizações do Material
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayMaterialView(int idUsuario, int idModule)
+	{
+		List gameScores = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT m.archivename, COUNT(l.*) " +
+				"FROM log l, person p, person_role_course prc, material m"  +
+				"WHERE " +
+				"m.id = " + idModule + " " +
+				"AND l.codigo =  5 " +
+				"AND l.idobjeto = m.id " +
+				"AND l.person_id = " + idUsuario + " " +
+				"AND prc.person_id = p.id " +
+				"AND prc.role_id = 1 " +
+				"GROUP BY m.archivename").list();
+		
+		String array = "";
+		
+		for(int i=0; i<gameScores.size(); i++)
+		{
+			Object[] temp = (Object[]) gameScores.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Material\":"+temp[0]+"\",\"Quantidade\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	//Respostas de Enquete
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayPollAnswered(int moduleID, int idAluno)
+	{
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery("SELECT poll.name, COUNT(l.*) " +
+				"FROM log l, person p, module m, person_role_course prc, poll " +
+				"WHERE " +
+				" m.id =  "+ moduleID +" " +
+				" AND m.course_id = prc.course_id " +
+				" AND prc.role_id = "+ idAluno +" " +
+				" AND prc.person_id = p.id " +
+				" AND poll.module_id = m.id " +
+				" AND l.idobjeto = poll.id " +
+				" AND l.codigo = 6 " +  
+				"GROUP BY poll.name").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\",\"Poll\":"+temp[0]+"\"Aluno\":\""+temp[1]+"\"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	
+	//Abertura do Jogo
+	@SuppressWarnings("unchecked")
+	public String getJSONArrayGameOpen(int idModule, int idAluno)
+	{
+		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
+		createSQLQuery(
+				"SELECT nome, sum(count) as jogadas " +
+				"FROM ((SELECT DISTINCT g.name as nome, COUNT(l.*) " +
+				"FROM log l, person_role_course prc, game g " +
+				"WHERE " +
+				"l.codigo =  7 " +
+				"AND l.idobjeto =   g.id " +
+				"AND l.person_id =  " + idAluno +" " +
+				"AND g.module_id =  " + idModule +" " +
+				"AND prc.person_id = l.person_id " +
+				"AND prc.role_id = 1 " +
+				"GROUP BY nome) UNION " +
+				"(SELECT g.name as nome, (0) as count from game g " +
+				"WHERE g.module_id =   " + idModule +"  " +
+				"group by nome)) as pas group by nome; ").list();
+		
+		String array = "";
+		
+		for(int i=0; i<logs.size(); i++)
+		{
+			Object[] temp = (Object[]) logs.get(i);
+			if(array.length() == 0)
+			{
+				array = "[";
+			}
+			else
+			{
+				array += ",";
+			}			
+			array+="{\"Jogo\":\""+temp[0]+"\",\"Quantidade\":"+temp[1]+"}";			
+		}		
+		array+="]";
+		
+		return array;
+	}
+	/*
+	 * TODO - M�todos para recuperar grupo
+	 */
+	public List<Groups> getGroups(int id) {
+		List<Groups> grupo = null;
+		try {
+			
+			 GroupsDAO groupsDAO = factory.getGroupsDAO();
+			 grupo = groupsDAO.getGroupsByCourseID(id);
+			 
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return grupo;
+	}
+	
+	public List<Person> getPersonByGroupsID(int id) {
+		List<Person> grupo = null;
+		try {
+			
+			 GroupsDAO groupsDAO = factory.getGroupsDAO();
+			 grupo = groupsDAO.getPersonByGroupsID(id);
+			 
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return grupo;
+	}
+	
+	public List<StudentHaveGroup> getStudentsHaveGroup(Course course, Person person)
+	{				
+		PersonRoleCourseDAO personRoleCourseDAO = factory.getPersonRoleCourseDAO();
+		List<StudentHaveGroup> result = personRoleCourseDAO.getStudentHaveGroupByCourse(course, person);
+		
+		return result;
+	}
+	
+	public Module getUltimoModulo(int courseID)
+	{				
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		Module result  = groupsDAO.getUltimoModulo(courseID);
+		
+		return result;
+	}
+	
+	public List<LogVisualizacao> getLogsByDayAndGroup(String data, int groupId)
+	{
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		List<Log> list = groupsDAO.getLogsByDayAndGroup(data, groupId);
+		
+		List<LogVisualizacao> result = new ArrayList<LogVisualizacao>();
+		for(Log log : list)
+		{
+			LogVisualizacao logVisualizacao = null;
+			Facade facade = Facade.getInstance();
+			
+			
+			if(log.getCodigo() == Log.LOG_CODIGO_VISUALIZACAO_MATERIAL)
+			{
+				Material material = facade.getMaterialByID(log.getIdObjeto());
+				
+				String materialName = "";
+				if(material !=null)
+				{
+					materialName = material.getArchiveName();
+				}
+				else
+				{
+					ExternalLink link = facade.getExternalLinkById(log.getIdObjeto());
+					materialName = link.getName();
+				}
+				
+				logVisualizacao = new LogVisualizacao(log, materialName);
+			}
+			else
+			{
+				logVisualizacao = new LogVisualizacao(log);
+			}
+			
+			result.add(logVisualizacao);
+		}
+		
+		return result;
+	}
+	
+	public List<LogVisualizacao> getLogsByDayAndPerson(String data, int groupID, int personID)
+	{
+		PersonDAO personDAO = factory.getPersonDAO();
+		List<Log> list = personDAO.getLogsByDayAndPerson(data, groupID, personID);
+		List<LogVisualizacao> result = new ArrayList<LogVisualizacao>();
+		for(Log log : list)
+		{
+			LogVisualizacao logVisualizacao = null;
+			Facade facade = Facade.getInstance();
+			
+			
+			if(log.getCodigo() == Log.LOG_CODIGO_VISUALIZACAO_MATERIAL)
+			{
+				String materialName = "";
+				
+				try
+				{
+					Material material = facade.getMaterialByID(log.getIdObjeto());
+					materialName = material.getArchiveName();					
+				}
+				catch(Exception e)
+				{
+					ExternalLink link = facade.getExternalLinkById(log.getIdObjeto());
+					materialName = link.getName();					
+				}
+				logVisualizacao = new LogVisualizacao(log, materialName);
+			}
+			else
+			{
+				logVisualizacao = new LogVisualizacao(log);
+			}
+			
+			result.add(logVisualizacao);
+		}
+		
+		return result;
+	}
+	
+	public Groups inserGroups(Groups g) throws CourseInvalidException {
+		Groups result;
+		try {			
+			GroupsDAO groupsDAO = factory.getGroupsDAO();
+			result = groupsDAO.makePersistent(g);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public List<TimelineItem> listarTimelineGroup(Groups g){
+		
+		List<TimelineItem> result = null;
+		try {			
+			GroupsDAO groupsDAO = factory.getGroupsDAO();
+			result = groupsDAO.getTimelineByGroupsID(g.getId());
+			
+			int max = 0;
+			int min = 10000000;
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max < result.get(i).getFrequency()){
+					max = result.get(i).getFrequency();
+				}
+				if(min > result.get(i).getFrequency()){
+					min = result.get(i).getFrequency();
+				}
+			}
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max == min){
+					result.get(i).setClasse("class3");
+				}else
+				{
+					int classe = (int) (((double)(result.get(i).getFrequency()-min))/(((double)(max-min))/9));
+					
+					switch (classe)
+					{
+					case 0:
+						result.get(i).setClasse("class1");
+						break;
+					case 1:
+						result.get(i).setClasse("class2");
+						break;
+					case 2:
+						result.get(i).setClasse("class3");
+						break;
+					case 3:
+						result.get(i).setClasse("class4");
+						break;
+					case 4:
+						result.get(i).setClasse("class5");
+						break;
+					case 5:
+						result.get(i).setClasse("class6");
+						break;
+					case 6:
+						result.get(i).setClasse("class7");
+						break;
+					case 7:
+						result.get(i).setClasse("class8");
+						break;
+					case 8:
+						result.get(i).setClasse("class9");
+						break;
+					case 9:
+						result.get(i).setClasse("class10");
+						break;
+					}
+				}
+			}
+			
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+public List<TimelineItem> listarTimelinePerson(Person p, Groups g){
+		
+		List<TimelineItem> result = null;
+		try {			
+			PersonDAO personDAO = factory.getPersonDAO();
+			result = personDAO.getTimelineByPersonID(p.getId(), g.getId());
+			
+			int max = 0;
+			int min = 10000000;
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max < result.get(i).getFrequency()){
+					max = result.get(i).getFrequency();
+				}
+				if(min > result.get(i).getFrequency()){
+					min = result.get(i).getFrequency();
+				}
+			}
+			
+			for(int i = 0; i<result.size(); i++){
+				if(max == min){
+					result.get(i).setClasse("class3");
+				}else
+				{
+					int classe = (int) (((double)(result.get(i).getFrequency()-min))/(((double)(max-min))/9));
+					
+					switch (classe)
+					{
+					case 0:
+						result.get(i).setClasse("class1");
+						break;
+					case 1:
+						result.get(i).setClasse("class2");
+						break;
+					case 2:
+						result.get(i).setClasse("class3");
+						break;
+					case 3:
+						result.get(i).setClasse("class4");
+						break;
+					case 4:
+						result.get(i).setClasse("class5");
+						break;
+					case 5:
+						result.get(i).setClasse("class6");
+						break;
+					case 6:
+						result.get(i).setClasse("class7");
+						break;
+					case 7:
+						result.get(i).setClasse("class8");
+						break;
+					case 8:
+						result.get(i).setClasse("class9");
+						break;
+					case 9:
+						result.get(i).setClasse("class10");
+						break;
+					}
+				}
+			}
+			
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public Groups getGroupsById(int id)
+	{
+		Groups result = null;
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		result = groupsDAO.findById(id, false);
+		return result;
+	}
+	
+	public boolean pesronHaveGroup(int courseId, int personId)
+	{
+		GroupsDAO groupsDAO = factory.getGroupsDAO();
+		return groupsDAO.personHaveGroup(courseId, personId);
+	}
+	
+	public boolean verificarStatusPorForum(List<Person> alunos, Forum forum)
+	{
+		ForumDAO forumDAO = factory.getForumDAO();
+		return forumDAO.verificarStatusPorForum(alunos, forum);
+	}
+	
+	public boolean verificarStatusPorGame(List<Person> alunos, Game game)
+	{
+		GameDAO gameDAO = factory.getGameDAO();
+		return gameDAO.verificarStatusPorGame(alunos, game);
+	}
 }

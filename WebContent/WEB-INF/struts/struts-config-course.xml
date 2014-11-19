@@ -100,6 +100,13 @@
 			<form-property name="courseId" type="java.lang.Integer" />
 			<form-property name="keywords" type="java.lang.String" />
 		</form-bean>
+		
+		<form-bean name="formCriarGrupo" type="org.apache.struts.action.DynaActionForm">
+			<form-property name="courseId" type="java.lang.Integer"/>
+			<form-property name="nomeGrupo" type="java.lang.String"/>
+			<form-property name="listaAlunos" type="java.lang.String"/>
+			<form-property name="Concluir" type="java.lang.String"/>
+		</form-bean>
 
 	</form-beans>
 	<global-exceptions />
@@ -125,6 +132,15 @@
 		
 		<forward name="fShowViewCourseEvaluations" path="/jsp/course/viewCourseEvaluations.jsp"/>
 		<forward name="fShowViewSendMail" path="/jsp/course/viewSendMail.jsp"/>
+		<forward name="fShowViewGraphic" path="/jsp/course/viewGraphic.jsp"/>
+		<forward name="fShowViewGroups" path="/jsp/course/viewGroups.jsp"/>
+		<forward name="fShowGroupDayTimeline" path="/jsp/course/viewGroupDayTimeline.jsp"/>
+		<forward name="fShowPersonDayTimeline" path="/jsp/course/viewPersonDayTimeline.jsp"/>
+		<forward name="fShowViewGroupTimeline" path="/jsp/course/viewGroupTimeline.jsp"/>
+		<forward name="fShowViewPersonTimeline" path="/jsp/course/ViewPersonTimeline.jsp"/>
+		<forward name="fShowViewOneGroup" path="/jsp/course/viewOneGroup.jsp"/>
+		<forward name="fShowViewGroupsRelatorio" path="/jsp/course/viewGroupsRelatorio.jsp"/>
+		
 		
 	</global-forwards>
 	<action-mappings>
@@ -193,6 +209,11 @@
 
 		<action name="formEditCourse" input="/course.do?method=showViewEditCourse"
 			path="/editCourse" parameter="editCourse" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
+			</action>
+			
+		<action name="formCriarGrupo" input="/course.do?method=showViewCreateGroup"
+			path="/course.do?method=showViewCreateGroup" parameter="criarGrupo" scope="request"
 			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
 			</action>
 

@@ -34,6 +34,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	<link href="themes/default/css/module.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+	<input id="inputCourse" type="hidden" value="${course.id}"/>
 	<div id="pBody" class="pBody">
 		<div id="pHeader" class="pHeader">
 			<jsp:include page="/jsp/conf/login.jsp" />

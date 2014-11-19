@@ -17,5 +17,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive;
 
 public interface ArchiveDAO extends GenericDAO <Archive, Integer> {
+	
+	public Archive getArchiveByMaterial(int material_id);
 
 }

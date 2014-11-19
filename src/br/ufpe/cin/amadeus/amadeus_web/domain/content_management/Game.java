@@ -49,7 +49,9 @@ public class Game implements Serializable{
 
 	private byte[] image;
 	
-	private Date creationDate; 
+	private Date creationDate;
+	
+	private boolean linkExterno;
 	
 	public int getId() {
 		return id;
@@ -126,6 +128,14 @@ public class Game implements Serializable{
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public void setLinkExterno(boolean linkExterno) {
+		this.linkExterno = linkExterno;
+	}
+
+	public boolean getLinkExterno() {
+		return linkExterno;
 	}
 
 }

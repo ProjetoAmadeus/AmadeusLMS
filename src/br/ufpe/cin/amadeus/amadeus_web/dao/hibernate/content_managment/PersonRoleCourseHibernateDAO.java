@@ -13,17 +13,23 @@ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿
 
 package br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+import sun.security.util.BigInt;
+
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.PersonRoleCourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.GenericHibernateDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.HibernateUtil;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
 
 public class PersonRoleCourseHibernateDAO extends GenericHibernateDAO<PersonRoleCourse, Integer> implements PersonRoleCourseDAO {
 
@@ -38,6 +44,24 @@ public class PersonRoleCourseHibernateDAO extends GenericHibernateDAO<PersonRole
 						  " and prc.course.id = " + course.getId()+
 						  " and prc.role.id = " + role.getId()+" order by p.name asc";
 		List<Person> results = getSession().createQuery(hqlQuery).list();
+		
+		return results;
+	}
+	
+	public List<PersonRoleCourse> getStudentByUser(AccessInfo userInfo){
+		
+
+		StringBuilder hql = new StringBuilder();
+		hql.append("select prc from PersonRoleCourse prc, " +
+				    "Person p, " +
+				    "AccessInfo aci " +
+				    "where prc.person.id = p.id " +
+				    "and p.accessInfo.id = aci.id " +
+				    "and aci.login = '"+userInfo.getLogin()+"' " +
+				    "and aci.password = '"+userInfo.getPassword()+"'");
+		
+		@SuppressWarnings("unchecked")
+		List<PersonRoleCourse> results = getSession().createQuery(hql.toString()).list();
 		
 		return results;
 	}
@@ -150,5 +174,39 @@ public class PersonRoleCourseHibernateDAO extends GenericHibernateDAO<PersonRole
 		List<PersonRoleCourse> roles = critRoles.list();
 		
 		return roles;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudentHaveGroup> getStudentHaveGroupByCourse(Course course, Person person) {
+		String hqlQuery = "select p.name, p.id, (pg.person_id IS NOT NULL) as haveGroup from person_role_course prc, person p " + 
+							" LEFT JOIN (SELECT p.person_id FROM person_groups p, groups g where p.group_id = g.id AND g.course_id = " + course.getId() + ") as pg " +
+							" ON p.id = pg.person_id " +
+							" where p.id = prc.person_id " +
+							" and prc.course_id = " + course.getId() +
+							" and prc.role_id = 1 " +
+							" order by p.name asc ";
+		
+		List<Object[][]> resultsParcial =	HibernateUtil.getSessionFactory()
+			.getCurrentSession()
+			.createSQLQuery(hqlQuery)
+			.list();
+		
+		ArrayList<StudentHaveGroup> results = new ArrayList<StudentHaveGroup>();
+		
+		int pos = 0;
+		for(int i=0;i<resultsParcial.size();i++)
+		{
+			Object[] tupla = resultsParcial.get(i);
+			
+			if(person.getId() != ((Integer) tupla[1]).intValue())
+			{
+				StudentHaveGroup temp = new StudentHaveGroup((String)tupla[0], ((Integer) tupla[1]).intValue(), (Boolean)tupla[2], pos);
+				pos++;
+				results.add(temp);				
+			}
+		}
+		
+		return results;
 	}
 }

@@ -34,8 +34,14 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 			<c:if test="${selectedPosition != 4}"><li><html:link action="course.do?method=showViewCourseEvaluations&courseId=${course.id}">Avaliações do Curso</html:link></li></c:if>
 		</c:if>
 		
-		<c:if test="${canInsertCourse}">
-			<li><a href="#" onclick="changeTeacher(${course.id});"><bean:message key="sideMenu.changeTeacher"/></a></li>		
+		<c:if test="${canViewGroups}">
+			<c:if test="${selectedPosition == 6}"><li><b>Grupos</b></li></c:if>
+			<c:if test="${selectedPosition != 6}"><li><html:link action="course.do?method=showViewGroups&courseId=${course.id}">Grupos</html:link></li></c:if>
+		</c:if>
+
+		<c:if test="${canViewGraphic}">
+			<c:if test="${selectedPosition == 5}"><li><b>Módulo de Visualização</b></li></c:if>
+			<c:if test="${selectedPosition != 5}"><li><html:link action="course.do?method=showViewGraphic&courseId=${course.id}&graphic=sel&moduleSel=-1&idAluno=-1&idGame=-1">Módulo de Visualização</html:link></li></c:if>
 		</c:if>
 		
 		<c:if test="${canInsertCourse}">

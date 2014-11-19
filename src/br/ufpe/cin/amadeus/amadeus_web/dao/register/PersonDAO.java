@@ -17,12 +17,19 @@ import java.util.List;
 
 import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.AccessInfo;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 
 public interface PersonDAO extends GenericDAO<Person, Integer> {
 	
 	public List<Person> getTeachersByName(String name);
 	public List<Person> getAssistanceInCourse(Course course, Role role);
 	public List<String> getAllEmails();
+	public Person getPersonByLogin(String login);
+	public Person getPersonByUserName(String userName);
+	public List<TimelineItem> getTimelineByPersonID(int personID, int groupID);
+	public List<Log> getLogsByDayAndPerson(String data, int groupID, int personID);
 }

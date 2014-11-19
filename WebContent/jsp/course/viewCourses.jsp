@@ -57,7 +57,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	
 	if(pageNumber == null){
 		if (criteria == null) {	
-			criteria = (String)request.getParameter("keyword_course");
+			criteria = new String(request.getParameter("keyword_course").getBytes("ISO-8859-1"), "UTF-8");
 			Facade facade = Facade.getInstance();
 			List<Course>[] founded = facade.getCoursesByRule(criteria);
 			numberOfResults = founded[0].size() + founded[1].size() + founded[2].size() + founded[3].size();

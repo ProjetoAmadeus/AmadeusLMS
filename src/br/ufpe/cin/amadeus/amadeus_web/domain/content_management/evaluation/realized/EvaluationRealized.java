@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.beanutils.BeanComparator;
 
@@ -44,6 +45,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class EvaluationRealized implements Serializable{
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)

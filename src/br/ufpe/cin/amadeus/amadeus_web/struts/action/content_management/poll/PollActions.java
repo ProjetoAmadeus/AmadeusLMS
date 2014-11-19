@@ -31,6 +31,7 @@ import br.ufpe.cin.amadeus.amadeus_mobile.sms.Receiver;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Answer;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Choice;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Poll;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
@@ -321,6 +322,12 @@ public class PollActions extends org.apache.struts.actions.DispatchAction{
 
 		answerPollBD(idAlternative, idPoll, loggedUser);
 
+		//TODO - LOG - Reposta enquete - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_RESPOSTA_ENQUETE);
+		log.setIdObjeto(idPoll);
+		this.facade.saveLog(log);
+		
 		return null;
 	}
 

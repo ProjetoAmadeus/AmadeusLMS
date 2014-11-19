@@ -22,6 +22,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Classe que encapsula os dados de uma atividade para casa
  * 
@@ -31,6 +32,7 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class Homework implements Serializable{
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	

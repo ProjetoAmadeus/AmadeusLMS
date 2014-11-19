@@ -1,16 +1,15 @@
 /*
- * Copyright 2008, 2009 UFPE - Universidade Federal de Pernambuco
- *
- * Este arquivo � parte do programa Amadeus Sistema de Gest�o de Aprendizagem, ou simplesmente Amadeus LMS
- * 
- * O Amadeus LMS � um software livre; voc� pode redistribui-lo e/ou modifica-lo dentro dos termos da Licen�a P�blica Geral GNU como
- * publicada pela Funda��o do Software Livre (FSF); na vers�o 2 da Licen�a.
- * 
- * Este programa � distribu�do na esperan�a que possa ser �til, mas SEM NENHUMA GARANTIA; sem uma garantia impl�cita de ADEQUA��O a qualquer MERCADO ou APLICA��O EM PARTICULAR. Veja a Licen�a P�blica Geral GNU para maiores detalhes.
- *  
- * Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral GNU, sob o t�tulo "LICENCA.txt", junto com este programa, se n�o, escreva para a Funda��o do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
- *
- */
+Copyright 2008, 2009 UFPE - Universidade Federal de Pernambuco
+ 
+Este arquivo é parte do programa Amadeus Sistema de Gestão de Aprendizagem, ou simplesmente Amadeus LMS
+ 
+O Amadeus LMS é um software livre; você pode redistribui-lo e/ou modifica-lo dentro dos termos da Licença Pública Geral GNU como
+publicada pela Fundação do Software Livre (FSF); na versão 2 da Licença.
+ 
+Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a Licença Pública Geral GNU para maiores detalhes.
+ 
+Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LICENCA.txt", junto com este programa, se não, escreva para a Fundação do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
+*/
 
 var keyUserNotLogged = "<ajklsdjfiei78324yhre8yds979873w78jklsdkfjsdlkfjlksdfjklksdflk9usdf98723uoudsfjk348987>";
 var keyAccessDenied =  "<iseocdsfc83f93rhnfv983nnds838hfoihos83hjod9uhwjjhvf83wnhfv983nhfg98h398udfhhdia82jsd2>";
@@ -118,7 +117,7 @@ function verificaEspaco(login){
     var i;  
     for(i=0;i<arr.length;i++){
       if(arr[i] == " "){
-            alert("N�o colocar espa�o no login");
+            alert("Não colocar espaço no login");
             break;
       }
     }
@@ -134,13 +133,13 @@ function verifyEmail(personId, email) {
 						$("#emailResponse").removeClass("emailResponseNotOK");
 						$("#emailResponse").addClass("emailResponseOK");
 					} 
-					$("#emailResponse").html("Email dispon�vel!");
+					$("#emailResponse").html("Email disponível!");
 				} else {
 					if (attrClass.indexOf("emailResponseOK") != -1) {
 						$("#emailResponse").removeClass("emailResponseOK");
 						$("#emailResponse").addClass("emailResponseNotOK");
 					}
-					$("#emailResponse").html("Email n�o dispon�vel!");
+					$("#emailResponse").html("Email não disponível!");
 				}
 				
 			}

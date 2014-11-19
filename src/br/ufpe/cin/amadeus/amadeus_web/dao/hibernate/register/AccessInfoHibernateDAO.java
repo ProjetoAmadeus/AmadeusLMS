@@ -73,5 +73,13 @@ public class AccessInfoHibernateDAO extends
 		
 		return query.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<AccessInfo> searchUsers(Integer userType) {
+		String hql = "from AccessInfo as a where";
+		hql += " a.typeProfile = "+userType;
+		Query query = getSession().createQuery(hql);
+		return query.list();
+	}
 	
 }

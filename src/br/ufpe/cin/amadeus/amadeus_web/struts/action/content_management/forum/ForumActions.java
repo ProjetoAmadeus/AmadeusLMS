@@ -28,11 +28,12 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import sun.security.provider.SystemSigner;
+//import sun.security.provider.SystemSigner;
 
 import br.ufpe.cin.amadeus.amadeus_mobile.sms.Receiver;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
@@ -80,6 +81,12 @@ public class ForumActions extends SystemActions {
 		request.setAttribute("forum", forum);
 		request.setAttribute("module", module);
 		//request.setAttribute("canAnswerForum", canAnswerForum);
+		
+		//TODO - LOG - Visualizacao de um topico - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_FORUM_TOPICO);
+		log.setIdObjeto(forum.getId());
+		facade.saveLog(log);
 		
 		return mapping.findForward(FORWARD_SHOW_VIEW_FORUM_ACTIVITY);
 	}
@@ -322,6 +329,14 @@ public class ForumActions extends SystemActions {
 			}
 
 			facade.flush();
+			
+			//TODO - LOG - Nova resposta para um topico - OK
+			Log log = SystemActions.getLogUser(request);
+			log.setCodigo(Log.LOG_CODIGO_FORUM_POST);
+			log.setIdObjeto(msg.getId());
+			log.setTamanhoMensagem(msg.getBody().length());
+			facade.saveLog(log);
+			
 		} else {
 			forward = new SystemActions().showViewWelcome(mapping, form, request, response);
 		}

@@ -18,13 +18,11 @@
 		<form-bean name="gameActivity"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="nameGame" type="java.lang.String" />
-			<form-property name="maxUsers" type="java.lang.String" />
-			<form-property name="minUsers" type="java.lang.String" />
 			<form-property name="descriptionGame" type="java.lang.String" />
-			<form-property name="urlGame" type="java.lang.String" />
+			<form-property name="urlGame" type="org.apache.struts.upload.FormFile" />
 			<form-property name="idGame" type="java.lang.String" />
 			<form-property name="image" type="org.apache.struts.upload.FormFile"/>
-			
+			<form-property name="externalUrlGame" type="java.lang.String"/>
 		</form-bean>
 
 		<form-bean name="forumActivity"
@@ -110,6 +108,12 @@
 			<form-property name="urlExternalLink" type="java.lang.String" />
 		</form-bean>
 
+		<form-bean name="gameResults"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="idMMJogos" type="java.lang.Integer" />
+			<form-property name="type" type="java.lang.Integer" />
+		</form-bean>
+
 	</form-beans>
 
 	<global-forwards>
@@ -179,6 +183,8 @@
 		
 		<!-- Forward Game -->
 		<forward name="fShowViewNewGameActivity" path="/jsp/course/content_management/activities/game/gameActivities.jsp" />
+		<forward name="fShowPlayGame" path="/jsp/course/content_management/activities/game/playGameActivities.jsp"/>
+		<forward name="fShowGraphicGame" path="/jsp/course/content_management/activities/game/viewGameGraphic.jsp"/>
 		
 		<forward name="fCancelShowListActivity"
 			path="/jsp/course/content_management/activities/cancelShowListActivity.jsp" />
@@ -250,6 +256,15 @@
 		<!--
 			Action das Atividades Game
 		-->
+		
+		<action path="/changeOrderGame"
+			scope="request" parameter="method" name="gameResults"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions" />
+		
+		<action path="/viewImage"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions" 
+			scope="request" parameter="method"/>
+		
 		<action path="/gameActivity"
 			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions"
 			parameter="method" scope="request" />
@@ -276,7 +291,19 @@
 		<action path="/fshowPlayerGame"
 			parameter="/jsp/course/content_management/activities/game/viewGamePlayer.jsp"
 			type="org.apache.struts.actions.ForwardAction" />
-
+			
+		<action path="/playGameActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions"
+			name="gameActivity"
+			input="/jsp/course/content_management/activities/game/playGameActivities.jsp"
+			parameter="method" scope="request"/>
+		
+		<action path="/graphicGameActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.forum.GameActions"
+			name="gameActivity"
+			input="/gameActivity.do?method=showGraphicGame"
+			parameter="method" scope="request"/>
+			
 		<!--
 			Action das Atividades Forum
 		-->

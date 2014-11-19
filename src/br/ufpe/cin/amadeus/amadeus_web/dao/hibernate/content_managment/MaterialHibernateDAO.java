@@ -33,6 +33,19 @@ public class MaterialHibernateDAO extends GenericHibernateDAO<Material, Integer>
 		
 		return (Material) crit.uniqueResult();
 	}
+
+	@Override
+	public
+	Material getMaterialByID(int material_id){
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select m from Material m " +
+				   "where m.id = " + material_id);
+		
+		Material material = (Material) getSession().createQuery(hql.toString()).uniqueResult();
+				
+		return material;
+	}
 	
 }
 
