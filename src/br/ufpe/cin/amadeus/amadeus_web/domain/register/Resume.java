@@ -19,10 +19,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class Resume implements Serializable{
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)

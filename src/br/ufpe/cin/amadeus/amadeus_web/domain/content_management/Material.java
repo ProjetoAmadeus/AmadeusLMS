@@ -25,6 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 /**
@@ -34,6 +35,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
  */
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class Material implements Serializable{
 
 
@@ -42,7 +44,7 @@ public class Material implements Serializable{
 
 	private static final int MAX_FILE_SIZE = 500000;
 	
-	@OneToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name="ARCHIVE_ID", nullable = false)
 	@org.hibernate.annotations.Cascade(
 		value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN )

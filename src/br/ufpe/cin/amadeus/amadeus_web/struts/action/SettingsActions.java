@@ -12,6 +12,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
+import br.ufpe.cin.amadeus.amadeus_web.domain.settings.WebSettings;
 import br.ufpe.cin.amadeus.amadeus_web.facade.Facade;
 import br.ufpe.cin.amadeus.amadeus_web.permissions.settings.WebSettingsPermissions;
 
@@ -32,6 +33,7 @@ public class SettingsActions extends SystemActions {
 		map.put("settingsActions.saveWebSecuritySettings", "saveWebSecuritySettings");
 		map.put("settingsActions.showViewWebMailSenderSettings", "showViewWebMailSenderSettings");
 		map.put("settingsActions.saveWebMailSenderSettings", "saveWebMailSenderSettings");
+		map.put("settingsActions.saveSystemSettings", "saveSystemSettings");
 		map.put("settingsActions.showViewMobileSettings", "showViewMobileSettings");
 		map.put("settingsActions.saveMobileSettings", "saveMobileSettings");
 		return map;
@@ -149,6 +151,29 @@ public class SettingsActions extends SystemActions {
 		}
 		
 		return forward;
+	}
+	
+	public ActionForward saveSystemSettings(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+		ActionForward forward = null;
+		
+		if(SystemActions.isLoggedUser(request)){
+			if(WebSettingsPermissions.userCanSaveWebMailSenderSettings(request)){
+				/*ActionMessages messages = new ActionMessages();*/
+				String domain = request.getParameter("domain").trim();
+				System.out.println("LALA: "+domain);
+				request.setAttribute("success", true);
+				SystemActions.webSettings.setSystemGeneralDomain(domain);
+				forward = this.showViewWebMailSenderSettings(mapping, form, request, response);
+			} else {
+				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
+			}
+		} else {
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+		
+		return  forward;
 	}
 	
 	public ActionForward saveWebMailSenderSettings(ActionMapping mapping, ActionForm form,

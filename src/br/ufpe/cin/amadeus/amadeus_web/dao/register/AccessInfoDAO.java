@@ -21,5 +21,6 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 public interface AccessInfoDAO extends GenericDAO<AccessInfo, Integer>{
 	public List<AccessInfo> getUsersByLogin(String login);
 	public List<AccessInfo> searchUsers(String userName, Integer userType, Integer courseId);
+	public List<AccessInfo> searchUsers(Integer userType);
 	public List<AccessInfo> getAllUserOrderByName();
 }

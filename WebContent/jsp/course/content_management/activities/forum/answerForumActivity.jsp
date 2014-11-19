@@ -15,19 +15,34 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 <%@ taglib uri="/WEB-INF/struts-html" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-bean" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
 <logic:notPresent name="user"> 
 	<logic:redirect action="system.do?method=showViewMenu"/>			
 </logic:notPresent>
-
 <div id="answerForumActivity" class="cmBody">
 <html:form action="answerForumActivity">
 	<html:errors/>
 	<div class="cmLine">
-		<textarea name="answerBody" class="cmTextArea"><bean:write name="messageForum" property="answerBody" filter="false"/></textarea>
+		<c:if test="${not empty message}">
+			<h3><bean:message key="activities.forum.inreplyto" /> ${message.author.name}:</h3>
+			<div class="fMessageBody">	
+				<PRE class="preMod"><bean:write name="message" property="body" filter="false"/></PRE><br />
+			</div>
+			<textarea name="answerBody" id="areatexto" class="cmTextArea" autofocus="autofocus" ><bean:write name="messageForum" property="answerBody" filter="false"/></textarea>
+		</c:if>
+		<c:if test="${empty message}">
+			<textarea name="answerBody" id="areatexto" class="cmTextArea" autofocus="autofocus" ><bean:write name="messageForum" property="answerBody" filter="false"/></textarea>
+		</c:if>
+		
 	</div>
 	<div class="cmFooter">
+	<c:if test="${empty message}">
 		<a onclick="answerForumActivity(${module.position}, ${forum.id}, ${person.id});" href="javascript:void(0)"><bean:message key="general.send" /></a> / 
+	</c:if>
+	<c:if test="${not empty message}">
+		<a onclick="answerForumActivityWithMessage(${module.position}, ${forum.id}, ${person.id}, ${message.id});" href="javascript:void(0)"><bean:message key="general.send" /></a> / 
+	</c:if>
 		<a onclick="cancelShowAnswerForumActivity(${module.position});" href="javascript:void(0)"><bean:message key="general.cancel" /></a>
 	</div>
 </html:form>

@@ -33,9 +33,9 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 			<c:if test="${selectedPosition == 4}"><li><b>Avaliações do Curso</b></li></c:if>
 			<c:if test="${selectedPosition != 4}"><li><html:link action="course.do?method=showViewCourseEvaluations&courseId=${course.id}">Avaliações do Curso</html:link></li></c:if>
 		</c:if>
-		
-		<c:if test="${canInsertCourse}">
-			<li><a href="#" onclick="changeTeacher(${course.id});"><bean:message key="sideMenu.changeTeacher"/></a></li>		
+		<c:if test="${canViewGraphic}">
+			<c:if test="${selectedPosition == 5}"><li><b>Módulo de Visualização</b></li></c:if>
+			<c:if test="${selectedPosition != 5}"><li><html:link action="course.do?method=showViewGraphic&courseId=${course.id}&graphic=sel&moduleSel=-1&idAluno=-1&idGame=-1">Módulo de Visualização</html:link></li></c:if>
 		</c:if>
 		
 		<c:if test="${canInsertCourse}">
@@ -56,6 +56,16 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		
 		<c:if test="${canAssistanceRequest}">
 			<li><html:link action="user.do?method=showViewAssistanceRequest&courseId=${course.id}"><bean:message key="assistanceRequest.heading"/></html:link></li>
-		</c:if>		
-	</ul>
+		</c:if>	
+		
+		<c:if test="${canMonitorSocialInteractions}">
+			<li><html:link action="course.do?method=showViewSocialInteractionMonitoring&courseId=${course.id}" property="${course.id}"><bean:message key="sideMenu.socialInteractionMonitoring"/></html:link></li>		
+		</c:if>
+		
+		<li><a href="messenger.do?method=showViewAllMessengerMessages&courseId=${course.id}">See all messages</a></li>
+		
+		<c:if test="${canMonitoringHashtag}">
+			<li><html:link action="social.do?method=showViewSocialNetworkMonitoring&courseId=${course.id}">Monitorar redes sociais</html:link></li>
+		</c:if>
+	</ul>	
 </div>

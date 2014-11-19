@@ -39,7 +39,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	</div>
 	<div class="cmFooter">
 		<c:if test="${status eq okStatus}"> 
-		<a onclick="watchVideo('<%=request.getContextPath()%>/videoChat.do?method=connectChat&idVideo=${video.youtubeId}');" href="javascript:void(0);" ><bean:message key="activities.video.watch" /></a> /
+		<a onclick="watchVideo('<%=request.getContextPath()%>/videoChat.do?method=connectChat&idVideo=${video.youtubeId}', ${video.id});" href="javascript:void(0);" ><bean:message key="activities.video.watch" /></a> /
 		</c:if>	 
 		<a onclick="top.backEditName(${video.module.position})" href="javascript:void(0)"><bean:message key="general.close" /></a>
 	</div>

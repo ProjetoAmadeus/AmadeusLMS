@@ -22,6 +22,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Question;
 /**
@@ -32,6 +33,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Ques
  */
 
 @Entity
+@XmlRootElement
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class QuestionRealized {
 	

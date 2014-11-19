@@ -28,6 +28,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Evaluation;
 /**
@@ -39,6 +42,8 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Eval
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Module implements Serializable {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	

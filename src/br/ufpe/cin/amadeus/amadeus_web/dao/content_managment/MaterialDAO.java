@@ -21,5 +21,6 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 public interface MaterialDAO extends GenericDAO<Material, Integer> {
 	
 	Material getMaterial(Person person, MaterialRequest materialRequest);
-	
+	Material getMaterialByID(int material_id);
+		
 }

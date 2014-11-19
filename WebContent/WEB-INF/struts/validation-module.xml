@@ -12,18 +12,19 @@
                 depends="required">
                     <arg key="activities.game.description"/>
             </field>
-			<field property="urlGame"
-                depends="required">
-                    <arg key="activities.game.url"/>
-            </field>
-            <field property="maxUsers"
-                depends="required">
-                    <arg key="activities.game.maxUsers"/>
-            </field>
-            <field property="minUsers"
-                depends="required">
-                    <arg key="activities.game.minUsers"/>
-            </field>
+<!-- Validações da versão do Amadeus Games de Vinicius Paiva -->
+<!--			<field property="urlGame"-->
+<!--                depends="required">-->
+<!--                    <arg key="activities.game.url"/>-->
+<!--            </field>-->
+<!--            <field property="maxUsers"-->
+<!--                depends="required">-->
+<!--                    <arg key="activities.game.maxUsers"/>-->
+<!--            </field>-->
+<!--            <field property="minUsers"-->
+<!--                depends="required">-->
+<!--                    <arg key="activities.game.minUsers"/>-->
+<!--            </field>-->
             
 		</form>
 		

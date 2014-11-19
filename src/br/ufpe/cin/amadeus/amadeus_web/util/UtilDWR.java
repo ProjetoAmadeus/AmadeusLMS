@@ -36,11 +36,20 @@ public class UtilDWR {
 
 	@SuppressWarnings("unchecked")
 	public static Util getUtil(){ 
-	    WebContext wctx = WebContextFactory.get(); 
-	    String page = wctx.getCurrentPage(); 
-	    Collection sessions = wctx.getScriptSessionsByPage(page); 
-	    Util u = new Util(sessions); 
-	    return u; 
+	    WebContext wctx = WebContextFactory.get();
+	    
+	    if(wctx != null) {
+	    	String page = wctx.getCurrentPage(); 
+	    	Collection sessions = wctx.getScriptSessionsByPage(page); 
+	    	Util u = new Util(sessions); 
+	    	return u;	    	
+	    }
+	    else
+	    {
+	    	Util u = new Util();
+	    	return u;
+	    }
+	    
 	 
 	  } 
 }

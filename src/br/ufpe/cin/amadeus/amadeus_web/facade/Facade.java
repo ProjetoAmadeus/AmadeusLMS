@@ -23,6 +23,7 @@ import javax.mail.MessagingException;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
@@ -31,6 +32,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.HistoryLearning
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Homework;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message;
@@ -49,17 +51,21 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Ques
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.EvaluationRealized;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionDiscursiveRealized;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.MessengerMessage;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.OpenID;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Resume;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.Tweet;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.UserRequest;
 import br.ufpe.cin.amadeus.amadeus_web.exception.CourseInvalidException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidCurrentPasswordException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidLogonException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidMaterialException;
+import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidSocialCredencialsException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidUserException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidVideoException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.RequestException;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.Archive;
 
 public class Facade {
 	
@@ -245,6 +251,9 @@ public class Facade {
 		return this.controller.logon(accessInfo);		
 	}
 	
+	public boolean validateUser(AccessInfo accessInfo){
+		return this.controller.validateUser(accessInfo);
+	}
 	
 	/**
 	 * this method return the number of pending tasks given the access info of a user
@@ -257,6 +266,18 @@ public class Facade {
 	
 	public List<Course> searchCoursesByAccessInfo(AccessInfo userInfo){
 		return this.controller.searchCoursesByAccessInfo(userInfo);
+	}
+	
+	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Course> getCoursesByUserSyncronize(AccessInfo userInfo) {
+		return this.controller.getCoursesByUser(userInfo);
+	}
+		
+	public Archive getArchiveByMaterial(int material_id){
+		return this.controller.getArchiveByMaterial(material_id);
+	}
+		
+	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.PersonRoleCourse> getStudentByUser(AccessInfo userInfo) {
+		return this.controller.getStudentByUser(userInfo);
 	}
 	
 	public AccessInfo updateUser(AccessInfo ai){
@@ -292,6 +313,11 @@ public class Facade {
 		
 	}
 	
+	public void integrationSocialNetworks(AccessInfo accessInfo, String twitterLogin, String facebookLogin) throws InvalidSocialCredencialsException{
+		this.controller.integrationSocialNetworks(accessInfo, twitterLogin, facebookLogin);
+		
+	}
+	
 	public List<Person> getTeachersByCourse(Course c){
 		return this.controller.getTeachersByCourse(c);
 	}
@@ -303,6 +329,14 @@ public class Facade {
 	
 	public Person getPersonByID(int id){
 		return this.controller.getPersonByID(id);
+	}
+	
+	public Person getPersonByLogin(String login){
+		return this.controller.getPersonByLogin(login);
+	}
+	
+	public Person getPersonByUserName(String userName){
+		return this.controller.getPersonByUserName(userName);
 	}
 	
 	public List<Keyword> getKeywordsByCourse(Course course) {
@@ -332,6 +366,13 @@ public class Facade {
 	}
 	public Module insertModule(Module module) {
 		return this.controller.insertModule(module);
+	}
+	public AmadeusDroidHistoric insertSocialHistory(AmadeusDroidHistoric historic){
+		return this.controller.insertSocialHitory(historic);
+	}
+	
+	public List<AmadeusDroidHistoric> getSocialHistory(){
+		return this.controller.getSocialHistory();
 	}
 	public boolean canRegisterUser(AccessInfo user, Course course){
 		return this.controller.canRegisterUser(user, course);
@@ -479,8 +520,20 @@ public class Facade {
 		return this.controller.getForumById(forumId);
 	}
 	
+	public Message getMessageById(int idMessage){
+		return this.controller.getMessageById(idMessage);
+	}
+	
+	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> getListForumSyncronize(){
+		return this.controller.getListForum();
+	}
+	
 	public List<Message> searchMessageByPaging(int tamanhoBloco, int qtdBloco, Forum forum) {
 		return this.controller.searchMessageByPaging(tamanhoBloco, qtdBloco, forum);
+	}
+	
+	public void saveMessage(Message message){
+		this.controller.saveMessage(message);
 	}
 	
 	public int getSizeSearchMessageByForum(Forum forum) {
@@ -691,6 +744,10 @@ public class Facade {
 		return this.controller.searchUsers(userName, userType, courseId);
 	}
 	
+	public List<AccessInfo> searchUsersByType(Integer userType) {
+		return this.controller.searchUsers(userType);
+	}
+	
 	
 	//external link
 	public ExternalLink getExternalLinkById(int idLink){
@@ -699,6 +756,205 @@ public class Facade {
 
 	public Person editPerson(Person person) throws Exception {
 		return this.controller.editUser(person);
+	}
+	
+	//Log
+	public void saveLog(Log log){
+		this.controller.saveLog(log);
+	}
+
+	public void saveLog(){
+		
+	}
+
+	public void answerForumActivity(Integer idForum, String message, String login){
+		Forum forum = this.getForumById(idForum);
+		Message msg = new Message();
+		msg.setBody(message);
+		Date date = new Date();
+		
+		AccessInfo user = this.searchUserByLogin(login);
+
+		msg.setDate(date);
+		msg.setAuthor(user.getPerson());
+
+		forum.getMessages().add(msg);
+		
+		if (forum.getMessages().size() < 2) {
+			forum.setCreationDate(date);
+		}
+
+		this.flush();
+
+
+	}
+	
+	public Material findMaterialByID(int material_id) {
+		return this.controller.findMaterialById(material_id);
+	}
+	
+	public Log getLog() throws Exception {
+		return this.controller.getLog();
+	}
+
+	public br.ufpe.cin.amadeus.amadeus_web.syncronize.Message getLastMessage() {
+		return this.controller.getLastMessage();
+	}
+
+	public String getJSONArrayGameScore(int idGame){
+		return this.controller.getJSONArrayGameScore(idGame);
+	}
+	
+	public String getJSONArrayGameScoreVisualizacao(int idGame){
+		return this.controller.getJSONArrayGameScoreVisualizacao(idGame);
+	}
+	
+	public String getXmlGameScore(int idGame){
+		return this.controller.getXmlGameScore(idGame);
+	}
+	
+	public String getJSONArrayGameLevel(int idGame){
+		return this.controller.getJSONArrayGameLevel(idGame);
+	}
+	
+	public String getXmlGameLevel(int idGame){
+		return this.controller.getXmlGameLevel(idGame);
+	}
+	
+	public String getJSONArrayModuleGameTimePerDay (int idModule){
+		return this.controller.getJSONArrayModuleGameTimePerDay(idModule);
+	}
+	
+	public String getJSONArrayModuleGameTotalTime (int idModule){
+		return this.controller.getJSONArrayModuleGameTotalTime(idModule);
+	}
+	
+	public String getJSONArrayGameGrid(int idGame){
+		return this.controller.getJSONArrayGameGrid(idGame);
+	}
+	
+	public String getJSONArrayGameGridByUser(int idGame, int idUser) {
+		return this.controller.getJSONArrayGameGridByUser(idGame, idUser);
+	}
+	
+	public String getJSONArrayTagCloudForum(int idModule){
+		return this.controller.getJSONArrayTagCloudForum(idModule);
+	}
+	
+	public String getJSONArrayPostsPerModule(int idModule){
+		return this.controller.getJSONArrayPostsPerModule(idModule);
+	}
+	
+	public String getJSONArraySizeMessagePerModule(int idModule){
+		return this.controller.getJSONArraySizeMessagePerModule(idModule);
+	}
+	
+	public String getJSONArrayPersonGameTimePerModule(int idPerson, int idModule){
+		return this.controller.getJSONArrayPersonGameTimePerModule(idPerson, idModule);
+	}
+	
+	public String getJSONObjectTempoLevelPontuacao(int idGame)
+	{
+		return this.controller.getJSONObjectTempoLevelPontuacao(idGame);
+	}
+	
+	public String getJSONObjectTempoQuantidadePartidas(int idGame)
+	{
+		return this.controller.getJSONObjectTempoQuantidadePartidas(idGame);
+	}
+	
+	public String getJSONObjectQuantidadeTamanhoMSG(int idModule)
+	{
+		return this.controller.getJSONObjectQuantidadeTamanhoMSG(idModule);
+	}
+	
+	public String getJSONObjectLevelPontuacao(int idGame)
+	{
+		return this.controller.getJSONObjectLevelPontuacao(idGame);
+	}
+	
+	public String getJSONArrayGameMeta(int idGame){
+		return this.controller.getJSONArrayGameMeta(idGame);
+	}
+	
+	public String getJSONArrayPersonTimeOnline(int idPerson){
+		return this.controller.getJSONArrayPersonTimeOnline(idPerson);
+	}
+	
+	public String getJSONArrayForumVisualizacao(int idModule, int idAluno){
+		return this.controller.getJSONArrayForumVisualizacao(idModule, idAluno);
+	}
+	public String getJSONArrayPostsPerUser(int idModule, int idUser){
+		return this.controller.getJSONArrayPostsPerUser(idModule, idUser);
+	}
+	public String getJSONArrayMaterialView(int idUsuario, int idModule){
+		return this.controller.getJSONArrayMaterialView(idUsuario, idModule);
+	}
+	public String getJSONArrayPollAnswered(int moduleID, int idAluno){
+		return this.controller.getJSONArrayPollAnswered(moduleID, idAluno);
+	}
+	public String getJSONArrayGameOpen(int idModule, int idAluno){
+		return this.controller.getJSONArrayGameOpen(idModule, idAluno);
+	}
+
+	/**
+	 * Método criado para persistir as mensagens enviadas, como primeira mensagem (não resposta a outra)
+	 * Recebe como parâmetro a mensagem, o pessoa que enviou e a pessoa que vai receber a mensagem.
+	 * @author Nailson Cunha
+	 * @param message
+	 * @param from
+	 * @param to
+	 */
+	public MessengerMessage saveMessengerMessage(MessengerMessage message, Person from,
+			Person to) {
+		return this.controller.saveMessengerMessage(message, from, to);
+	}
+
+	/**
+	 * Método que retorna a lista de mensagens não ligas de uma determinada pessoa
+	 * @author Nailson Cunha
+	 * @param person A pessoa que solicita as mensagens não lidas.
+	 * @return retorna a lista de mensagens ainda não lidas.
+	 */
+	public List<MessengerMessage> getAllUnreadByPerson(Person person) {
+		return this.controller.getAllUnreadByPerson(person);
+	}
+
+	public MessengerMessage getMessengerMessageById(int idMensagem) {
+		return this.controller.getMessengerMessageById(idMensagem);
+	}
+
+	public MessengerMessage saveOnlyMessage(MessengerMessage message) {
+		return this.controller.saveOnlyMessage(message);
+	}
+
+	public void deleteMessengerMessage(MessengerMessage message) {
+		this.controller.deleteMessengerMessage(message);
+	}
+
+	public List<MessengerMessage> getAllMessengerMessageByPerson(Person person) {
+		
+		return this.controller.getAllMessengerMessageByPerson(person);
+	}
+
+	/**
+	 * Método que retorna todas as Persons do banco de dados
+	 * @return A lista de pessoas.
+	 */
+	public List<Person> getAllPersons() {
+		return this.controller.getAllPersons();
+	}
+
+	public int getPersonByTwitterLogin(String screenName) {
+		return this.controller.getPersonByTwitterLogin(screenName);
+	}
+
+	public List<Tweet> getAllTweets() {
+		return this.controller.getAllTweets();
+	}
+
+	public List<Tweet> getTweetBetweenDates(Date inicio, Date fim) {
+		return this.controller.getTweetBetweenDates(inicio,fim);
 	}
 	
 }

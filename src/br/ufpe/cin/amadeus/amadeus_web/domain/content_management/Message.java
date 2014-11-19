@@ -40,8 +40,12 @@ public class Message {
 
 	@Column(length=2000)
 	private String body;
-
+	
 	private Date date;
+	
+	@OneToOne
+	@JoinColumn (name="MESSAGEREPLY_ID")
+	private Message messageReply;
 
 	@OneToOne
 	@JoinColumn (name="AUTHOR_ID")
@@ -96,4 +100,13 @@ public class Message {
 		this.forum = forum;
 	}
 
+	public Message getMessageReply() {
+		return messageReply;
+	}
+
+	public void setMessageReply(Message messageReply) {
+		this.messageReply = messageReply;
+	}
+	
+	
 }

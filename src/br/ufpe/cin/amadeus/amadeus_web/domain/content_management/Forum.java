@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,6 +28,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
+import org.hibernate.annotations.Cascade;
+
+
 /**
  * Classe que encapsula os dados de um forum
  * 
@@ -36,18 +44,19 @@ import javax.persistence.OneToMany;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class Forum implements Serializable{
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	
 	private int id;
 
 	private String name;
-
+	@Column(length=9000)
 	private String description;
 
 	private Date creationDate;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "FORUM_ID", nullable = false)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION", base = 0)
 	@org.hibernate.annotations.Cascade(
@@ -58,6 +67,12 @@ public class Forum implements Serializable{
 	@JoinColumn(name = "MODULE_ID", nullable = false,
 			updatable = false, insertable = false)
 	private Module module;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.forum",
+			 cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+			 @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			 org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	private List<PersonForum> foruns = new ArrayList<PersonForum>();
 	
 	public Forum() {
 
@@ -111,4 +126,12 @@ public class Forum implements Serializable{
 		this.module = module;
 	}
 
+	public List<PersonForum> getForuns() {
+		return foruns;
+	}
+
+	public void setForuns(List<PersonForum> foruns) {
+		this.foruns = foruns;
+	}
+	
 }

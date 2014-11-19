@@ -1,0 +1,210 @@
+@CHARSET "ISO-8859-1";
+
+div.send-message-0, div.send-message, div.invisible{
+	display: none;
+}
+
+div#participants {
+	height: 335px;
+	max-height:240px;
+	overflow-y: auto; 
+	overflow-x: hidden;
+}
+
+div#participants::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+div#participants::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+div#participants::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+div#participants ul {
+	list-style: none;
+	cursor: pointer;
+}
+
+div#seemessages{
+	padding: 5px;
+}
+
+div#seemessages h2{
+	margin: 9px 0;
+	font-size: 12px;
+}
+
+p.the-message-content{
+	background-color: #b6d7a8;
+	padding: 5px;
+}
+
+div#participants h2{
+	margin: 9px 0 5px 5px;
+	font-size: 12px;
+}
+
+ul.all-participants{
+	margin: 0 0 0 5px;
+	padding: 0;
+}
+
+li#li-professores, li#li-alunos {
+	cursor: default;
+	background: #FBFBFB;
+	margin: 15px 0 3px 0;
+	padding: 2px;
+	color: #090;
+	width: 135px;
+	font-weight: bolder;
+} 
+
+ul.all-participants textarea{
+	width: 130px;
+	max-width:130px;
+	height: 96px;
+	max-height: 96px;
+	resizable: none; 
+}
+
+li#all-participants{
+	color: #090;
+}
+
+div#messenger input {
+	width: 64.5px;
+	text-align: center;
+}
+div#messenger input.ipt-assunto {
+	width: 134px;
+	text-align: left;
+	color: #ccc;
+}
+
+div#messenger input.btn-cancelar{
+	margin-left: 4px;
+}
+
+.alluser{
+	background: url(../imgs/amadeus/onlineuser.png) no-repeat;
+	padding-left: 15px;
+}
+
+div#divsucesso, div#naovazio{
+	position: absolute;
+	top:100px;
+	right: 500px;
+	z-index: 25;
+	margin: 0;
+	float: right;
+	width: 200px;
+	height: 30px;
+	border: 1px solid #d6e9c6;
+	text-align: center;
+	vertical-align: middle;
+	color: #468847;
+  	background-color: #dff0d8;
+  	font-weight: bolder;
+  	padding-top: 15px;
+}
+
+div#naovazio {
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+p.the-message-content a.message-delete-link{
+	float: right;
+}
+
+p.the-message-content a.message-reply-link, 
+p.the-message-content a.message-delete-link,
+p.the-message-content a.reply-to-all-link{
+	color: #00f;
+}
+
+p.the-message-content a.reply-to-all-link{
+	display: block;
+	text-align: center;
+	margin-top: 5px;
+}
+
+p.the-message-content a.message-reply-link{
+	margin-left: 7px;
+}
+p.the-message-content a.message-delete-link{
+	margin-right: 7px;
+}
+
+div.the-message .message-date, div.the-message .from-user{
+	margin-bottom: 7px;
+}
+
+div#all-messages-unread,
+p.the-message-content
+{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+p.the-message-content{
+	display: none;
+}
+
+div#all-messages-unread{
+	padding: 5px;
+	background-color: #edf5ea;
+}
+
+h3.the-message-title{
+	text-align: center;
+	cursor: pointer;
+	margin-top: 5px;
+	clear: both;
+}
+
+h3.the-message-title a{
+	color: #00f;
+}
+
+h3.the-message-title a.lida, h3.the-message-title a.lida-true{
+	font-weight: normal;
+}
+
+h3.the-message-title:HOVER {
+	text-decoration: underline;
+}
+
+.reply-assunto{
+	width: 232px;
+	margin-left: 11px;
+	margin-bottom: 10px;
+}
+
+.reply-content{
+	width: 228px;
+	max-width: 228px;
+	height: 96px;
+	max-height: 96px;
+	float: right;
+}
+
+#label-reply-content{
+	float: left;
+}
+
+a.link-see-all-messages{
+	color: #00f;
+}
+
+div#div-link-see-all-messages{
+	text-align: center;
+	margin-top: 10px;
+}

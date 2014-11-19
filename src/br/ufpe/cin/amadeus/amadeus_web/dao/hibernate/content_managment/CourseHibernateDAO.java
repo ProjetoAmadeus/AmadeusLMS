@@ -28,8 +28,11 @@ import org.hibernate.criterion.Restrictions;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.CourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.GenericHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.NotNullOrBlankPropertySelector;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.middleware.services.session.Key;
@@ -57,6 +60,25 @@ public class CourseHibernateDAO extends GenericHibernateDAO<Course, Integer>
 		
 	}
 	
+	@Override
+	public List<Course> getCoursesByUser(AccessInfo userInfo) {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select c from Course c, " +
+				    "PersonRoleCourse prc, " +
+				    "Person p, " +
+				    "AccessInfo aci " +
+				    "where prc.course.id = c.id " +
+				    "and prc.person.id = p.id " +
+				    "and p.accessInfo.id = aci.id " +
+				    "and aci.login = '"+userInfo.getLogin()+"' " +
+				    "and aci.password = '"+userInfo.getPassword()+"'");
+		
+		List<Course> results = getSession().createQuery(hql.toString()).list();
+					
+		return results;
+	}
+		
 	@SuppressWarnings("unchecked")
 	public List<Course> getCoursesByKeyword(Keyword key){
 		
@@ -277,4 +299,5 @@ public class CourseHibernateDAO extends GenericHibernateDAO<Course, Integer>
 		}
 	}
 
+	
 }

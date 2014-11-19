@@ -27,3 +27,11 @@ function replicateCourse(courseId) {
 		}
 	);
 }
+
+function changeTeacher(courseId) {
+	UtilDWR.getInclude('/course.do?method=viewChangeTeacher&courseId='+courseId,
+	 		function(data) {
+				dwr.util.setValue('pContent', data, { escapeHtml:false });
+			}
+		);
+}

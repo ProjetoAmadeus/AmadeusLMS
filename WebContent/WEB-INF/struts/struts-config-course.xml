@@ -100,6 +100,39 @@
 			<form-property name="courseId" type="java.lang.Integer" />
 			<form-property name="keywords" type="java.lang.String" />
 		</form-bean>
+		
+		
+		<form-bean name="formSocialInteractionMonitoring" 
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="initialMonitoringDay"
+				type="java.lang.String" />
+			<form-property name="initialMonitoringMonth"
+				type="java.lang.String" />
+			<form-property name="initialMonitoringYear"
+				type="java.lang.String" />
+			<form-property name="forum" 
+				type="java.lang.String" />
+			<form-property name="message" 
+				type="java.lang.String" />
+			<form-property name="chat" 
+				type="java.lang.String" />
+			<form-property name="twitter" 
+				type="java.lang.String" />
+			<form-property name="finalMonitoringDay"
+				type="java.lang.String" />
+			<form-property name="finalMonitoringMonth"
+				type="java.lang.String" />
+			<form-property name="finalMonitoringYear"
+				type="java.lang.String" />
+			<form-property name="socialMethod" 
+				type="java.lang.String" />
+			
+			
+		</form-bean>
+		<form-bean name="formSocialInteractionMonitoringReports" 
+			type="org.apache.struts.validator.DynaValidatorForm">
+			
+		</form-bean>
 
 	</form-beans>
 	<global-exceptions />
@@ -109,6 +142,8 @@
 		<forward name="fInsertCourseStepTwo" path="/fInsertCourseStepTwo.do" />
 		<forward name="fShowViewChangeTeacher" path="/jsp/course/viewChangeTeacher.jsp" />
 		<forward name="fShowViewEditCourse" path="/jsp/course/editCourse.jsp" />
+		<forward name="fShowViewSocialInteractionMonitoring" path="/jsp/course/socialInteractionMonitoring.jsp" />
+		<forward name="fShowViewSocialInteractionMonitoringReports" path="/jsp/course/socialInteractionMonitoringReports.jsp" />
 		<forward name="fViewDeleteConfirmation" path="/fViewDeleteConfirmation.do" />
 		<forward name="fProject" path="/fProject.do" />
 		<forward name="fCases" path="/fCases.do" />
@@ -125,6 +160,7 @@
 		
 		<forward name="fShowViewCourseEvaluations" path="/jsp/course/viewCourseEvaluations.jsp"/>
 		<forward name="fShowViewSendMail" path="/jsp/course/viewSendMail.jsp"/>
+		<forward name="fShowViewGraphic" path="/jsp/course/viewGraphic.jsp"/>
 		
 	</global-forwards>
 	<action-mappings>
@@ -194,7 +230,17 @@
 		<action name="formEditCourse" input="/course.do?method=showViewEditCourse"
 			path="/editCourse" parameter="editCourse" scope="request"
 			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
-			</action>
+		</action>
+		
+		<action name="formSocialInteractionMonitoring" input="/course.do?method=showViewSocialInteractionMonitoring"
+			path="/socialInteractionMonitoring" parameter="socialInteractionMonitoring" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
+		</action>
+		
+		<action name="formSocialInteractionMonitoringReports" input="/course.do?method=showViewSocialInteractionMonitoringReports"
+			path="/socialInteractionMonitoringReports" parameter="socialInteractionMonitoringReports" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
+		</action>
 
 		<action path="/fViewDeleteConfirmation"
 			parameter="/jsp/course/viewCourseDeleteConfirmation.jsp"

@@ -62,6 +62,11 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	         			<html:link action="openIDActions.do?method=showViewManagerOpenIDs">
 	         			<img src="themes/default/imgs/menu/openid.png" style="vertical-align: middle;" border="0" title="OpenID" />&nbsp;Google Account
 		        		</html:link>
+		        	</li>
+					<li>
+	         			<html:link action="user.do?method=showViewIntegrationSocialNetworks">
+	         				<img src="themes/default/imgs/menu/users-16x16.png" border="0" title="Social Accounts"/>&nbsp;<bean:message key="sideMenu.integrationSocialNetworks"/>
+		        		</html:link>
 		        	</li>	
 				</ul>
 			</div>

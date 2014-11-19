@@ -112,6 +112,25 @@ public class CoursePermissions {
 		
 		return userCanSendMailForCourseParticipants; 
 	}
+	
+	public static boolean userCanViewGraphic(HttpServletRequest request, Course course) {
+		boolean userCanViewGraphic = false;
+		
+		AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
+		
+		Role userRoleInCourse;
+		
+		try {
+			userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
+			if(userRoleInCourse != null) {				
+				userCanViewGraphic = true;				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return userCanViewGraphic; 
+	}
 
 	
 }

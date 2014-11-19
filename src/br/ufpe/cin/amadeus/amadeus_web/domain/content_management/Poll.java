@@ -27,6 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Classe que encapsula os dados de uma enquete
  * 
@@ -36,6 +37,7 @@ import javax.persistence.OneToMany;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class Poll implements Serializable{
 
 	@Id @GeneratedValue (strategy=GenerationType.AUTO) 

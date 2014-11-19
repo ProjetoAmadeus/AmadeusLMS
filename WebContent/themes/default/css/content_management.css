@@ -141,6 +141,10 @@
  	background-color: #f6f6f6;
  }
  
+ .fQuotedText{
+ 	background-color: #f6f6f5;
+ }
+ 
  .fMessageAuthor{
  	margin-top: 10px; text-align: left;
  }

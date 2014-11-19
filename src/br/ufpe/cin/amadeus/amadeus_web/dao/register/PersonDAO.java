@@ -19,10 +19,14 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.AccessInfo;
 
 public interface PersonDAO extends GenericDAO<Person, Integer> {
 	
 	public List<Person> getTeachersByName(String name);
 	public List<Person> getAssistanceInCourse(Course course, Role role);
 	public List<String> getAllEmails();
+	public Person getPersonByLogin(String login);
+	public Person getPersonByUserName(String userName);
+	public int getPersonByTwitterLogin(String screenName);
 }

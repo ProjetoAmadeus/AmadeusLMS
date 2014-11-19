@@ -19,6 +19,19 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive;
 
 public class ArchiveHibernateDAO extends GenericHibernateDAO<Archive, Integer>
 		implements ArchiveDAO {
+	
+	public Archive getArchiveByMaterial(int material_id){
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select a from Archive a, " +
+				   "Material m " +
+				   "where m.archive.id = a.id " +
+				   "and m.id = " + material_id);
+		
+		Archive result = (Archive) getSession().createQuery(hql.toString()).uniqueResult();
+		
+		return result;
+	}
 
 
 }

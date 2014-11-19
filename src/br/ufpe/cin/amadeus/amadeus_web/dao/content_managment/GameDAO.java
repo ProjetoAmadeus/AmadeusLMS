@@ -13,9 +13,12 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LIC
 
 package br.ufpe.cin.amadeus.amadeus_web.dao.content_managment;
 
+import java.util.List;
+
 import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
 
 public interface GameDAO extends GenericDAO <Game, Integer>{
-	
+	public List<Game> getAllGameFromCourse(Course course);
 }

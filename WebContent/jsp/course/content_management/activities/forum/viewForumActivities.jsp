@@ -42,7 +42,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		<c:import url="/forumActivity.do?method=showViewListMessagesForumActivity&idForum=${forum.id}" />
 	</div>
 	<div class="cmFooter">	
-		<a onclick="showViewNewAnswerForumActivity(${module.position},${forum.id});" href="javascript:void(0)"><bean:message key="activities.forum.answer" /></a>&nbsp;/&nbsp;
+		<a onclick="showViewNewAnswerForumActivity(${module.position},${forum.id});" href="javascript:void(0)"><bean:message key="activities.forum.newpost" /></a>&nbsp;/&nbsp;
 		<a onclick="backEditName(${module.position});" href="javascript:void(0)"><bean:message key="general.close" /></a>
 	</div>
 </html:form>

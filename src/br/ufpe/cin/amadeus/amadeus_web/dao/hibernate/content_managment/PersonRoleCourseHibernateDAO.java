@@ -23,6 +23,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.GenericHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 public class PersonRoleCourseHibernateDAO extends GenericHibernateDAO<PersonRoleCourse, Integer> implements PersonRoleCourseDAO {
@@ -38,6 +39,24 @@ public class PersonRoleCourseHibernateDAO extends GenericHibernateDAO<PersonRole
 						  " and prc.course.id = " + course.getId()+
 						  " and prc.role.id = " + role.getId()+" order by p.name asc";
 		List<Person> results = getSession().createQuery(hqlQuery).list();
+		
+		return results;
+	}
+	
+	public List<PersonRoleCourse> getStudentByUser(AccessInfo userInfo){
+		
+
+		StringBuilder hql = new StringBuilder();
+		hql.append("select prc from PersonRoleCourse prc, " +
+				    "Person p, " +
+				    "AccessInfo aci " +
+				    "where prc.person.id = p.id " +
+				    "and p.accessInfo.id = aci.id " +
+				    "and aci.login = '"+userInfo.getLogin()+"' " +
+				    "and aci.password = '"+userInfo.getPassword()+"'");
+		
+		@SuppressWarnings("unchecked")
+		List<PersonRoleCourse> results = getSession().createQuery(hql.toString()).list();
 		
 		return results;
 	}

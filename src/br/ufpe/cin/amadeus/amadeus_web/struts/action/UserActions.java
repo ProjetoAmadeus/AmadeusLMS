@@ -29,6 +29,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+//import org.GNOME.Accessibility.AccessUtil;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -39,6 +40,7 @@ import org.apache.struts.upload.FormFile;
 import org.apache.struts.util.LabelValueBean;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ProfileType;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Evaluation;
@@ -51,6 +53,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.Thumbnail;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.UserRequest;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidCurrentPasswordException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidLogonException;
+import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidSocialCredencialsException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidUserException;
 import br.ufpe.cin.amadeus.amadeus_web.permissions.register.UserPermissions;
 import br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.VideoChatAction;
@@ -72,6 +75,7 @@ public class UserActions extends SystemActions {
 	private final String FORWARD_SHOW_VIEW_TEACHER_PENDING_TASKS = "fShowViewTeacherPendingTasks";
 	private final String FORWARD_SHOW_VIEW_STUDENT_PENDING_TASKS = "fShowViewStudentPendingTasks";
 	private final String FORWARD_SHOW_VIEW_ONLINE_USERS = "fShowViewOnlineUsers";
+	private final String FORWARD_SHOW_VIEW_INTEGRATION_SOCIAL_NETWORKS = "fShowViewIntegrationSocialNetworks";
 
 	private final String FORWARD_SHOW_VIEW_ALL_USERS_IN_MANAGER_USERS = "fShowViewAllUsersInManagerUsers";
 	private final String FORWARD_SHOW_VIEW_USER_NEW_IN_MANAGER_USERS = "fShowViewUserNewInManagerUsers";
@@ -98,6 +102,7 @@ public class UserActions extends SystemActions {
 		map.put("assistanceRequest.sendRequest", "assistanceRequest");
 		map.put("editUser.heading", "viewEditUser");
 		map.put("editUser.reportError", "reportError");
+		map.put("integrationSocialNetworks.integrate", "integrationSocialNetworks");
 
 		map.put("user.showViewInsertUser", "showViewInsertUser");
 		map.put("user.showViewEditPassword", "showViewEditPassword");
@@ -111,6 +116,7 @@ public class UserActions extends SystemActions {
 		map.put("user.countOnlineUser", "countOnlineUser");
 		map.put("user.userStatus", "userStatus");
 		map.put("user.showViewOnlineUsers", "showViewOnlineUsers");
+		map.put("user.showViewIntegrationSocialNetworks", "showViewIntegrationSocialNetworks");
 
 		// MAP MANAGER USERS
 		map.put("user.showViewAllUsersInManagerUsers", "showViewAllUsersInManagerUsers");
@@ -118,6 +124,7 @@ public class UserActions extends SystemActions {
 		map.put("user.showViewUserNewInManagerUsers", "showViewUserNewInManagerUsers");
 		map.put("user.showViewEditUserInManagerUsers", "showViewEditUserInManagerUsers");
 		map.put("user.userNewInManagerUsers", "userNewInManagerUsers");
+		map.put("user.userEditInManagerUsers", "userEditInManagerUsers");
 		map.put("user.showViewUserProfileInManagerUsers", "showViewUserProfileInManagerUsers");
 		map.put("user.showViewSendMailInManagerUsers", "showViewSendMailInManagerUsers");
 		map.put("user.sendMailInManagerUsers", "sendMailInManagerUsers");
@@ -141,6 +148,8 @@ public class UserActions extends SystemActions {
 
 		return forward;
 	}
+	
+	
 
 	public ActionForward viewEditUser(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -264,6 +273,10 @@ public class UserActions extends SystemActions {
 			myForm.set("passwordConfirmation", "");
 		} else {
 			forward = this.showViewMenu(mapping, myForm, request, response);
+			//TODO - LOG - Login - OK
+			Log log = SystemActions.getLogUser(request);
+			log.setCodigo(Log.LOG_CODIGO_LOGIN);
+			this.facade.saveLog(log);
 		}
 
 		return forward;
@@ -337,6 +350,12 @@ public class UserActions extends SystemActions {
 				request.getSession().removeAttribute("user");
 				request.getSession().setAttribute("user", accessInfo);
 				aForward = mapping.findForward("success");
+				
+				//TODO - LOG - Login - OK
+				Log log = SystemActions.getLogUser(request);
+				log.setCodigo(Log.LOG_CODIGO_LOGIN);
+				this.facade.saveLog(log);
+				
 			} catch (InvalidLogonException e1) {
 				messages.add("invalidLogin", new ActionMessage(
 				"errors.auth.invalid"));
@@ -365,7 +384,6 @@ public class UserActions extends SystemActions {
 	public ActionForward editUser(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 	throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>editUSER");
 		ActionForward forward = null;
 
 		if (SystemActions.isLoggedUser(request)) {
@@ -375,7 +393,7 @@ public class UserActions extends SystemActions {
 			.getAttribute("user");
 
 			Person person = accessInfo.getPerson();
-
+			
 			DynaActionForm dynaForm = (DynaActionForm) form;
 
 			person.setName(dynaForm.getString("name"));
@@ -383,19 +401,16 @@ public class UserActions extends SystemActions {
 			person.setState(dynaForm.getString("state"));
 			person.setCpf(dynaForm.getString("cpf"));
 			person.setPhoneNumber(dynaForm.getString("phoneNumber"));
-			System.out.println("email novo>>>>>>>>>>>>> " + dynaForm.getString("email"));
+			//person.setEmail(dynaForm.getString("email"));
 			
 			Date dataAnivesario = null;
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			dataAnivesario = formatter.parse((String) dynaForm.get("birthDate"));
 			
 			if (!dynaForm.getString("birthDate").trim().equals("")) {
+				dataAnivesario = formatter.parse((String) dynaForm.get("birthDate"));
 				if(dataAnivesario.compareTo(getNowDateTime()) > 0){
 					messages.add("error", new ActionMessage("errors.date.birthDataIsAfterNow"));
-					System.out.println(accessInfo.getPerson().getBirthDate().toString());
-					System.out.println(getNowDateTime().toString());
 				}else{
-
 					person.setBirthDate(dataAnivesario);
 				}
 			} else {
@@ -457,10 +472,9 @@ public class UserActions extends SystemActions {
 			} catch (Exception e) {
 				messages.add("editError", new ActionMessage(e.getMessage()));
 			}
-
+			System.out.println("Novo: "+dynaForm.getString("email")+" Velho: "+person.getEmail());
 			if (!dynaForm.getString("email").equals(person.getEmail())) {
 				if (facade.existEmail(dynaForm.getString("email"))) {
-					System.out.println("email anterior>>>>"+person.getEmail());
 					messages.add("error", new ActionMessage(
 					"errors.email.alreadyExists"));
 				} else {
@@ -494,17 +508,33 @@ public class UserActions extends SystemActions {
 	public ActionForward signOut(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		try {
-			VideoChatAction.logoffChatMain(mapping, form, request, response);
-		} catch (Exception e) {
-			System.out.println("signOut Chat");
+		if (SystemActions.isLoggedUser(request)) {
+			
+			//TODO - LOG - Logout - OK
+			Log log = SystemActions.getLogUser(request);
+			
+			try {
+				VideoChatAction.logoffChatMain(mapping, form, request, response);
+				
+				
+			} catch (Exception e) {
+				log.setCodigo(Log.LOG_CODIGO_LOGOUT);
+				System.out.println("signOut Chat");
+			}
+			
+
+			response.setHeader("Cache-Control", "no-cache"); // HTTP 1.1
+			response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+			response.setDateHeader("Expires", 0);
+			request.getSession().invalidate();
+			
+			if(log.getCodigo() != null)
+			{
+				this.facade.saveLog(log);
+				System.out.println("registrou o log de logout.");
+			}
 		}
-
-		response.setHeader("Cache-Control", "no-cache"); // HTTP 1.1
-		response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-		response.setDateHeader("Expires", 0);
-		request.getSession().invalidate();
-
+		
 		return mapping.findForward(FORWARD_SUCCESS);
 	}
 
@@ -933,7 +963,7 @@ public class UserActions extends SystemActions {
 	public ActionForward showViewEditPassword(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		
 		ActionForward forward = null;
 
 		if (SystemActions.isLoggedUser(request)) {
@@ -951,8 +981,7 @@ public class UserActions extends SystemActions {
 					.getPerson());
 
 			request.setAttribute("isTeacher", isTeacher);
-			request.setAttribute("canRequestTeaching", canRequestTeaching);
-
+			request.setAttribute("canRequestTeaching", canRequestTeaching);			
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_EDIT_PASSWORD);
 		} else {
 			forward = new SystemActions().showViewWelcome(mapping, form,
@@ -1224,6 +1253,38 @@ public class UserActions extends SystemActions {
 
 		return forward;
 	}
+	
+	public ActionForward showViewIntegrationSocialNetworks(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+
+		if (SystemActions.isLoggedUser(request)) {
+			AccessInfo accessInfo = (AccessInfo) request.getSession()
+			.getAttribute("user");
+
+			accessInfo = facade.searchUserById(accessInfo.getId());
+			
+			HashMap<String, String> socialProfiles = new HashMap<String, String>();
+
+			socialProfiles.put("id", String.valueOf(accessInfo.getId()));
+			socialProfiles.put("name", accessInfo.getPerson().getName());
+			socialProfiles.put("amadeusLogin",accessInfo.getLogin());
+			socialProfiles.put("twitterLogin", accessInfo.getPerson().getTwitterLogin());
+			socialProfiles.put("facebookLogin", accessInfo.getPerson().getFacebookLogin());
+			
+
+			request.setAttribute("person", accessInfo.getPerson());
+			request.setAttribute("socialProfiles", socialProfiles);
+
+			forward = mapping.findForward(FORWARD_SHOW_VIEW_INTEGRATION_SOCIAL_NETWORKS);
+		} else {
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+
+		return forward;
+	}
 
 	public ActionForward showViewAllCoursesInManagerUsers(
 			ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -1326,9 +1387,8 @@ public class UserActions extends SystemActions {
 				ActionMessages messages = new ActionMessages();
 
 				DynaActionForm dynaForm = (DynaActionForm) form;
-
 				Person person = new Person();
-
+				//person.setId(Integer.parseInt(request.getParameter("userId")));
 				person.setName(dynaForm.getString("name"));
 				person.setCity(dynaForm.getString("city"));
 				person.setState(dynaForm.getString("state"));
@@ -1371,8 +1431,9 @@ public class UserActions extends SystemActions {
 				AccessInfo accessInfo = new AccessInfo();
 				accessInfo.setLogin(dynaForm.getString("login"));
 				accessInfo.setPassword(dynaForm.getString("password"));
-
+				
 				String profileType = dynaForm.getString("userType");
+				System.out.println(dynaForm.getString("userType"));
 
 				if (profileType.equals("ADMIN")) {
 					accessInfo.setTypeProfile(ProfileType.ADMIN);
@@ -1385,7 +1446,7 @@ public class UserActions extends SystemActions {
 				accessInfo.setPerson(person);
 
 				person.setAccessInfo(accessInfo);
-
+				
 				person.setEmail(dynaForm.getString("email"));
 
 				Resume resume = new Resume();
@@ -1411,13 +1472,19 @@ public class UserActions extends SystemActions {
 					messages.add("error", new ActionMessage(
 					"errors.login.alreadyExists"));
 				}
-				if (facade.existEmail(person.getEmail())) {
+				/*if (facade.existEmail(person.getEmail())) {
 					messages.add("error", new ActionMessage(
 					"errors.email.alreadyExists"));
-				}
+				}*/
 
 				if (messages.isEmpty()) {
+					System.out.println("Antes: "+person.getCity());
+					System.out.println("Antes: "+person.getCpf());
+					System.out.println("Antes: "+person.getEmail());
 					person = facade.insertPerson(person);
+					System.out.println("Depois: "+person.getCity());
+					System.out.println("Depois: "+person.getCpf());
+					System.out.println("Depois: "+person.getEmail());
 					facade.confirmRegistry(person.getAccessInfo());
 					request.setAttribute("userId", person.getAccessInfo()
 							.getId());
@@ -1438,6 +1505,136 @@ public class UserActions extends SystemActions {
 
 		return forward;
 	}
+	
+	public ActionForward userEditInManagerUsers(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+		if (SystemActions.isLoggedUser(request)) {
+			if (UserPermissions.userCanUserNewInManagerUsers(request)) {
+				ActionMessages messages = new ActionMessages();
+
+				DynaActionForm dynaForm = (DynaActionForm) form;
+
+				Person person = new Person();
+				
+				//person.getAccessInfo().setId(Integer.parseInt(request.getParameter("userId")));
+				AccessInfo accessInfoOld = facade.searchUserById(Integer.parseInt(request.getParameter("userId")));
+				person.setId(accessInfoOld.getPerson().getId());
+				person.setName(dynaForm.getString("name"));
+				person.setCity(dynaForm.getString("city"));
+				person.setState(dynaForm.getString("state"));
+				person.setCpf(dynaForm.getString("cpf"));
+
+				if (!dynaForm.getString("phoneNumber").trim().equals("")) {
+					person.setPhoneNumber(dynaForm.getString("phoneNumber"));
+				}
+				if (!dynaForm.getString("birthDate").trim().equals("")) {
+					DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+					person.setBirthDate((Date) formatter
+							.parse((String) dynaForm.get("birthDate")));
+				}
+				if (!dynaForm.getString("gender").trim().equals("")) {
+					person.setGender(((String) dynaForm.getString("gender"))
+							.charAt(0));
+				}
+
+				FormFile myFile = (FormFile) dynaForm.get("image");
+
+				// photo validation
+				try {
+					if (!myFile.getFileName().equals("")) {
+						if (myFile.getFileSize() < 500000) { // if the photo has
+							// less than
+							// 500KB
+							Image image = new Image();
+							Thumbnail thumb = new Thumbnail();
+							byte[] photo = thumb.resize(myFile.getFileData());
+							image.setPhoto(photo);
+							person.setImage(image);
+						} else
+							messages.add("requestError", new ActionMessage(
+							"errors.photoSize"));
+					}
+				} catch (Exception e) {
+					messages.add("editError", new ActionMessage(e.getMessage()));
+				}
+
+				AccessInfo accessInfo = new AccessInfo();
+				accessInfo.setLogin(accessInfoOld.getLogin());
+				accessInfo.setTypeProfile(accessInfoOld.getTypeProfile());
+				accessInfo.setPassword(dynaForm.getString("password"));
+				
+				String profileType = request.getParameter("userType");
+
+				if (profileType.equals("ADMIN")) {
+					accessInfo.setTypeProfile(ProfileType.ADMIN);
+				} else if (profileType.equals("STUDENT")) {
+					accessInfo.setTypeProfile(ProfileType.STUDENT);
+				} else if (profileType.equals("PROFESSOR")) {
+					accessInfo.setTypeProfile(ProfileType.PROFESSOR);
+				}
+				
+				accessInfo.setPerson(person);
+
+				person.setAccessInfo(accessInfo);
+				
+				
+				
+				person.setEmail(dynaForm.getString("email"));
+
+				Resume resume = new Resume();
+
+				if (!dynaForm.getString("degree").trim().equals("")) {
+					resume.setDegree(dynaForm.getString("degree"));
+				}
+				if (!dynaForm.getString("instituition").trim().equals("")) {
+					resume.setInstituition(dynaForm.getString("instituition"));
+				}
+				if (!dynaForm.getString("description").trim().equals("")) {
+					resume.setDescription(dynaForm.getString("description"));
+				}
+				if (!dynaForm.get("year").equals("")) {
+					resume.setYear(Integer.parseInt(dynaForm.getString("year")));
+				}
+
+				resume.setPerson(person);
+
+				person.setResume(resume);
+
+				/*if (facade.existLogin(person.getAccessInfo().getLogin())) {
+					messages.add("error", new ActionMessage(
+					"errors.login.alreadyExists"));
+				}*/
+				/*if (facade.existEmail(person.getEmail())) {
+					messages.add("error", new ActionMessage(
+					"errors.email.alreadyExists"));
+				}*/
+
+				if (messages.isEmpty()) {
+					person = facade.editUser(person);
+					facade.confirmRegistry(person.getAccessInfo());
+					request.setAttribute("userId", person.getAccessInfo()
+							.getId());
+					forward = this.showViewUserProfileInManagerUsers(mapping,
+							dynaForm, request, response);
+				} else {
+					saveErrors(request, messages);
+					forward = this.showViewUserNewInManagerUsers(mapping,
+							dynaForm, request, response);
+				}
+			} else {
+				forward = SystemActions.showViewAccessDenied(mapping, form,
+						request, response);
+			}
+		} else {
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+
+		return forward;
+	}
+
 
 	public ActionForward showViewEditUserInManagerUsers(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
@@ -1494,6 +1691,7 @@ public class UserActions extends SystemActions {
 					accessInfo.getPerson().getResume() != null ? String
 							.valueOf(accessInfo.getPerson().getResume()
 									.getYear()) : null);
+			userProfile.put("twitterLogin", accessInfo.getPerson().getTwitterLogin());
 
 			request.setAttribute("personId", accessInfo.getPerson().getId());
 			request.setAttribute("userProfile", userProfile);
@@ -1651,6 +1849,35 @@ public class UserActions extends SystemActions {
 		out.print(facade.verifyEmail(personId, email));
 
 		return null;
+	}
+	
+	public ActionForward integrationSocialNetworks(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		DynaActionForm myForm = (DynaActionForm) form;
+		ActionMessages messages = new ActionMessages();
+
+		AccessInfo userAccessInfo = (AccessInfo) request.getSession()
+		.getAttribute("user");
+
+		String twitterLogin = myForm.getString("twitterLogin");
+		String facebookLogin = myForm.getString("facebookLogin");
+
+		try {
+			facade.integrationSocialNetworks(userAccessInfo, twitterLogin, facebookLogin);
+		} catch (InvalidSocialCredencialsException e) {
+			messages.add("twitterLogin", new ActionMessage(
+			"errors.invalidTwitterLogin"));
+		}
+
+		if (!messages.isEmpty()) {
+			saveErrors(request, messages);
+			return mapping.getInputForward();
+		}
+
+		myForm.initialize(mapping);
+
+		return mapping.findForward(FORWARD_SUCCESS);
 	}
 
 }

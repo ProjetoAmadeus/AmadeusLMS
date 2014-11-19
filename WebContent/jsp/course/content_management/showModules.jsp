@@ -34,6 +34,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	<link href="themes/default/css/module.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+	<input id="inputCourse" type="hidden" value="${course.id}"/>
 	<div id="pBody" class="pBody">
 		<div id="pHeader" class="pHeader">
 			<jsp:include page="/jsp/conf/login.jsp" />
@@ -52,6 +53,11 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		<div id="pLeftMenu" class="pLeftMenu">
 			<c:set var="selectedPosition" value="2" scope="request" />
 			<jsp:include page="/jsp/conf/courseMenu.jsp" />
+			
+			<!-- Added By Nailson Cunha -->
+			<div id="twitter-container">
+				<jsp:include page="/jsp/twittertool/userTwitter.jsp" />
+			</div>
 		</div>						
 		<div id="pContent" class="pContent">
 			<c:if test="${user.typeProfile eq 'ADMIN' || userRoleInCourse eq 'TEACHER' || userRoleInCourse eq 'ASSISTANT'}">
@@ -94,7 +100,9 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 				</div>
 			</div>
 		</div>
-		<div id="pRightMenu" class="pRightMenu"></div>
+		<div id="pRightMenu" class="pRightMenu">
+			<jsp:include page="/jsp/messenger/messenger.jsp" />
+		</div>
 		<jsp:include page="/jsp/conf/footer.jsp" />
 	</div>
 </body>	

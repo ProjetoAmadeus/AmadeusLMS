@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 /**
@@ -38,6 +39,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
  */
 
 @Entity
+@XmlRootElement
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Question {
 	

@@ -14,16 +14,25 @@ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿
 package br.ufpe.cin.amadeus.amadeus_web.domain.register;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.annotations.Cascade;
+
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum;
 
 /**
  * Classe que encapsula os dados de um usuÃ¡rio do sistema
@@ -34,6 +43,7 @@ import javax.persistence.OneToOne;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 @org.hibernate.annotations.Entity (dynamicUpdate = true)
 public class Person implements Serializable{
 
@@ -57,6 +67,10 @@ public class Person implements Serializable{
 	
 	private char gender;
 	
+	private String twitterLogin;
+	
+	private String facebookLogin;
+	
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name="ACCESS_INFO_ID")
 	private AccessInfo accessInfo;
@@ -68,9 +82,25 @@ public class Person implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="IMAGE_ID")
 	private Image image;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "SENDER_ID", nullable = true)
+	private List<MessengerMessage> sent;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "RECEIVER_ID", nullable = true)
+	private List<MessengerMessage> received;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.person",
+			 cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+			 @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			 org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	private List<PersonForum> foruns = new ArrayList<PersonForum>();
 
 	public Person() {
 		gender = ' ';
+		this.sent = new ArrayList<MessengerMessage>();
+		this.received = new ArrayList<MessengerMessage>();
 	}
 
 	public Date getBirthDate() {
@@ -166,11 +196,11 @@ public class Person implements Serializable{
 		return result;
 	}
 	
-	public int hashCode(){
+	/*public int hashCode(){
 		StringBuilder builder = new StringBuilder();
 		builder.append(this);
 		return builder.toString().hashCode();
-	}
+	}*/
 
 	public Resume getResume() {
 		return resume;
@@ -186,6 +216,46 @@ public class Person implements Serializable{
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public String getTwitterLogin() {
+		return twitterLogin;
+	}
+
+	public void setTwitterLogin(String twitterLogin) {
+		this.twitterLogin = twitterLogin;
+	}
+
+	public String getFacebookLogin() {
+		return facebookLogin;
+	}
+
+	public void setFacebookLogin(String facebookLogin) {
+		this.facebookLogin = facebookLogin;
+	}
+
+	public List<PersonForum> getForuns() {
+		return foruns;
+	}
+
+	public void setForuns(List<PersonForum> foruns) {
+		this.foruns = foruns;
+	}
+	
+	public List<MessengerMessage> getReceived() {
+		return received;
+	}
+	
+	public void setReceived(List<MessengerMessage> received) {
+		this.received = received;
+	}
+	
+	public List<MessengerMessage> getSent() {
+		return sent;
+	}
+	
+	public void setSent(List<MessengerMessage> sent) {
+		this.sent = sent;
 	}
 
 }

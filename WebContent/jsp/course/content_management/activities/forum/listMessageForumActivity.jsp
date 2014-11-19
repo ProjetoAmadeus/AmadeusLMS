@@ -30,11 +30,19 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	<div id="rolagem" class="cmLine">
 		<c:forEach items="${messages}" var="message">
 		<div class="fMessageBody">
+			<c:if test="${not empty message.messageReply}">
+			<h3>Resposta:</h3>
+				<div style="background-color: #CCCCCC; padding: 5px;">
+					<b><bean:message key="activities.forum.inreplyauthor" /> ${message.messageReply.author.name}:</b><br />
+					<p style="padding-left: 15px">${message.messageReply.body}</p>
+				</div>
+			</c:if>	
 			<PRE class="preMod"><bean:write name="message" property="body" filter="false"/></PRE>
 			<div class="fMessageAuthor">
 				<strong><bean:write name="message" property="author.name" filter="false" />,</strong>
 				<div class="cmLineRight">
 				<fmt:formatDate value="${message.date}" type="both" pattern="EEEE, d MMMM yyyy" />&nbsp;&nbsp;às&nbsp;&nbsp;<fmt:formatDate value="${message.date}" type="time" pattern="HH:mm" />
+				<br><a onclick="showViewNewAnswerForumActivityWithMessage(${module.position},${forum.id},${message.id});" href="javascript:void(0)"><bean:message key="activities.forum.answer" /></a>
 				</div>
 			</div>
 		</div>

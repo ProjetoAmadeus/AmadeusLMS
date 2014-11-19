@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <web>
 	<system>
-		<general.version>00.95.00</general.version>
-    	<general.language>Português-Brasil</general.language>
+		<general.version>00.96.60</general.version>
+    	<general.language>PortuguÃªs-Brasil</general.language>
     	<general.encoding>UTF-8</general.encoding>
     	<general.themes>default</general.themes>
+    	<general.domain>localhost:8080/amadeuslms</general.domain>
     </system>
     <mailsender>
-    	<mail.description>Conta de e-mail padrão</mail.description>
-    	<mail.from>projetoamadeus@gmail.com</mail.from>
-    	<mail.password>Joplin05</mail.password>
+    	<mail.description>Conta de e-mail padrÃ£o</mail.description>
+    	<mail.from>exemploamadeus@gmail.com</mail.from>
+    	<mail.password>amadeus2012!</mail.password>
     	<mail.smtp.host>smtp.gmail.com</mail.smtp.host>
     	<mail.smtp.auth>true</mail.smtp.auth>
     	<mail.debug>false</mail.debug>
@@ -22,7 +23,7 @@
 		<mail.smtp.starttls.required>false</mail.smtp.starttls.required>
     </mailsender>
     <bug>
-    	<report.to>projetoamadeus@gmail.com</report.to>
+    	<report.to>exemploamadeus@gmail.com</report.to>
     </bug>
     <security>
     	<cryptography>
