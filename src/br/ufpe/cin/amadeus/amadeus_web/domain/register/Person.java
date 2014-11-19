@@ -24,6 +24,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Classe que encapsula os dados de um usuário do sistema
@@ -34,6 +35,7 @@ import javax.persistence.OneToOne;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 @org.hibernate.annotations.Entity (dynamicUpdate = true)
 public class Person implements Serializable{
 

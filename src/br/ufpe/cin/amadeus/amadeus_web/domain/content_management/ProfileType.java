@@ -13,6 +13,9 @@ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿
 
 package br.ufpe.cin.amadeus.amadeus_web.domain.content_management;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum ProfileType {
 	ADMIN, STUDENT, PROFESSOR, INACTIVE
 }

@@ -9,9 +9,12 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/amadeus_web</property>
-		<property name="hibernate.connection.username">amadeus</property>
-		<property name="hibernate.connection.password">amadeus</property>
+		<property name="hibernate.connection.username">postgres</property>
+		<property name="hibernate.connection.password">postgres</property>
 		<property name="hibernate.current_session_context_class">thread</property>
+<!--	Senha de Paulo	-->
+<!--	<property name="hibernate.connection.password">mcplparp</property> -->
+		
 		
 		<property name="hibernate.c3p0.max_size">10</property>
 		<property name="hibernate.c3p0.min_size">2</property>
@@ -34,6 +37,7 @@
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.UserRequest"/>
 		
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Answer" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Choice" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Commentary" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course" />
@@ -78,6 +82,9 @@
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionAssociationRealized" /> 
 	
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Person_Groups" />
 	
 	</session-factory>
 </hibernate-configuration>

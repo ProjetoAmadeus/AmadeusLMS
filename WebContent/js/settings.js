@@ -44,7 +44,7 @@ function saveWebMailSenderSettings(){
 }
 
 function saveSystemSettings(){
-	var url = "/webSettingMailSender.do?method=saveWebMailSenderSettings&"+$("#formWebSettingMailSender").serialize();
+	var url = "/webSettingSystem.do?method=saveSystemSettings&"+$("#formWebSettingSystem").serialize();
 	$("#imgMobile").show();
 	UtilDWR.getInclude(url, 
 	function(data) {
@@ -54,9 +54,9 @@ function saveSystemSettings(){
 			window.open(urlAccessDenied, "_self");
 		} else {
 			execScript(data);
-			dwr.util.setValue("mailSender", data, { escapeHtml:false });
+			dwr.util.setValue("system", data, { escapeHtml:false });
 		}
-		$("#imgMobile").show();
+		$("#imgMobile").hide();
   	});
 }
 

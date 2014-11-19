@@ -13,12 +13,12 @@
  */
 
 //VARI�VEIS GLOBAIS
-var gDynamicOption = ''; //Internacionaliza��o
-var gEditOption = ''; //Internacionaliza��o
+var gDynamicOption = ''; //Internacionalização
+var gEditOption = ''; //Internacionalização
 var editToolTip = 'Editar';
 var removeToolTip = 'Remover';
-var gIdEditModule = -1;//Essa vari�vel so recebe valor em "showListActivity()", "editActivity()" e "showActivity()". by Vinicius P�dua
-var MMgameURL = "" //Vari�vel do endere�o do MM de Jogos, parametrizado! package br.ufpe.cin.amadeus.amadeus_game
+var gIdEditModule = -1;//Essa variável so recebe valor em "showListActivity()", "editActivity()" e "showActivity()". by Vinicius Pádua
+var MMgameURL = "" //Variável do endereço do MM de Jogos, parametrizado! package br.ufpe.cin.amadeus.amadeus_game
 var lastMaterial = null //Usada nos materiais acessados pelo professor
 
 function ajaxLoadingConfig(div, innerHTML) {
@@ -128,16 +128,26 @@ function createGame(moduleId, modulePosition){
 		}
   	);
 }
-function editGame(idActivity){
+function editGame(positionModule, idActivity){
 	UtilDWR.getInclude('/editGame.do?idModule='+gIdEditModule+'&idGame='+idActivity,
  		function(data) {
-			dwr.util.setValue('dynamic'+gIdEditModule, data, { escapeHtml:false });
+			dwr.util.setValue('dynamic'+positionModule, data, { escapeHtml:false });
 			 if (data.indexOf(keyError) == -1){
 			 }
 		}
   	);	
 	
 }
+
+function editGameActivity(idGame){
+	UtilDWR.getInclude('',
+ 		function(data) {
+		}
+  	);	
+	
+}
+
+
 function saveGame(idActivity){
 	var name    = trim(dwr.util.getValue("nameGame"));
   	var url = trim(dwr.util.getValue("urlGame"));
@@ -162,7 +172,7 @@ function saveGame(idActivity){
 
 function deleteGame(idActivity){
 
-	UtilDWR.getInclude('/deleteGame.do?method=deleteGame&idGame='+idActivity+'&idModule='+gIdEditModule,
+	UtilDWR.getInclude('/gameActivity.do?method=deleteGame&idGame='+idActivity+'&idModule='+gIdEditModule,
  		function(data) {
 		}
   	);
@@ -188,13 +198,59 @@ function showPlayerGame(idMMJogos){
   	);
 }
 
-function showScoreGame(type,idMMJogos){
-
+function showScoreGameGrupo(type,idMMJogos){
 	UtilDWR.getInclude('/changeOrderGame.do?method=changeOrderGame&type='+type+'&idMMJogos='+idMMJogos,
  		function(data) {
-			dwr.util.setValue('optionGame'+gIdEditModule, data, { escapeHtml:false });
+			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
 		}
   	);
+}
+
+function showScoreGameIndividual(type,idMMJogos,idUser){
+	UtilDWR.getInclude('/changeOrderGame.do?method=changeOrderGame&type='+type+'&idMMJogos='+idMMJogos+'&idUser='+idUser,
+ 		function(data) {
+			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
+		}
+  	);
+}
+
+
+function modalGameWin(gameId) {
+	window.open('playGameActivity.do?method=showPlayGame&gameId='+gameId,'Game',
+	'height=800,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes,directories=no');
+}
+
+function openGameExternal(gameUrl){
+
+	var external = window.open(gameUrl,'Game',
+		'height=800,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no ,modal=yes');
+
+	//resize para a tela não ficar preta
+	external.onload = resizeExternal(external);
+}
+
+function resizeExternal(win)
+{
+	win.resizeTo(10,10);
+	win.resizeTo(811,611);	
+}
+
+
+function modalVisualizacaoWin(gameId) {
+	if (window.showModalDialog) {
+	window.showModalDialog('graphicGameActivity.do?method=showGraphicGame&gameId='+gameId+'&graphic=sel',"Game Graphic",
+	"dialogWidth:800px;dialogHeight:600px");
+	} else {
+	window.open('graphicGameActivity.do?method=showGraphicGame&gameId='+gameId+'&graphic=sel','Game Graphic',
+	'height=800,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	}
+}
+
+function log(idGame, numFases, tempo, pontuacao, meta)
+{
+	window.open('saveLog.do?method=saveLog&jogo='+idGame+'&fases='+numFases+'&tempo='+tempo+'&pontuacao='+pontuacao+'&metaAlternativa='+meta,'Game Graphic',
+		'height=100,width=100,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
+
 }
 
 
@@ -1365,6 +1421,12 @@ function deleteActivity(type, idActivity) {
   	dwr.util.setValue('editOption'+positionModule, editLink, { escapeHtml:false });
   }
   
+  function openExternalLinkAtivity(url, id){
+	  
+	 window.open(url,'External Link','width=800, height=600');
+	 saveLogViewMaterial(id);
+  }
+  
   // ****************** IRIZ **************************
     
   function getVideoURL(codigoHTMLcomScript)
@@ -1435,7 +1497,9 @@ function editVideoActivity(positionModule, idVideo){
   	);
 }
 	
-function watchVideo(url){
+function watchVideo(url, idMaterial){
+	
+	saveLogViewVideo(idMaterial);
 	window.open(url,'','width=800px, height=600px, directories=0, location=0, menubar=0, resizable=0, scrollbars=0, status=0');
 }
   

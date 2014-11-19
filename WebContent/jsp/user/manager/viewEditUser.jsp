@@ -70,7 +70,9 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		<div id="pContent" class="pContent">
 			<html:errors />
 			<html:form action="/editUserFormInManagerUsers" focus="name" enctype="multipart/form-data">
-			<html:hidden property="method" value="userNewInManagerUsers"/>
+			<html:hidden property="method" value="userEditInManagerUsers"/>
+			<html:hidden property="userId" value="${userProfile.id}"/>
+			<html:hidden property="userType" value="${userProfile.userType}"/>
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr align="right">
 					<td colspan="2">

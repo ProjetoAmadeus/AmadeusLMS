@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +39,7 @@ import org.apache.struts.util.ModuleUtils;
 import br.ufpe.cin.amadeus.amadeus_mobile.sms.Receiver;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
@@ -221,6 +223,12 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 		}
 		
 		script.append("</script>");
+		
+		//TODO - LOG - Entrega de atividade - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_ENTREGAR_MATERIAL);
+		log.setIdObjeto(material.getId());
+		this.facade.saveLog(log);
 		
 		out.print(script.toString());
 		
@@ -619,6 +627,11 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//TODO - LOG - Visualizacao de Material - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_VISUALIZACAO_MATERIAL);
+		log.setIdObjeto(material.getId());
+		this.facade.saveLog(log);
 		
 		return null;
 	}
@@ -646,6 +659,13 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 			os.flush();
 			os.write(swf);
 			os.close();
+			
+			//TODO - LOG - Visualizacao de Material - OK
+			Log log = SystemActions.getLogUser(request);
+			log.setCodigo(Log.LOG_CODIGO_VISUALIZACAO_MATERIAL);
+			log.setIdObjeto(material.getId());
+			this.facade.saveLog(log);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -22,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 /**
@@ -33,6 +34,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class CourseScores implements Serializable{
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	

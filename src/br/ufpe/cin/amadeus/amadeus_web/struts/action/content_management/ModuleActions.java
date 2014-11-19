@@ -88,8 +88,8 @@ public class ModuleActions extends SystemActions {
 			int positionModule = facade.getNextPositionModule(course);
 			
 			Module module = new Module();
-			module.setName("Nome do M�dulo - "+(positionModule));
-			module.setDescription("Descri��o");
+			module.setName("Nome do Módulo - "+(positionModule));
+			module.setDescription("Descrição");
 			module.setVisible(true);
 			module.setPosition(positionModule);		
 			module.setCourse(course);
@@ -216,7 +216,7 @@ public class ModuleActions extends SystemActions {
 			Module module = facade.getModuleById(idModule);
 			Course course = module.getCourse();
 			
-			//Impede estouro de mem�ria.
+			//Impede estouro de memória.
 			for (int i = (module.getMaterials().size() -1); i >= 0; i--) {
 				module.getMaterials().remove(i);
 				facade.flush();

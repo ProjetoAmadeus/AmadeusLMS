@@ -20,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Classe que encapsula os dados de uma keyword
  * 
@@ -27,6 +28,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
+@XmlRootElement
 public class Keyword implements Comparable<Keyword>, Serializable{
 
 	private static final long serialVersionUID = 1L;

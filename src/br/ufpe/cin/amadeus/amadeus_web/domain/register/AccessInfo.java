@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cascade;
 
@@ -44,6 +45,7 @@ import br.ufpe.cin.amadeus.amadeus_web.util.Cryptography;
  */
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class AccessInfo implements Serializable{
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	

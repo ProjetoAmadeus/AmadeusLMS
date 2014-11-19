@@ -27,8 +27,12 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	}
 	
 	function formSubmit(){
+		var courseId = document.getElementById("inputCourse").value;
 		ajaxLoadingConfig('actions','<img border=0 src=<%=request.getContextPath()%>/themes/default/imgs/ajax-loader-activity.gif /><bean:message key="ajaxLoading.save" />');
-	  	document.gameActivity.submit();
+		
+		//reload forcado pq o ajax reverso não está funcionado com fileform
+		setTimeout(function() {window.location.reload();},3000);
+	  	document.gameActivity.submit();	  	
 	}
 </script>
 
@@ -47,22 +51,16 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		<html:text name="gameActivity" property="nameGame" />
 	</div>
 	<div class="cmLine">
-		<label class="labelAttribute"><bean:message key="activities.game.maxUsers"/>:</label>
+		<label class="labelAttribute">Url externo:</label>
 	</div>
 	<div class="cmLine">
-		<html:text name="gameActivity" property="maxUsers" />
+		<html:text property="externalUrlGame" />
 	</div>
 	<div class="cmLine">
-		<label class="labelAttribute"><bean:message key="activities.game.minUsers"/>:</label>
+		<label class="labelAttribute">Upload do jogo:</label>
 	</div>
 	<div class="cmLine">
-		<html:text name="gameActivity" property="minUsers" />
-	</div>
-	<div class="cmLine">
-		<label class="labelAttribute"><bean:message key="activities.game.url"/>:</label>
-	</div>
-	<div class="cmLine">
-		<html:text name="gameActivity" property="urlGame" />
+		<html:file property="urlGame" />
 	</div>
 	<div class="cmLine">
 		<label class="labelAttribute"><bean:message key="activities.game.description"/>:</label>

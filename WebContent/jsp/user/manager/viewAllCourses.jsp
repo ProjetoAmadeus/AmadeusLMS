@@ -113,7 +113,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 							</h3>
 							<div class="iconBar">
 								<html:link action="course.do?method=showViewEditCourse&courseId=${course.id}">
-									<img border="0" src="themes/default/imgs/menu/edit-16x16.png" title="Alterar Curso" />
+									<img border="0" src="themes/default/imgs/menu/edit-16x16.png" title="Editar Curso" />
 								</html:link>
 								<html:link action="course.do?method=viewReplicateCourse&courseId=${course.id}">
 									<img border="0" src="themes/default/imgs/menu/replicate-16x16.png" title="Replicar Curso" />

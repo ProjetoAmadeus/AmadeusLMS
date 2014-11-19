@@ -13,11 +13,56 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LIC
 
 package br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment;
 
+import java.util.List;
+
+import org.apache.poi.hssf.record.formula.functions.Int;
+
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GameDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.GenericHibernateDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 public class GameHibernateDAO extends GenericHibernateDAO<Game, Integer>
 		implements GameDAO {
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Game> getAllGameFromCourse(Course course) {
+		// TODO Auto-generated method stub
+		String hqlQuery = "select g from Course c join c.modules m join Game g" +
+		" where c.id = "+course.getId();
+		List<Game> game = getSession().createQuery(hqlQuery).list();
+
+		return game;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean verificarStatusPorGame(List<Person> alunos, Game game) {
+
+		String persons = " AND l.idUser.id IN (";
+		
+		String ids = "";
+		
+		for (int i = 0; i < alunos.size(); i++)
+		{
+			if(ids.length() != 0)
+			{
+				ids += ",";
+			}
+			ids += alunos.get(i).getId();
+		}
+		
+		persons += ids + ")";
+		
+		String hql = "select distinct l.idUser.id from Log l where l.codigo = 7 AND l.idObjeto = " + game.getId() + persons;
+		List<Int> posts = getSession().createQuery(hql).list();
+		
+		boolean retorno = alunos.size() == posts.size();
+		
+		
+		return retorno;
+	}
 
 }
