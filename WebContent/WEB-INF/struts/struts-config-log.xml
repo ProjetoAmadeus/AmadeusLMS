@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="formLog" type="org.apache.struts.action.DynaActionForm">
+			<form-property name="jogo" type="java.lang.Integer" />
+			<form-property name="fases" type="java.lang.Integer" />
+			<form-property name="pontuacao" type="java.lang.Integer" />
+			<form-property name="tempo" type="java.lang.Integer" />
+			<form-property name="metaAlternativa" type="java.lang.Integer" />
+		</form-bean>
+		<form-bean name="formLogViewMaterial" type="org.apache.struts.action.DynaActionForm">
+			<form-property name="idMaterial" type="java.lang.Integer" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions />
+	<global-forwards>
+		<forward name="fcloseWindow" path="/jsp/course/content_management/activities/game/closeWindow.jsp"></forward>
+	</global-forwards>
+	
+	
+	
+	<action-mappings>
+	
+		<action path="/saveLog"
+			scope="request" parameter="method" name="formLog"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.LogActions" />
+		
+		<action path="/saveLogViewMaterial"
+			scope="request" parameter="method" name="formLogViewMaterial"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.LogActions" />
+		
+		<action path="/saveLogViewVideo"
+			scope="request" parameter="method" name="formLogViewMaterial"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.LogActions" />
+			
+	</action-mappings>
+	<controller nocache="true"  />
+	<message-resources null="false"
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources" />
+</struts-config>

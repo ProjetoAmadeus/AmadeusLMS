@@ -16,6 +16,7 @@ package br.ufpe.cin.amadeus.amadeus_web.domain.register;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cascade;
 
@@ -44,6 +46,7 @@ import br.ufpe.cin.amadeus.amadeus_web.util.Cryptography;
  */
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class AccessInfo implements Serializable{
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	
@@ -127,6 +130,6 @@ public class AccessInfo implements Serializable{
 
 	public void setOpenIDs(List<OpenID> openIDs) {
 		this.openIDs = openIDs;
-	}
+	}	
 	
 }

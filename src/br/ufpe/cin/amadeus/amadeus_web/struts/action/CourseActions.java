@@ -13,12 +13,12 @@ Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral GNU, sob o t�
 
 package br.ufpe.cin.amadeus.amadeus_web.struts.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -27,12 +27,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.record.formula.functions.Evaluate;
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,6 +53,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Poll;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ProfileType;
@@ -59,18 +63,20 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.VideoIriz;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Alternative;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Evaluation;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Question;
-import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionAlternativable;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionAssociation;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionDiscursive;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionGap;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionMultiple;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionTrueFalse;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.MessengerMessage;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.amadeus.amadeus_web.exception.CourseInvalidException;
 import br.ufpe.cin.amadeus.amadeus_web.facade.Facade;
 import br.ufpe.cin.amadeus.amadeus_web.permissions.content_management.CoursePermissions;
 import br.ufpe.cin.amadeus.amadeus_web.util.DateValidator;
+import br.ufpe.cin.amadeus.amadeus_web.util.SocialInteractionMethods;
+import br.ufpe.cin.amadeus.amadeus_web.util.SocialInteractions;
 
 public class CourseActions extends SystemActions {
 
@@ -81,13 +87,16 @@ public class CourseActions extends SystemActions {
 	private final String FORWARD_SHOW_VIEW_CHANGE_TEACHER = "fShowViewChangeTeacher";
 	private final String FORWARD_SHOW_VIEW_COURSE_NOT_LOGGED = "fShowViewCourseNotLogged";
 	private final String FORWARD_SHOW_VIEW_COURSE_PARTICIPANTS = "fShowViewCourseParticipants";
-	private final String FORWARD_SHOW_VIEW_SHOW_MODULES = "fShowViewShowModules";
+	private final String FORWARD_SHOW_VIEW_SHOW_MODULES = "fShowViewShowModules";	
 	private final String FORWARD_SHOW_VIEW_EDIT_COURSE = "fShowViewEditCourse";
 	private final String FORWARD_SHOW_VIEW_COURSE_EVALUATIONS = "fShowViewCourseEvaluations";
 	private final String FORWARD_SHOW_VIEW_SEND_MAIL = "fShowViewSendMail";
 	private final String FORWARD_SHOW_VIEW_NEW_EXTERNAL_LINK = "fshowViewNewExternalLink";
 	private final String FORWARD_SHOW_VIEW_REPLICATE_COURSE = "fReplicateCourseStepOne";
-	
+	private final String FORWARD_SHOW_VIEW_GRAPHIC = "fShowViewGraphic";
+	private final String FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING = "fShowViewSocialInteractionMonitoring";
+	private final String FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING_REPORTS = "fShowViewSocialInteractionMonitoringReports";
+
 	@Override
 	protected Map<String, String> getKeyMethodMap() {
 		Map<String, String> map = new HashMap<String, String>();
@@ -99,6 +108,7 @@ public class CourseActions extends SystemActions {
 		map.put("course.viewChangeTeacher", "viewChangeTeacher");
 		map.put("general.register", "insertCourseStepTwo");
 		map.put("general.update", "editCourse");
+		map.put("general.generatepdfreport", "socialInteractionMonitoring");
 		map.put("general.cancel", "cancelEdition");
 		map.put("viewCourse.registration", "viewCourse");
 		map.put("course.delete", "deleteCourse");
@@ -111,11 +121,16 @@ public class CourseActions extends SystemActions {
 		map.put("course.showViewCourse", "showViewCourse");
 		map.put("course.showViewCourseNotLogged", "showViewCourseNotLogged");
 		map.put("course.showViewEditCourse", "showViewEditCourse");
+		map.put("course.showViewSocialInteractionMonitoring", "showViewSocialInteractionMonitoring");
+		map.put("course.showViewSocialInteractionMonitoringReports", "showViewSocialInteractionMonitoringReports");
+		map.put("course.showViewEditCourse", "showViewEditCourse");
 		map.put("course.showViewShowModules", "showViewShowModules");
 		map.put("course.showViewCourseEvaluations", "showViewCourseEvaluations");
+		map.put("course.showViewGraphic", "showViewGraphic");
 		map.put("course.showViewSendMail", "showViewSendMail");
 		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
 		map.put("course.changeTeacher", "changeTeacher");
+		map.put("course.viewChangeTeacher", "viewChangeTeacher");
 		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
 		
 		return map;
@@ -598,7 +613,7 @@ public class CourseActions extends SystemActions {
 			isOwner = true;
 		}
 		if(isOwner){
-			ArrayList<AccessInfo> teacherList = (ArrayList<AccessInfo>) facade.searchUsers("", 2, 0);
+			ArrayList<AccessInfo> teacherList = (ArrayList<AccessInfo>) facade.searchUsersByType(2);
 			System.out.println("########: " + teacherList.get(0).getLogin());
 			request.setAttribute("teacherList", teacherList);
 			request.setAttribute("courseId", courseId);
@@ -680,7 +695,7 @@ public class CourseActions extends SystemActions {
 			throws Exception {
 		DynaActionForm dyna = (DynaActionForm) form;
 		String courseName = dyna.getString("courseName").trim();
-
+		System.out.println("LALA");
 		List<Course>[] results = null;
 		if (!courseName.equals("") && courseName != null) {
 			results = facade.getCoursesByRule(courseName);
@@ -862,6 +877,141 @@ public class CourseActions extends SystemActions {
 		
 		return null;
 	}
+	
+	public ActionForward socialInteractionMonitoring(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		MultiMap interactions = new MultiValueMap();
+		SocialInteractionMethods sim = new SocialInteractionMethods();	
+		DynaActionForm myForm = (DynaActionForm) form;
+		ActionMessages messages = new ActionMessages();
+		
+		String initialMonitoringDay = (String) myForm.get("initialMonitoringDay");
+		String initialMonitoringMonth = (String) myForm.get("initialMonitoringMonth");
+		String initialMonitoringYear = (String) myForm.get("initialMonitoringYear");
+		String finalMonitoringDay = (String) myForm.get("finalMonitoringDay");
+		String finalMonitoringMonth = (String) myForm.get("finalMonitoringMonth");
+		String finalMonitoringYear = (String) myForm.get("finalMonitoringYear");
+		
+		DateValidator im = new DateValidator(messages, initialMonitoringDay, initialMonitoringMonth, initialMonitoringYear, true);
+		DateValidator fm = new DateValidator(messages, finalMonitoringDay, finalMonitoringMonth, finalMonitoringYear, true);
+		
+		//Pegando o valor do curso
+		int id = Integer.valueOf(request.getParameter("id"));
+		Course c = facade.getCoursesById(id);
+		
+		//Pegando valor do combobox
+		int method = Integer.parseInt((String)myForm.get("socialMethod"));
+		
+
+		//Preenchendo o list com os participantes
+		ArrayList<String> ar = new ArrayList<String>();
+
+		for(Person p: facade.listStudentsByCourse(c)){
+			ar.add(p.getName());
+		}
+		
+		//Pegando os valores do checkbox e concatenando o MultiMap
+		String twitter = request.getParameter("twitter");
+		System.out.println(twitter);
+		String forum = request.getParameter("forum");
+		System.out.println(forum);
+		String message = request.getParameter("message");
+		System.out.println(message);
+		String chat = request.getParameter("chat");
+		System.out.println(chat);
+		
+		if(forum != null){
+			MultiMap interactionsForum = SocialInteractions.getSocialInteractionsFromForumsByCourseAndData(c, im.getDate(), fm.getDate());
+			interactions.putAll(interactionsForum);
+			
+		}
+		
+		if(twitter != null){
+			MultiMap interactionsTwitter = SocialInteractions.getSocialInteractionsFromTwitterTool(im.getDate(), fm.getDate());
+			interactions.putAll(interactionsTwitter);
+			
+		}
+		
+		if(message != null){
+			MultiMap interactionsMessenger = SocialInteractions.getSocialInteractionsFromMessenger(c, im.getDate(), fm.getDate());		
+			interactions.putAll(interactionsMessenger);
+			
+		}
+		
+		//interactions = SocialInteractions.getSocialInteractionsFromForumsByCourseAndData(c, im.getDate(), fm.getDate());
+		
+		String nomearquivo = "c:/" + Math.random() + ".pdf";
+		
+		switch (method){
+			case 0: response.sendRedirect("course.do?method=showViewCourse&courseId="+c.getId());
+			break;
+			case 1: SocialInteractions.generateReport(sim.cohesionGroup(ar, interactions), nomearquivo);
+			break;
+			case 2: SocialInteractions.generateReport(sim.heterogeneityGroup(ar, interactions), nomearquivo);
+			break;
+			case 3: SocialInteractions.generateReport(sim.visibilityPerStudent(ar, interactions), nomearquivo);
+			break;
+			case 4: SocialInteractions.generateReport(sim.isolationPerStudent(ar, interactions), nomearquivo);
+			break;
+			case 5: SocialInteractions.generateReport(sim.engagementPerStudent(ar, interactions), nomearquivo);
+			break;
+			case 6: SocialInteractions.generateReport(sim.informationIntermediationPerStudent(ar, interactions), nomearquivo);
+			break;
+			case 7: SocialInteractions.generateReport(sim.prestigePerStudent(ar, interactions), nomearquivo);
+			break;
+		}
+		
+		
+		
+		//return an application file instead of html page
+	     response.setContentType("application/octet-stream");
+	     response.setHeader("Content-Disposition","attachment;filename=Relatorio.pdf");
+	 
+	     try 
+	     {
+	       	//Get it from file system
+	       	FileInputStream in = 
+	      		new FileInputStream(new File(nomearquivo));
+	 
+	        ServletOutputStream out = response.getOutputStream();
+	 
+	        byte[] outputByte = new byte[4096];
+	        //copy binary content to output stream
+	        while(in.read(outputByte, 0, 4096) != -1){
+	        	out.write(outputByte, 0, 4096);
+	        }
+	        in.close();
+	        out.flush();
+	        out.close();
+	 
+	     }catch(Exception e){
+	    	e.printStackTrace();
+	   }
+	     //response.setContentType("text/html");
+	     //response.setHeader("","");
+		//response.sendRedirect("course.do?method=showViewCourse&courseId="+c.getId());
+		//response.sendRedirect("/Users/dvpereira/Documents/workspace/amadeuslms/WebContent/reports/PDF_LinhaCodigo.pdf");
+
+		return null;
+	}
+	
+	public ActionForward socialInteractionMonitoringReports(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		
+		
+		DynaActionForm myForm = (DynaActionForm) form;
+		ActionMessages messages = new ActionMessages();
+		int id = (Integer) myForm.get("id");
+		
+		Course c = facade.getCoursesById(id);
+		
+		response.sendRedirect("course.do?method=showViewCourse&courseId="+c.getId());
+		
+		return null;
+	}
 
 	public ActionForward cancelEdition(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -1018,6 +1168,8 @@ public class CourseActions extends SystemActions {
 			Course course = facade.getCoursesById(courseId);
 			List<Person> teachers = facade.getTeachersByCourse(course);
 			List<Person> assistants = facade.listAssistantsByCourse(course);
+			List<Person> participants = facade.listStudentsByCourse(course); //added by Nailson
+			List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 			
 			int studentsNumber = facade.getNumberOfStudentsInCourse(course);
 			course.setNumberOfStudentsInCourse(studentsNumber);
@@ -1025,9 +1177,13 @@ public class CourseActions extends SystemActions {
 			Set<Keyword> keywords = course.getKeywords();
 			
 			boolean canRegisterUser = false;
+			boolean canMonitorSocialInteractions = false;
 			
 			if (facade.canRegisterUser(user, course)) {
 				canRegisterUser = true;
+			}
+			if(course.getProfessor().equals(user.getPerson())){
+				canMonitorSocialInteractions = true;
 			}
 			
 			Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
@@ -1035,9 +1191,12 @@ public class CourseActions extends SystemActions {
 			SystemActions.setMenuPermissionsForUserInRequest(request, course);
 			request.setAttribute("userRoleInCourse", ( userRoleInCourse != null) ? userRoleInCourse.getRoleType() : null );
 			request.setAttribute("canRegisterUser", canRegisterUser);
+			request.setAttribute("canMonitorSocialInteractions", canMonitorSocialInteractions);
 			request.setAttribute("course", course);
 			request.setAttribute("teachers", teachers);
 			request.setAttribute("assistants", assistants);
+			request.setAttribute("participants", participants); //added by Nailson
+			request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 			request.setAttribute("keywords", keywords);
 			
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_COURSE);
@@ -1089,6 +1248,7 @@ public class CourseActions extends SystemActions {
 			List<Person> participants = facade.listStudentsByCourse(course);
 			List<Person> teachers = facade.listTeachersByCourse(course);
 			List<Person> assistants = facade.listAssistantsByCourse(course);
+			List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 			
 			
 			SystemActions.setMenuPermissionsForUserInRequest(request, course);
@@ -1097,6 +1257,7 @@ public class CourseActions extends SystemActions {
 			request.setAttribute("teachers", teachers);
 			request.setAttribute("assistants", assistants);
 			request.setAttribute("userRoleInCourse", userRoleInCourse);
+			request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 			
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_COURSE_PARTICIPANTS);
 		} else {
@@ -1126,15 +1287,15 @@ public class CourseActions extends SystemActions {
 			//System.out.println("########: " + teacherList.get(0).getLogin());
 			
 			Set<Keyword> keywords = course.getKeywords();
-			Iterator ikeywords = keywords.iterator();
+			Iterator<Keyword> ikeywords = keywords.iterator();
 			String keywordsStr = ""; 
 			int counter = 1;
 			while(ikeywords.hasNext()){
 				if(counter < keywords.size()){
-					keywordsStr = keywordsStr + ((Keyword)ikeywords.next()).getName() + ", ";
+					keywordsStr = keywordsStr + ikeywords.next().getName() + ", ";
 					counter++;
 				} else {
-					keywordsStr = keywordsStr + ((Keyword)ikeywords.next()).getName();
+					keywordsStr = keywordsStr + ikeywords.next().getName();
 				}
 			}
 			
@@ -1181,6 +1342,79 @@ public class CourseActions extends SystemActions {
 		return forward;
 	}
 	
+	public ActionForward showViewSocialInteractionMonitoring(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		ActionForward forward = null;
+		
+		if(SystemActions.isLoggedUser(request)) {
+			String courseIdStr = request.getParameter("courseId");
+			
+			if(courseIdStr == null){
+				courseIdStr = request.getParameter("id");
+			}
+			
+		    int courseId = Integer.parseInt(courseIdStr);
+			
+			Course course = facade.getCoursesById(courseId);
+			
+			AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
+			loggedUser = facade.searchUserById(loggedUser.getId());
+			boolean canMonitorSocialInteractions = false;
+			
+			if(!facade.isStudent(loggedUser.getPerson(), course)){
+				canMonitorSocialInteractions = true;
+			}
+			
+			request.setAttribute("canMonitorSocialInteractions", canMonitorSocialInteractions);
+			
+			request.setAttribute("course", course);
+			
+			forward = mapping.findForward(FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING);
+		} else {
+			forward = new SystemActions().showViewWelcome(mapping, form, request, response);
+		}
+		
+		return forward;
+	}
+	
+	public ActionForward showViewSocialInteractionMonitoringReports(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		ActionForward forward = null;
+		
+		if(SystemActions.isLoggedUser(request)) {
+			String courseIdStr = request.getParameter("courseId");
+			
+			if(courseIdStr == null){
+				courseIdStr = request.getParameter("id");
+			}
+			
+		    int courseId = Integer.parseInt(courseIdStr);
+			
+			Course course = facade.getCoursesById(courseId);
+			
+			AccessInfo loggedUser = (AccessInfo) request.getSession().getAttribute("user");
+			loggedUser = facade.searchUserById(loggedUser.getId());
+			
+			boolean canMonitorSocialInteractions = false;
+			
+			if(!facade.isStudent(loggedUser.getPerson(), course)){
+				canMonitorSocialInteractions = true;
+			}
+			
+			request.setAttribute("canMonitorSocialInteractions", canMonitorSocialInteractions);
+			
+			request.setAttribute("course", course);
+			
+			forward = mapping.findForward(FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING_REPORTS);
+		} else {
+			forward = new SystemActions().showViewWelcome(mapping, form, request, response);
+		}
+		
+		return forward;
+	}
+	
 	public ActionForward showViewShowModules(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -1199,13 +1433,24 @@ public class CourseActions extends SystemActions {
 				
 				List<Module> modules = course.getModules();
 				
+				List<PersonForum> forunsperson = user.getPerson().getForuns();
+				
 				List<Person> assistances = facade.getAssistanceInCourse(course);
+				List<Person> teachers = facade.getTeachersByCourse(course); //added by Nailson
+				List<Person> participants = facade.listStudentsByCourse(course); //added by Nailson
+				List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 		
 				SystemActions.setMenuPermissionsForUserInRequest(request, course);
 				request.setAttribute("userRoleInCourse", ( userRoleInCourse != null) ? userRoleInCourse.getRoleType() : null );
 				request.setAttribute("course", course);
 				request.setAttribute("modules", modules);
+				request.setAttribute("forunsperson",forunsperson);
 				request.setAttribute("assistants", assistances);
+				
+				request.setAttribute("teachers", teachers); //added by Nailson
+				request.setAttribute("participants", participants); //added by Nailson
+				request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
+				
 				
 				forward = mapping.findForward(FORWARD_SHOW_VIEW_SHOW_MODULES);
 			} else {
@@ -1300,4 +1545,328 @@ public class CourseActions extends SystemActions {
 		
 		return forward;
 	}
+
+	public ActionForward showViewGraphic(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+
+		if(SystemActions.isLoggedUser(request)) {
+
+			int courseId = Integer.parseInt(request.getParameter("courseId"));
+			Course course = facade.getCoursesById(courseId);
+
+
+			if(CoursePermissions.userCanViewGraphic(request, course)) {
+				SystemActions.setMenuPermissionsForUserInRequest(request, course);
+
+				String graphic = request.getParameter("graphic");
+				Integer moduleSel = Integer.parseInt(request.getParameter("moduleSel"));
+				Integer idAluno = Integer.parseInt(request.getParameter("idAluno"));
+				Integer idGame = Integer.parseInt(request.getParameter("idGame"));
+				Integer idForum;// = Integer.parseInt(request.getParameter("idForum"));
+
+				request.setAttribute("course", course);
+				request.setAttribute("graphic", graphic);
+				request.setAttribute("moduleSel", moduleSel);
+				request.setAttribute("idAluno", idAluno);
+				request.setAttribute("idGame", idGame);
+				//request.setAttribute("idForum", idForum);
+
+				if(graphic.equals("g1"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayModuleGameTotalTime(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g2"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayModuleGameTimePerDay(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g3"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayTagCloudForum(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g4"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArrayPostsPerModule(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g5"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONArraySizeMessagePerModule(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				else if(graphic.equals("g6"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPersonGameTimePerModule(idAluno, moduleSel);
+							//							String data = "[{\"Aluno\":\"GameTest\",\"Tempo\":18}]";
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Código dos Gráficos de Danilo Começa aqui
+				//Tempo de permanência no sistema - Diferença entre os horários de login e logout.
+				else if(graphic.equals("g7"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPersonGameTimePerModule(idAluno, moduleSel);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Quantidade de visualizações dos fóruns - Número de vezes que o usuário abriu um fórum de determinado módulo.
+				else if(graphic.equals("g8"))
+				{
+					request.setAttribute("modules", course.getModules());
+					
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{						
+							String data = facade.getJSONArrayForumVisualizacao(moduleSel, idAluno);
+							request.setAttribute("xml", data);							
+						}
+					}
+
+				}
+				//Quantidade de posts em um fórum - Número de vezes que o usuário respondeu ao fórum.
+				else if(graphic.equals("g9"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPostsPerUser(moduleSel, idAluno);
+							request.setAttribute("xml", data);						
+						}						
+					}
+				}
+				//Quantidade de acessos à materiais - Número de vezes que o usuário abriu um material presente no módulo.
+				else if(graphic.equals("g10"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayMaterialView(idAluno, moduleSel);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Quantidade de enquetes respondidas - Número de repostas a enquetes de um módulo feitas pelo usuário.
+				else if(graphic.equals("g11"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayPollAnswered(moduleSel, idAluno);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Quantidade de acesso aos jogos - Número de vezes que o usuário abriu um jogo do módulo.
+				else if(graphic.equals("g12"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						List<Person> participants = facade.listStudentsByCourse(course);
+						request.setAttribute("alunos", participants);						
+
+						if(idAluno!=-1)
+						{
+							String data = facade.getJSONArrayGameOpen(moduleSel, idAluno);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				else if(graphic.equals("g13"))
+				{
+					request.setAttribute("modules", course.getModules());					
+
+					if(moduleSel!=-1)
+					{
+						String data = facade.getJSONObjectQuantidadeTamanhoMSG(moduleSel);
+						request.setAttribute("xml", data);
+					}
+				}
+				//Graficos do jogo
+				//Pontuação
+				else if(graphic.equals("g14")||graphic.equals("g15"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONArrayGameScore(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//Level
+				else if(graphic.equals("g16")||graphic.equals("g17"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONArrayGameLevel(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//tempo X level X pontuacao
+				else if(graphic.equals("g18"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONObjectTempoLevelPontuacao(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				// tempo X quantidade de partidas
+				else if(graphic.equals("g19"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONObjectTempoQuantidadePartidas(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+				}
+				//level X pontuacao
+				else if(graphic.equals("g20"))
+				{
+					request.setAttribute("modules", course.getModules());
+
+					if(moduleSel!=-1)
+					{
+						Module module = facade.getModuleById(moduleSel.intValue());
+						request.setAttribute("games", module.getGames());						
+
+						if(idGame!=-1)
+						{
+							String data = facade.getJSONObjectLevelPontuacao(idGame);
+							request.setAttribute("xml", data);							
+						}
+
+					}
+
+				}
+				
+				request.setAttribute("domain", SystemActions.webSettings.getSystemGeneralDomain());
+				forward = mapping.findForward(FORWARD_SHOW_VIEW_GRAPHIC);
+			} else {
+				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
+			}
+		} else {
+			forward = this.showViewWelcome(mapping, form, request, response);
+		}
+
+		return forward;
+
+	}	 
+
 }

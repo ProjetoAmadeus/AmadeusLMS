@@ -18,5 +18,5 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 <div id="login">
 	<bean:message key="menu.greeting"/>&nbsp;${user.person.name}.<br />
 	<html:link action="user.do?method=showViewMyProfile"><bean:message key="userPrivateData.showProfile"/></html:link>
-	(<html:link action="signOut.do?parameter=Sair"><bean:message key="general.leave"/></html:link>)
+	(<html:link action="signOut.do?parameter=Quit"><bean:message key="general.leave"/></html:link>)
 </div>

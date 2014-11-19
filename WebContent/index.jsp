@@ -12,6 +12,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%@ taglib uri="/WEB-INF/struts-logic" prefix="logic" %>
 
 <logic:present name="org.apache.struts.action.MESSAGE" scope="application">

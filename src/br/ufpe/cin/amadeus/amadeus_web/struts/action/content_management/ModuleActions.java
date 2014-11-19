@@ -17,6 +17,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.facade.Facade;
@@ -88,8 +89,8 @@ public class ModuleActions extends SystemActions {
 			int positionModule = facade.getNextPositionModule(course);
 			
 			Module module = new Module();
-			module.setName("Nome do Mï¿½dulo - "+(positionModule));
-			module.setDescription("Descriï¿½ï¿½o");
+			module.setName("Nome do Módulo - "+(positionModule));
+			module.setDescription("Descrição");
 			module.setVisible(true);
 			module.setPosition(positionModule);		
 			module.setCourse(course);
@@ -216,7 +217,7 @@ public class ModuleActions extends SystemActions {
 			Module module = facade.getModuleById(idModule);
 			Course course = module.getCourse();
 			
-			//Impede estouro de memï¿½ria.
+			//Impede estouro de memÃ³ria.
 			for (int i = (module.getMaterials().size() -1); i >= 0; i--) {
 				module.getMaterials().remove(i);
 				facade.flush();
@@ -256,7 +257,9 @@ public class ModuleActions extends SystemActions {
 			Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
 			
 			List<Module> modules = course.getModules();
+			List<PersonForum> forunsperson= user.getPerson().getForuns();
 			
+			request.setAttribute("forunsperson", forunsperson);
 			request.setAttribute("positionModule", 0);
 			request.setAttribute("modules", modules);
 			request.setAttribute("course", course);
@@ -285,7 +288,8 @@ public class ModuleActions extends SystemActions {
 			Course course = module.getCourse();
 			
 			Role userRoleInCourse = facade.getRoleByPersonInCourse(user.getPerson(), course);
-			
+			List<PersonForum> forunsperson = user.getPerson().getForuns();
+			request.setAttribute("forunsperson", forunsperson);
 			request.setAttribute("module", module);
 			request.setAttribute("userRoleInCourse", userRoleInCourse);
 			request.getSession().setAttribute("course", course);

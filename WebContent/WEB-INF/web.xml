@@ -49,28 +49,50 @@
    						 /WEB-INF/struts/struts-config-module.xml, 
    						 /WEB-INF/struts/struts-config-mobile.xml,
    						 /WEB-INF/struts/struts-config-openid.xml,
-   						 /WEB-INF/struts/struts-config-settings.xml</param-value>
+   						 /WEB-INF/struts/struts-config-settings.xml,
+   						 /WEB-INF/struts/struts-config-log.xml,
+   						 /WEB-INF/struts/struts-config-messenger.xml,
+   						 /WEB-INF/struts/struts-config-twittertool.xml</param-value>
   </init-param>
   <load-on-startup>2</load-on-startup>
  </servlet>
  
  <!-- JAXWS Servlet Configuration -->
- <servlet>
+ <!-- <servlet>
     <description>Cadastro de Pessoa JAX-WS</description>
     <display-name>courseWS</display-name>
     <servlet-name>courseWS</servlet-name>
     <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
-  </servlet>
+  </servlet>  -->
  <!-- Listener JAXWS Configuration -->
- <listener>
+ <!-- <listener>
     <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
- </listener>
+ </listener>  -->
  <!-- Mapping JAXWS Configuration -->
- <servlet-mapping>
+ <!-- <servlet-mapping>
     <servlet-name>courseWS</servlet-name>
     <url-pattern>/courseWS</url-pattern>
- </servlet-mapping>
+ </servlet-mapping> -->
+ 
+ <!-- REST Servlet Configuration  -->
+ <servlet>
+    <servlet-name>Jersey REST Service</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>br.ufpe.cin.amadeus.amadeus_web.services</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+<!-- Mapping REST Configuration -->
+<servlet-mapping>
+    <servlet-name>Jersey REST Service</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
+  </servlet-mapping>
+  
+  
  <!-- DWR Configuration-->
  <servlet>
   <description>dwr-invoker</description>
@@ -98,7 +120,6 @@
   <servlet-name>action</servlet-name>
   <url-pattern>*.do</url-pattern>
  </servlet-mapping>
- <!-- JAXWS Servlet Configuration -->
  
  <!-- DWR Mapping -->
  	 <listener>
@@ -114,6 +135,7 @@
  <!-- The Usual Welcome File List -->
  <welcome-file-list>
   <welcome-file>index.jsp</welcome-file>
+  
  </welcome-file-list>
  <error-page>
   <error-code>404</error-code>

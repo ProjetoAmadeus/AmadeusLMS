@@ -148,6 +148,17 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 					<td  class="formAttribute"><bean:message key="editUserForm.description" />:</td>
 					<td><bean:write name="userProfile" property="person.resume.description" filter="false" /></td>
 				</tr>
+
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr>
+					<td  class="formAttribute"><bean:message key="userPrivateData.twitterLink" />:</td>
+					<td><c:if test="${userProfile.person.twitterLogin != ''}"><a href="http://www.twitter.com/<bean:write name="userProfile" property="person.twitterLogin" filter="false" />" target="_blank">http://www.twitter.com/<bean:write name="userProfile" property="person.twitterLogin" filter="false" /></a></c:if></td>
+				</tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr>
+					<td  class="formAttribute"><bean:message key="userPrivateData.facebookLink" />:</td>
+					<td><c:if test="${userProfile.person.facebookLogin != ''}"><a href="http://www.facebook.com/<bean:write name="userProfile" property="person.facebookLogin" filter="false" />" target="_blank">http://www.facebook.com/<bean:write name="userProfile" property="person.facebookLogin" filter="false" /></a></c:if></td>
+				</tr>
 			</table>
 		</div>
 		<jsp:include page="/jsp/conf/footer.jsp" />

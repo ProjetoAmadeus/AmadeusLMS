@@ -21,6 +21,8 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message;
 
 public interface MessageDAO extends GenericDAO <Message, Integer> {
 
-	public List<Message> searchMessageByPaging(int tamanhoBloco, int qtdBloco, Forum forum);
-	public int getSizeSearchMessageByForum(Forum forum);
+	List<Message> searchMessageByPaging(int tamanhoBloco, int qtdBloco, Forum forum);
+	int getSizeSearchMessageByForum(Forum forum);
+	Message getLastMessage();
+	
 }

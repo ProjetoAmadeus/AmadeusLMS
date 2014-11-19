@@ -13,10 +13,23 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LIC
 
 package br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.content_managment;
 
+import java.util.List;
+
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.GenericHibernateDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
 
 public class ForumHibernateDAO extends GenericHibernateDAO<Forum, Integer> implements ForumDAO {
+
+	@Override
+	public List<Forum> getListForum() {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("Select f from Forum f");
+		
+		List<Forum> results = getSession().createQuery(hql.toString()).list();
+		
+		return results;
+	}
 
 }

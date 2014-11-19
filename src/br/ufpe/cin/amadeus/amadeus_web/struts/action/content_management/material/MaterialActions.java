@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +39,7 @@ import org.apache.struts.util.ModuleUtils;
 import br.ufpe.cin.amadeus.amadeus_mobile.sms.Receiver;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
@@ -114,7 +116,14 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 			Archive a = new Archive();
 			a.setArchive(archive.getFileData());
 			material.setArchive(a);
-			material.setExtension(archive.getFileName());
+			String fileName =  archive.getFileName();
+			String[] extension = fileName.split("\\.");
+			System.out.println(archive.getFileSize());
+			if (extension.length == 0) {
+				new InvalidMaterialException("editError");
+			}else {
+				material.setExtension(extension[extension.length - 1]);
+			}
 		} catch (InvalidMaterialException e) {
 			messages.add("editError", new ActionMessage(e.getMessage()));
 		} catch (Exception e) {
@@ -221,6 +230,12 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 		}
 		
 		script.append("</script>");
+		
+		//TODO - LOG - Entrega de atividade - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_ENTREGAR_MATERIAL);
+		log.setIdObjeto(material.getId());
+		this.facade.saveLog(log);
 		
 		out.print(script.toString());
 		
@@ -604,7 +619,7 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 		Material material = facade.getMaterialByID(idActivity);
 		
 		response.addHeader("Content-Disposition",
-		"attachment; filename=" + material.getExtension().replace(' ', '_')); 
+		"attachment; filename=" + material.getArchiveName()+ "." + material.getExtension().replace(' ', '_')); 
 		response.setContentType(UtilActivities.defineContentType(material.getExtension()));
 		
 		OutputStream out;
@@ -619,6 +634,11 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//TODO - LOG - Visualizacao de Material - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_VISUALIZACAO_MATERIAL);
+		log.setIdObjeto(material.getId());
+		this.facade.saveLog(log);
 		
 		return null;
 	}
@@ -652,6 +672,7 @@ public class MaterialActions extends org.apache.struts.actions.DispatchAction {
 
 		return forward;
 	}
+	
 	
 	public ActionForward saveMaterialGrade(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) {

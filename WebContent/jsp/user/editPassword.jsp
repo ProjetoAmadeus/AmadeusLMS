@@ -55,7 +55,12 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 					</c:if>
 					<li><html:link action="user.do?method=showViewClassMates"><img src="themes/default/imgs/menu/user-group-16x16.png" border="0" title="Colegas de Sala" />&nbsp;<bean:message key="sideMenu.classmates"/></html:link></li>
 	         		<li><html:link action="openIDActions.do?method=showViewManagerOpenIDs"><img src="themes/default/imgs/menu/openid.png" border="0" title="Google Account"/>&nbsp;Google Account</html:link></li>
-			    </ul>
+			    	<li>
+	         			<html:link action="user.do?method=showViewIntegrationSocialNetworks">
+	         				<img src="themes/default/imgs/menu/users-16x16.png" border="0" title="Social Accounts"/>&nbsp;<bean:message key="sideMenu.integrationSocialNetworks"/>
+		        		</html:link>
+		        	</li>
+				</ul>
 			</div>
 		</div>
 		<div id="pContent" class="pContent">

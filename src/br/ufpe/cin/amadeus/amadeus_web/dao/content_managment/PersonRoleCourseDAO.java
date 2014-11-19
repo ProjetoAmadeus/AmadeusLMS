@@ -19,6 +19,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.GenericDAO;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 
 public interface PersonRoleCourseDAO extends GenericDAO<PersonRoleCourse, Integer>{
@@ -31,4 +32,5 @@ public interface PersonRoleCourseDAO extends GenericDAO<PersonRoleCourse, Intege
 	public List<PersonRoleCourse> getPossibleTeacherOrAssistantsInCourse(Person person, Role roleA, Role roleT, Course course);
 	public List<PersonRoleCourse> getByRoleInCourse(Person person, Course course, Role role);
 	public List<PersonRoleCourse> getStudentRolesCourses(int studentId);
+	public List<PersonRoleCourse> getStudentByUser(AccessInfo accessInfo);
 }

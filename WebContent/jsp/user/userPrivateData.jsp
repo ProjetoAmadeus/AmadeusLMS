@@ -85,6 +85,12 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	         				<img src="themes/default/imgs/menu/openid.png" border="0" title="Google Account"/>&nbsp;Google Account
 		        		</html:link>
 		        	</li>
+					<li>
+	         			<html:link action="user.do?method=showViewIntegrationSocialNetworks">
+	         				<img src="themes/default/imgs/menu/users-16x16.png" border="0" title="Social Accounts"/>&nbsp;<bean:message key="sideMenu.integrationSocialNetworks"/>
+		        		</html:link>
+		        	</li>
+
 	         	</c:if>
 	         	<c:if test="${loggedUserId != requestUserId}">
 	         		<li><bean:message key="sideMenu.sendMessage"/></li>
@@ -189,6 +195,18 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 				<tr>
 					<td class="formAttribute"><bean:message key="editUserForm.description" />:</td>
 					<td><c:if test="${userProfile.person.resume != null}"><bean:write name="userProfile" property="person.resume.description" filter="false" /></c:if></td>
+				</tr>
+
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr>
+					<td class="formAttribute"><bean:message key="userPrivateData.twitterLink" />:</td>
+					<td><c:if test="${userProfile.person.twitterLogin ne null}"><a href="http://www.twitter.com/<bean:write name="userProfile" property="person.twitterLogin" filter="false" />" target="_blank">http://www.twitter.com/<bean:write name="userProfile" property="person.twitterLogin" filter="false" /></a></c:if></td>
+				</tr>
+
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr>
+					<td class="formAttribute"><bean:message key="userPrivateData.facebookLink" />:</td>
+					<td><c:if test="${userProfile.person.facebookLogin ne null}"><a href="http://www.facebook.com/<bean:write name="userProfile" property="person.facebookLogin" filter="false" />" target="_blank">http://www.facebook.com/<bean:write name="userProfile" property="person.facebookLogin" filter="false" /></a></c:if></td>
 				</tr>
 			</table>
 		</div>

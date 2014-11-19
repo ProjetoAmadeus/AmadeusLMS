@@ -26,6 +26,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 public interface CourseDAO extends GenericDAO <Course, Integer>{
 	
 	public List<Course> searchCoursesByUser(AccessInfo userInfo);
+	public List<Course> getCoursesByUser(AccessInfo userInfo);
 	public List<Course> getCoursesByKeyword(Keyword key);
 	public List<Course> getCoursesByContent(String cont);
 	public List<Course> getCoursesByName(String name);

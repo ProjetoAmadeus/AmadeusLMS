@@ -46,7 +46,8 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	</div>
 	<div class="cmFooter">
 		<div id="actions">
-			<a href="${externalLink.url}" target="_blank"><bean:message key="material.externalLink.access" /></a> / 
+<!--			<a href="${externalLink.url}" target="_blank"></a>-->
+			<a onclick="openExternalLinkAtivity('${externalLink.url}', ${externalLink.id});" href="javascript:void(0)"><bean:message key="material.externalLink.access" /></a> / 
 			<a onclick="backEditName(${module.position});" href="javascript:void(0)"><bean:message key="general.close" /></a>
 		</div> 
 	</div>

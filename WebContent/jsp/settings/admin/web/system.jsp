@@ -13,7 +13,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<form id="formWebSettingSystem"> 
 <div class="lineSettings"><strong>Geral</strong></div>
 <div class="hrDiv"></div>
 <div class="lineSettings">
@@ -30,8 +30,14 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 </div>
 <div class="lineSettings">
 	<label class="labelAttribute">Domínio:</label>
-	<input type="text" name="description" value="${webSettings.systemGeneralDomain}" style="width: 250px;" />
+	<input type="text" name="domain" value="${webSettings.systemGeneralDomain}" style="width: 250px;" />
 </div>
+<div class="line"></div>
 <div class="line"></div>
 <div class="lineSettings"><strong>Temas</strong></div>
 <div class="hrDiv"></div>
+<div class="lineSettings">
+<div class="line"></div>
+	<input type="button" value="Salvar Modificações" onclick="saveSystemSettings();" />
+</div>
+</form>

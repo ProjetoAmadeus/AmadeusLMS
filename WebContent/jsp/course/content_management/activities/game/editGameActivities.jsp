@@ -15,9 +15,12 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 <%@ taglib uri="/WEB-INF/struts-html" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-bean" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ page import="br.ufpe.cin.amadeus.amadeus_web.facade.Facade,
-				 java.util.HashMap,br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game" %>
+				 java.util.HashMap,br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game,
+				 java.util.HashMap,br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module" %>
+
 <%int idGame=-1; %>
 <%
 
@@ -26,44 +29,75 @@ idGame = Integer.parseInt(request.getParameter("idGame"));
 Facade facade = Facade.getInstance();
 Game game = facade.getGameById(idGame);
 
-HashMap<String, Object> data = new HashMap<String, Object>();
+HashMap<String, Object> dataGame = new HashMap<String, Object>();
+HashMap<String, Object> dataModule = new HashMap<String, Object>();
 
-data.put("nameGame",game.getName());
-data.put("urlGame", game.getUrl());
-data.put("descriptionGame", game.getDescription());
+dataGame.put("nameGame",game.getName());
+dataGame.put("urlGame", game.getUrl());
+dataGame.put("descriptionGame", game.getDescription());
+dataGame.put("isExternal", game.getLinkExterno());
+dataGame.put("id",game.getId());
 
-request.setAttribute("game", data);
+Module module = game.getModule();
+
+dataModule.put("position", module.getPosition());
+
+request.setAttribute("game", dataGame);
+request.setAttribute("module", dataModule);
+
+
+
 %>
 
-<html:form action="newGame" >
-<td colspan="3" class="cont-tableinterna">
-<table class="tableinterna">
-	<tbody>
-		<tr>
-			<td class="headTab"><bean:message key="activities.game.editTitle"/></td>
-		</tr>
-			<html:errors/>
-		<tr>
-			<td><bean:message key="activities.game.name"/>:<br />
-			<html:text name="game" property="nameGame" /></td>
-		</tr>
-		<tr>
-			<td><bean:message key="activities.game.url"/>:<br />
-			<html:text name="game" property="urlGame" /></td>
-		</tr>
-		<tr>
-			<td><bean:message key="activities.game.description"/>:<br />
-				<html:textarea name="game" property="descriptionGame" styleClass="ativDescriptTextarea"/>
-			</td>
-		</tr>
-		
-		<tr align="right">
-			<td align="right" colspan="3">
-				<a onclick=<%="saveGame('"+(idGame)+"');"%>	href="javascript:void(0)"><bean:message key="general.save" /></a> / 
-				<a onclick="cancelShowListActivity();" href="javascript:void(0)"><bean:message key="general.cancel" /></a> 
-			</td>
-		</tr>
-	</tbody>
-</table>
-</td>
+<script type="text/javascript">
+
+</script>
+
+<div id="gameActivity" class="cmBody">
+<html:form action="newGameActivity" method="post" enctype="multipart/form-data" target="iframeUpload">
+<html:hidden property="method" value="editGame"/>
+<html:hidden property="idGame" value="${game.id}"/>
+	<div class="cmLine">	
+		<label class="labelAttribute"><bean:message key="activities.game.name"/>:</label>
+	</div>
+	<div class="cmLine">
+		<html:text name="gameActivity" property="nameGame" value="${game.nameGame}"/>
+	</div>
+	<div class="cmLine">
+		<label class="labelAttribute">Url externo:</label>
+	</div>
+	<div class="cmLine">
+		<c:if test="${!game.isExternal}">
+			<html:text property="externalUrlGame" />
+		</c:if>
+		<c:if test="${game.isExternal}">
+			<html:text property="externalUrlGame" value="${game.urlGame}"/>
+		</c:if>
+	</div>
+	<div class="cmLine">
+		<label class="labelAttribute">Upload do jogo:</label>
+	</div>
+	<div class="cmLine">
+		<html:file property="urlGame" />
+	</div>
+	<div class="cmLine">
+		<label class="labelAttribute"><bean:message key="activities.game.description"/>:</label>
+	</div>
+	<div class="cmLine">
+		<html:textarea name="gameActivity" property="descriptionGame" styleClass="ativDescriptTextarea" value="${game.descriptionGame}"/>
+	</div>
+	<div class="cmLine">
+		<label class="labelAttribute"><bean:message key="activities.game.image"/>:</label>
+	</div>
+	<div class="cmLine">
+		<html:file property="image" />
+	</div>
+	<div class="cmFooter">
+		<div id="actions">
+				<a onclick="formSubmitEditGame();"	href="javascript:void(0)"><bean:message key="general.save" /></a> / 
+				<a onclick="cancelShowListActivity(${module.position});" href="javascript:void(0)"><bean:message key="general.cancel" /></a> 
+		</div>
+	</div>
 </html:form>
+<iframe name="iframeUpload" style="display:none"></iframe>
+</div>

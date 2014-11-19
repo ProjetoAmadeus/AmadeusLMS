@@ -50,6 +50,11 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		<div id="pLeftMenu" class="pLeftMenu">
 			<c:set var="selectedPosition" value="4" scope="request" />
 			<jsp:include page="/jsp/conf/courseMenu.jsp" />
+			
+			<!-- Added By Nailson Cunha -->
+			<div id="twitter-container">
+				<jsp:include page="/jsp/twittertool/userTwitter.jsp" />
+			</div>
 		</div>
 		<div id="pContent" class="pContent2">
 			<div style="overflow-x: scroll; min-height: 400px;">

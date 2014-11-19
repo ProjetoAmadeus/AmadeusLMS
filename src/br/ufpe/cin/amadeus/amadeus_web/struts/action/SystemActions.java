@@ -13,6 +13,7 @@ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿
 
 package br.ufpe.cin.amadeus.amadeus_web.struts.action;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.LookupDispatchAction;
 
+import repository.User;
+
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ProfileType;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.RoleType;
@@ -74,7 +78,7 @@ public class SystemActions extends LookupDispatchAction {
 	
 	public ActionForward showViewWelcome(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		System.out.println("ShowViewWelcome");
 		ActionForward forward = null;
 		
 		if(!SystemActions.isLoggedUser(request)) {
@@ -148,6 +152,20 @@ public class SystemActions extends LookupDispatchAction {
 		return isLoggedUser; 
 	}
 
+	public static Log getLogUser(HttpServletRequest request) {
+		
+		AccessInfo accessInfo = (AccessInfo) request.getSession().getAttribute("user");
+		
+		Log log = null;
+		
+		if(accessInfo != null) {
+			log = Log.getLog();
+			log.setIdUser(accessInfo.getPerson());
+		}
+		
+		return log; 
+	}
+	
 	public static ActionForward showViewAccessDenied(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -162,6 +180,9 @@ public class SystemActions extends LookupDispatchAction {
 		boolean canViewCourseEvaluations = CoursePermissions.userCanShowViewCourseEvaluations(request, course);
 		boolean canAssistanceRequest = false;
 		boolean canViewCourseContent = false;
+		boolean canViewGraphic = true;
+		boolean canMonitoringHashtag = false;
+		boolean canSendToClassmates = false;
 		
 		AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 		
@@ -173,9 +194,14 @@ public class SystemActions extends LookupDispatchAction {
 			canEditCourse = true;
 			canDeleteCourse = true;
 			canViewCourseContent = true;
+			canMonitoringHashtag = true;
+			canSendToClassmates = true;
+			
 		} else if (userRoleInCourse != null) {
 			if(	userProfileType == ProfileType.PROFESSOR) {
 				canInsertCourse = true;
+				canMonitoringHashtag = true;
+				canSendToClassmates = true;
 			}
 			
 			if(	userRoleInCourse.getRoleType() == RoleType.TEACHER || 
@@ -185,6 +211,8 @@ public class SystemActions extends LookupDispatchAction {
 			
 			if( userRoleInCourse.getRoleType() == RoleType.TEACHER) {
 				canDeleteCourse = true;
+				canMonitoringHashtag = true;
+				canSendToClassmates = true;
 			}
 			
 			if( userRoleInCourse.getRoleType() == RoleType.TEACHER ||
@@ -204,5 +232,8 @@ public class SystemActions extends LookupDispatchAction {
 		request.setAttribute("canViewCourseEvaluations", canViewCourseEvaluations);
 		request.setAttribute("canViewCourseContent", canViewCourseContent);
 		request.setAttribute("canAssistanceRequest", canAssistanceRequest);
+		request.setAttribute("canViewGraphic", canViewGraphic);
+		request.setAttribute("canMonitoringHashtag", canMonitoringHashtag);
+		request.setAttribute("canSendToClassmates", canSendToClassmates);
 	}
 }

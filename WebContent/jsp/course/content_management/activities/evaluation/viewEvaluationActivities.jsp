@@ -257,7 +257,9 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 						
 						</div>
 					</c:forEach>
-					<a onclick="correctEvaluationRealized('correctEvaluationRealized${status.count}',${evaluation.module.position});" href="javascript:void(0)">Salvar Correção</a>
+					<div class="line" style="text-align:right;">
+						<a onclick="correctEvaluationRealized('correctEvaluationRealized${status.count}',${evaluation.module.position});" href="javascript:void(0)" style="text-align:right;">Salvar Correção</a>
+					</div>
 					</form>
 				 </div>
 			</div>

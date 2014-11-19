@@ -36,6 +36,13 @@
 				parameter="method"
 				scope="request"
 				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.SettingsActions">
+		</action>
+		<action name="formWebSettingSystem"
+				path="/webSettingSystem"
+				input="/settingsActions.do?method=showViewSettings"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.SettingsActions">
 		</action>				
 	</action-mappings>
 	

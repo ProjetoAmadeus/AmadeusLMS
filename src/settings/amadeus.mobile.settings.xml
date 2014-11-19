@@ -2,9 +2,9 @@
 <mobile>
 	<database-connection>
 		<driver-class>org.postgresql.Driver</driver-class>
-		<url>jdbc:postgresql://localhost:5432/amadeus_mobile_teste</url>
+		<url>jdbc:postgresql://localhost:5432/amadeus_mobile_droid</url>
 		<username>amadeus</username>
-		<password>amadeus</password>
+		<password>d0rfl3x</password>
 	</database-connection>
 	<sms-data>
 		<login>login</login>

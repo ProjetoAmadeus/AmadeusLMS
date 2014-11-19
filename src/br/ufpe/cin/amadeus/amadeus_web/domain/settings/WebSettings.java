@@ -92,6 +92,9 @@ public class WebSettings extends XMLConfiguration {
 	}
 	
 	public void setSystemGeneralDomain(String systemGeneralDomain) {
+		this.setAutoSave(true);
+		this.setProperty("system.general..domain", systemGeneralDomain);
+		this.setAutoSave(false);
 		this.systemGeneralDomain= systemGeneralDomain;
 	}
 

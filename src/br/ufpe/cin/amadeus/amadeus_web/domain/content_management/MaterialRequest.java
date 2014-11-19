@@ -27,9 +27,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class MaterialRequest implements Serializable{
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)	

@@ -1,18 +1,22 @@
 /**
 Copyright 2008, 2009 UFPE - Universidade Federal de Pernambuco
  
-Este arquivo é parte do programa Amadeus Sistema de Gestão de Aprendizagem, ou simplesmente Amadeus LMS
+Este arquivo ï¿½ parte do programa Amadeus Sistema de Gestï¿½o de Aprendizagem, ou simplesmente Amadeus LMS
  
-O Amadeus LMS é um software livre; você pode redistribui-lo e/ou modifica-lo dentro dos termos da Licença Pública Geral GNU como
-publicada pela Fundação do Software Livre (FSF); na versão 2 da Licença.
+O Amadeus LMS ï¿½ um software livre; vocï¿½ pode redistribui-lo e/ou modifica-lo dentro dos termos da Licenï¿½a Pï¿½blica Geral GNU como
+publicada pela Fundaï¿½ï¿½o do Software Livre (FSF); na versï¿½o 2 da Licenï¿½a.
  
-Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a Licença Pública Geral GNU para maiores detalhes.
+Este programa ï¿½ distribuï¿½do na esperanï¿½a que possa ser ï¿½til, mas SEM NENHUMA GARANTIA; sem uma garantia implï¿½cita de ADEQUAï¿½ï¿½O a qualquer MERCADO ou APLICAï¿½ï¿½O EM PARTICULAR. Veja a Licenï¿½a Pï¿½blica Geral GNU para maiores detalhes.
  
-Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LICENCA.txt", junto com este programa, se não, escreva para a Fundação do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
+Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿½tulo "LICENCA.txt", junto com este programa, se nï¿½o, escreva para a Fundaï¿½ï¿½o do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
 **/
 
 package br.ufpe.cin.amadeus.amadeus_web.dao;
 
+import java.util.Date;
+import java.util.List;
+
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.AmadeusDroidHistoricDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ArchiveDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.CourseDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.DeliveryDAO;
@@ -22,6 +26,7 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HistoryLearningObje
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.HomeworkDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.KeywordDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.LearningObjectDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.LogDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.MaterialDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.MaterialRequestDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.MessageDAO;
@@ -30,14 +35,17 @@ import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.PersonRoleCourseDAO
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.PollDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.RoleDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.VideoIrizDAO;
-import br.ufpe.cin.amadeus.amadeus_web.dao.register.AccessInfoDAO;
-import br.ufpe.cin.amadeus.amadeus_web.dao.register.OpenIDDAO;
-import br.ufpe.cin.amadeus.amadeus_web.dao.register.PersonDAO;
-import br.ufpe.cin.amadeus.amadeus_web.dao.register.ResumeDAO;
-import br.ufpe.cin.amadeus.amadeus_web.dao.register.UserRequestDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.evaluation.EvaluationDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.evaluation.EvaluationRealizedDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.externallink.ExternalLinkDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.AccessInfoDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.MessengerMessageDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.OpenIDDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.PersonDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.ResumeDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.TweetDAO;
+import br.ufpe.cin.amadeus.amadeus_web.dao.register.UserRequestDAO;
+import br.ufpe.cin.amadeus.amadeus_web.domain.register.Tweet;
 
 public abstract class DAOFactory {
 
@@ -88,5 +96,9 @@ public abstract class DAOFactory {
 	public abstract EvaluationDAO getEvaluationDAO();
 	public abstract EvaluationRealizedDAO getEvaluationRealizedDAO();
 	public abstract ExternalLinkDAO getExternalLinkDAO();
+	public abstract AmadeusDroidHistoricDAO getAmadeusDroidHistoricDAO();
+	public abstract LogDAO getLogDAO();
+	public abstract MessengerMessageDAO getMessengerMessageDAO(); //Added by Nailson Cunha
+	public abstract TweetDAO getTweetDAO(); //Added by Nailson Cunha
 }
 

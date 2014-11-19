@@ -22,11 +22,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 public class OpenID implements Serializable {
 	
 	@Id @GeneratedValue (strategy=GenerationType.AUTO)

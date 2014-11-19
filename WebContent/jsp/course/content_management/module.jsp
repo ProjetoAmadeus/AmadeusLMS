@@ -11,13 +11,27 @@ Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA
 Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LICENCA.txt", junto com este programa, se não, escreva para a Fundação do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
 -->
 
+<%@page import="jsx3.gui.Alerts"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo" %>
+<%@ page import="br.ufpe.cin.amadeus.amadeus_web.facade.Facade" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum" %>
+<%@ page import="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum" %>
+<%@ page import="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module" %>
+<%@ page import="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message" %>
 <%@ taglib uri="/WEB-INF/struts-html" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-bean" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-logic" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html:errors/>
+<script type="text/javascript">
+$(function() {
+  $('.nyroModal').nyroModal();
+});
+</script>
 <table class="modAllTitle">
 	<tr>
 		<td class="modTitleName">
@@ -58,7 +72,12 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 				<c:forEach var="material" items="${module.materials}">
 					<c:if test="${material.requestedMaterial == null}">
 					<li class="<c:import url='/module.do?method=getDefineCSSClass&extension=${material.extension}' />">
-						<html:link action="/showMaterial.do?method=showSWF&idActivity=${material.id}&idModule=${module.id}" target="_blank"><bean:write name="material" property="archiveName" filter="false" /></html:link>
+						<c:if test="${material.extension == 'swf' || material.extension == 'jpg' || material.extension == 'jpeg' || material.extension == 'png' || material.extension == 'gif' }">
+							<html:link action="/showMaterial.do?method=showSWF&idActivity=${material.id}&idModule=${module.id}" target="_blank" styleClass="nyroModal"><bean:write name="material" property="archiveName" filter="false" /></html:link>
+						</c:if>
+						<c:if test="${material.extension != 'swf' && material.extension != 'jpg' && material.extension != 'jpeg' && material.extension != 'png' && material.extension != 'gif'}">
+							<html:link action="/showMaterial.do?method=showMaterial&idActivity=${material.id}&idModule=${module.id}" target="_blank"><bean:write name="material" property="archiveName" filter="false" /></html:link>
+						</c:if>
 					</li>
 					</c:if>
 				</c:forEach>
@@ -76,11 +95,37 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		<c:if test="${ (user.typeProfile eq 'ADMIN') || (userRoleInCourse eq 'TEACHER') || (userRoleInCourse eq 'ASSISTANT') }">
 		 	id="activitiesList${module.position}"
 		</c:if> >
-			<c:forEach var="forum" items="${module.forums}">
-				<li class="forum">
-					<a href="javascript:void(0)" onclick="showActivity(${module.position},'forum',${forum.id})"><bean:write name="forum" property="name" filter="false" /></a>
-				</li>
+		<%		
+				Module module = (Module)request.getAttribute("module");
+				List<Forum> moduleforums = module.getForums();
+				List<PersonForum> personforums = (List<PersonForum>)request.getAttribute("forunsperson");				
+				List<Forum> alreadyloaded = new ArrayList<Forum>();
+				int count = 0;%>
+				<c:forEach var="forum" items="${module.forums}">
+				<%	Forum forum = (Forum)pageContext.getAttribute("forum");
+					for(PersonForum personforum: personforums){
+						//se já pertencer ao forum
+						if(forum.equals(personforum.getForum())&&!alreadyloaded.contains(forum)){
+							alreadyloaded.add(forum);
+						//incrementa o contador das mensagens não lidas	
+							for(Message message: forum.getMessages()){
+								if(message.getDate().after(personforum.getLastTimeInForum())){
+									count++;									
+								}
+							}
+							out.write("<li class=\"forum\">");
+							out.write("<a href=\"javascript:void(0)\" onclick=\"showActivity("+module.getPosition()+",'forum',"+forum.getId()+")\">"+forum.getName()+" ("+count+" mensagens não lidas)"+"</a>");
+							out.write("</li>");
+							count = 0;
+						}						
+						
+					}if(!alreadyloaded.contains(forum)){
+							out.write("<li class=\"forum\">");
+							out.write("<a href=\"javascript:void(0)\" onclick=\"showActivity("+module.getPosition()+",'forum',"+forum.getId()+")\">"+forum.getName()+"</a>");
+							out.write("</li>");							
+						}%>
 			</c:forEach>
+			
 			<c:forEach var="poll" items="${module.polls}">
 				<li class="pollItem">
 				<c:set var="answered" value="false" />

@@ -51,4 +51,14 @@ public class MessageHibernateDAO extends GenericHibernateDAO<Message, Integer>
 		int size = forum.getMessages().size();
 		return size;
 	}
+
+	@Override
+	public Message getLastMessage() {
+		StringBuilder hql = new StringBuilder();
+		hql.append("Select m from Message m where m.id = (Select max(id) from Message)");
+		
+		Message result = (Message) getSession().createQuery(hql.toString()).uniqueResult();
+		return result;
+	}
+
 }

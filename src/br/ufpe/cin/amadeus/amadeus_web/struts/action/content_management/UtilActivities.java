@@ -246,7 +246,9 @@ public class UtilActivities {
 				 type.equalsIgnoreCase("png")){
 			
 			cssClass = "imageFile";
-		}else if(type.equalsIgnoreCase("avi") || 
+		}else if(type.equalsIgnoreCase("avi") ||
+				 type.equalsIgnoreCase("swf") ||
+				 type.equalsIgnoreCase("flv") ||
 				 type.equalsIgnoreCase("mov") || 
 				 type.equalsIgnoreCase("mpg") ||
 				 type.equalsIgnoreCase("mpeg")){
@@ -269,7 +271,7 @@ public class UtilActivities {
 	}
 
 	private static String getFileType(String extension) {
-		int length = extension.length();
+		/*int length = extension.length();
 		int dotChar = length - 6;
 		String subString = extension.substring(dotChar);
 		
@@ -278,7 +280,8 @@ public class UtilActivities {
 			subString = extension.substring(dotChar);
 		}
 
-		return extension.substring(dotChar + 1);
+		return extension.substring(dotChar + 1);*/
+		return extension;
 	}	
 	
 	public static String getVideoId(String longId){

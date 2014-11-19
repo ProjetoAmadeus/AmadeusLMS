@@ -9,10 +9,11 @@ publicada pela Fundaï¿½ï¿½o do Software Livre (FSF); na versï¿½o 2 da Licenï¿½a.
 Este programa ï¿½ distribuï¿½do na esperanï¿½a que possa ser ï¿½til, mas SEM NENHUMA GARANTIA; sem uma garantia implï¿½cita de ADEQUAï¿½ï¿½O a qualquer MERCADO ou APLICAï¿½ï¿½O EM PARTICULAR. Veja a Licenï¿½a Pï¿½blica Geral GNU para maiores detalhes.
  
 Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿½tulo "LICENCA.txt", junto com este programa, se nï¿½o, escreva para a Fundaï¿½ï¿½o do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
-**/
+ **/
 
 package br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.forum;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -28,13 +31,15 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import sun.security.provider.SystemSigner;
+//import sun.security.provider.SystemSigner;
 
 import br.ufpe.cin.amadeus.amadeus_mobile.sms.Receiver;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module;
+import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.amadeus.amadeus_web.struts.action.SettingsActions;
@@ -52,58 +57,91 @@ public class ForumActions extends SystemActions {
 	@Override
 	protected Map<String, String> getKeyMethodMap() {
 		Map<String, String> map = new HashMap<String, String>();
-		
+
 		map.put("forumActivity.showViewForumActivity", "showViewForumActivity");
-		map.put("forumActivity.showViewNewForumActivity", "showViewNewForumActivity");
+		map.put("forumActivity.showViewNewForumActivity",
+				"showViewNewForumActivity");
 		map.put("forumActivity.newForumActivity", "newForumActivity");
-		map.put("forumActivity.showViewEditForumActivity", "showViewEditForumActivity");
+		map.put("forumActivity.showViewEditForumActivity",
+				"showViewEditForumActivity");
 		map.put("forumActivity.editForumActivity", "editForumActivity");
 		map.put("forumActivity.deleteForumActivity", "deleteForumActivity");
-		map.put("forumActivity.showViewListMessagesForumActivity", "showViewListMessagesForumActivity");
-		map.put("forumActivity.showViewNewAnswerForumActivity", "showViewNewAnswerForumActivity");
+		map.put("forumActivity.showViewListMessagesForumActivity",
+				"showViewListMessagesForumActivity");
+		map.put("forumActivity.showViewNewAnswerForumActivity",
+				"showViewNewAnswerForumActivity");
+		map.put("forumActivity.showViewNewAnswerForumActivityWithMessage",
+				"showViewNewAnswerForumActivityWithMessage");
 		map.put("forumActivity.answerForumActivity", "answerForumActivity");
-		
+		map.put("forumActivity.answerForumActivityWithMessage",
+				"answerForumActivityWithMessage");
+
 		return map;
 	}
-	
-	public ActionForward showViewForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-	
+
+	public ActionForward showViewForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
 		int idForum = Integer.parseInt(request.getParameter("idForum"));
-		
+		AccessInfo loggedUser = (AccessInfo) request.getSession()
+				.getAttribute("user");
+		AccessInfo user = facade.searchUserById(loggedUser.getId());
+
 		Forum forum = facade.getForumById(idForum);
 		Module module = forum.getModule();
-		//Course course = module.getCourse();
 		
-		//boolean canAnswerForum = facade.isValidationDataToAnswerForum(forum, course);
+		PersonForum personForum = new PersonForum();
+		personForum.getPk().setForum(forum);
+		personForum.getPk().setPerson(user.getPerson());
 		
+		if(user.getPerson().getForuns().contains(personForum)){
+			System.out.println("REGISTRADO NO FORUM");
+			user.getPerson().getForuns().remove(personForum);
+			this.facade.flush();
+			personForum.setLastTimeInForum(new Date());
+			user.getPerson().getForuns().add(personForum);	
+		}
+		// Course course = module.getCourse();
+
+		// boolean canAnswerForum = facade.isValidationDataToAnswerForum(forum,
+		// course);
+
 		request.setAttribute("forum", forum);
 		request.setAttribute("module", module);
-		//request.setAttribute("canAnswerForum", canAnswerForum);
-		
+		// request.setAttribute("canAnswerForum", canAnswerForum);
+
+		// TODO - LOG - Visualizacao de um topico - OK
+		Log log = SystemActions.getLogUser(request);
+		log.setCodigo(Log.LOG_CODIGO_FORUM_TOPICO);
+		log.setIdObjeto(forum.getId());
+		facade.saveLog(log);
+
 		return mapping.findForward(FORWARD_SHOW_VIEW_FORUM_ACTIVITY);
 	}
-	
-	public ActionForward showViewNewForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-		
+
+	public ActionForward showViewNewForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
 		int idModule = Integer.parseInt(request.getParameter("idModule"));
-		
+
 		Module module = facade.getModuleById(idModule);
-		
+
 		request.setAttribute("module", module);
-		
+
 		return mapping.findForward(FORWARD_SHOW_VIEW_NEW_FORUM_ACTIVITY);
 	}
-	
-	public ActionForward newForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-		
+
+	public ActionForward newForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
 		DynaActionForm myForm = (DynaActionForm) form;
 		ActionMessages messages = new ActionMessages();
 
 		int idModule = Integer.parseInt(request.getParameter("idModule"));
-		
+
 		Module module = facade.getModuleById(idModule);
 		Course course = module.getCourse();
 
@@ -127,7 +165,7 @@ public class ForumActions extends SystemActions {
 			module.getForums().add(f);
 
 			facade.flush();
-			if(SettingsActions.mobileSettings.getSmsForum().equals("on")){
+			if (SettingsActions.mobileSettings.getSmsForum().equals("on")) {
 				Receiver receiver = new Receiver();
 				receiver.addMaterial(course.getId(), module.getId(), f.getId());
 			}
@@ -138,9 +176,10 @@ public class ForumActions extends SystemActions {
 
 	}
 
-	public ActionForward showViewEditForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-		
+	public ActionForward showViewEditForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
 		int idForum = Integer.parseInt(request.getParameter("idForum"));
 
 		Forum forum = facade.getForumById(idForum);
@@ -149,60 +188,65 @@ public class ForumActions extends SystemActions {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 
 		data.put("idForum", forum.getId());
-		data.put("nameForum",forum.getName());
+		data.put("nameForum", forum.getName());
 		data.put("descriptionForum", forum.getDescription());
 
 		request.setAttribute("forum", data);
 		request.setAttribute("module", module);
-		
+
 		return mapping.findForward(FORWARD_SHOW_VIEW_EDIT_FORUM_ACTIVITY);
 	}
-	
-	public ActionForward editForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
+
+	public ActionForward editForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
 
 		DynaActionForm myForm = (DynaActionForm) form;
 		int idForum = Integer.parseInt(request.getParameter("idForum"));
-		
+
 		Forum forum = facade.getForumById(idForum);
-		
+
 		forum.setName(myForm.getString("topicForum"));
 		forum.setDescription(myForm.getString("descriptionForum"));
 
 		facade.flush();
-		
+
 		// AJAX REVERSO
 		UtilActivities.eraseAndWriteNameActivity(forum.getModule().getId());
 		return null;
 	}
 
-	public ActionForward deleteForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ActionForward deleteForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
 
 		int idForum = Integer.parseInt(request.getParameter("idForum"));
-		
+
 		Forum forum = facade.getForumById(idForum);
 		Module module = forum.getModule();
 		Course course = module.getCourse();
-		
+
 		module.getForums().remove(forum);
-		
+
 		facade.flush();
-		
-		//ENVIO SMS COMENTADO
-		/*Receiver receiver = new Receiver();
-		receiver.removeMaterial(course.getId(), module.getId(), idForum);*/
-		
+
+		// ENVIO SMS COMENTADO
+		/*
+		 * Receiver receiver = new Receiver();
+		 * receiver.removeMaterial(course.getId(), module.getId(), idForum);
+		 */
+
 		UtilActivities.eraseAndWriteNameActivity(module.getId());
 		return null;
 	}
 
-	public ActionForward showViewListMessagesForumActivity(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		
+	public ActionForward showViewListMessagesForumActivity(
+			ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
 		int idForum = Integer.parseInt(request.getParameter("idForum"));
-		Forum forum = facade.getForumById(idForum);		
-		
+		Forum forum = facade.getForumById(idForum);
+
 		int maxResultado = 5;
 		int qtdIdPorPag = 10;
 		int pivo;
@@ -213,74 +257,83 @@ public class ForumActions extends SystemActions {
 		int menos = 0;
 		int mais = 0;
 		int numeroDePagina = 0;
-	
-		pivo = (int)Math.ceil((double)qtdIdPorPag/(double)2);
-		
+
+		pivo = (int) Math.ceil((double) qtdIdPorPag / (double) 2);
+
 		int totalResultado = facade.getSizeSearchMessageByForum(forum);
 
 		if (request.getParameter("pagina") == null) {
-		   pagina = 1;
+			pagina = 1;
 		} else {
-			pagina = Integer.parseInt((request.getParameter("pagina")).toString());
-			
-			if (pagina < 1){
-				pagina = (int)Math.ceil((double)totalResultado/(double)maxResultado);;
+			pagina = Integer.parseInt((request.getParameter("pagina"))
+					.toString());
+
+			if (pagina < 1) {
+				pagina = (int) Math.ceil((double) totalResultado
+						/ (double) maxResultado);
+				;
 			}
 		}
 
 		int inicio = pagina;
-		
-		if (totalResultado == 0){
-		
+
+		if (totalResultado == 0) {
+
 		} else {
-			messages = (List<Message>)facade.searchMessageByPaging(maxResultado, inicio, forum);
+			messages = (List<Message>) facade.searchMessageByPaging(
+					maxResultado, inicio, forum);
 		}
-		
+
 		if (totalResultado > 1) {
 			// Calculando pagina anterior
 			menos = pagina - 1;
 			// Calculando pagina posterior
 			mais = pagina + 1;
-			numeroDePagina = (int)Math.ceil((double)totalResultado/(double)maxResultado);
+			numeroDePagina = (int) Math.ceil((double) totalResultado
+					/ (double) maxResultado);
 		}
-		
-		if ((pagina-pivo) < 1 ) {
-	          anterior = 1;
+
+		if ((pagina - pivo) < 1) {
+			anterior = 1;
 		} else {
-	          anterior = pagina-pivo;
+			anterior = pagina - pivo;
 		}
-	    
-		if ((pagina+pivo) > numeroDePagina ) {
-	          posterior = numeroDePagina;
+
+		if ((pagina + pivo) > numeroDePagina) {
+			posterior = numeroDePagina;
 		} else {
-	          posterior = pagina + pivo;
+			posterior = pagina + pivo;
 		}
-		
-		request.setAttribute("maxResultado",maxResultado);
-		request.setAttribute("qtdIdPorPag",qtdIdPorPag);
-		request.setAttribute("pivo",pivo);
-		request.setAttribute("pagina",pagina);
-		request.setAttribute("anterior",anterior);
-		request.setAttribute("posterior",posterior);
-		request.setAttribute("menos",menos);
-		request.setAttribute("mais",mais);
-		request.setAttribute("numeroDePagina",numeroDePagina);
-		request.setAttribute("messages",messages);
+
+		request.setAttribute("maxResultado", maxResultado);
+		request.setAttribute("qtdIdPorPag", qtdIdPorPag);
+		request.setAttribute("pivo", pivo);
+		request.setAttribute("pagina", pagina);
+		request.setAttribute("anterior", anterior);
+		request.setAttribute("posterior", posterior);
+		request.setAttribute("menos", menos);
+		request.setAttribute("mais", mais);
+		request.setAttribute("numeroDePagina", numeroDePagina);
+		request.setAttribute("messages", messages);
 		request.setAttribute("totalResultado", totalResultado);
 		request.setAttribute("forum", forum);
-		
-		return mapping.findForward(FORWARD_SHOW_VIEW_LIST_MESSAGES_FORUM_ACTIVITY);
+		request.setAttribute("module", forum.getModule());
+
+		return mapping
+				.findForward(FORWARD_SHOW_VIEW_LIST_MESSAGES_FORUM_ACTIVITY);
 	}
-	
-	public ActionForward showViewNewAnswerForumActivity(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-		
+
+	public ActionForward showViewNewAnswerForumActivity(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
 		int idForum = Integer.parseInt(request.getParameter("idForum"));
-		
+
 		Forum forum = facade.getForumById(idForum);
 		Module module = forum.getModule();
-		
-		AccessInfo user = (AccessInfo)request.getSession().getAttribute("user");
+
+		AccessInfo user = (AccessInfo) request.getSession()
+				.getAttribute("user");
 		user = facade.searchUserById(user.getId());
 
 		Person person = user.getPerson();
@@ -288,15 +341,39 @@ public class ForumActions extends SystemActions {
 		request.setAttribute("module", module);
 		request.setAttribute("forum", forum);
 		request.setAttribute("person", person);
-		
+
 		return mapping.findForward(FORWARD_SHOW_VIEW_NEW_ANSWER_FORUM_ACTIVITY);
 	}
-	
+
+	public ActionForward showViewNewAnswerForumActivityWithMessage(
+			ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		int idForum = Integer.parseInt(request.getParameter("idForum"));
+		int idMessage = Integer.parseInt(request.getParameter("idMessage"));
+
+		Forum forum = facade.getForumById(idForum);
+		Message message = facade.getMessageById(idMessage);
+		Module module = forum.getModule();
+
+		AccessInfo user = (AccessInfo) request.getSession()
+				.getAttribute("user");
+		user = facade.searchUserById(user.getId());
+
+		Person person = user.getPerson();
+
+		request.setAttribute("message", message);
+		request.setAttribute("module", module);
+		request.setAttribute("forum", forum);
+		request.setAttribute("person", person);
+
+		return mapping.findForward(FORWARD_SHOW_VIEW_NEW_ANSWER_FORUM_ACTIVITY);
+	}
+
 	public ActionForward answerForumActivity(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		ActionForward forward = null;
-		
 		if(SystemActions.isLoggedUser(request)) {
 			DynaActionForm myForm = (DynaActionForm) form;
 
@@ -316,17 +393,107 @@ public class ForumActions extends SystemActions {
 
 			forum.getMessages().add(msg);
 
+			PersonForum personForum = new PersonForum();
+			personForum.getPk().setForum(forum);
+			personForum.getPk().setPerson(user.getPerson());
+			
+			//se for o primeiro post do usuário
+			if(!user.getPerson().getForuns().contains(personForum)){
+				personForum.setLastTimeInForum(date);
+				user.getPerson().getForuns().add(personForum);				
+			}else{
+				user.getPerson().getForuns().remove(personForum);
+				this.facade.flush();
+				personForum.setLastTimeInForum(date);
+				user.getPerson().getForuns().add(personForum);
+			}
+			
+			
 			// se for a primeira resposta set a data como a atual.
 			if (forum.getMessages().size() < 2) {
 				forum.setCreationDate(date);
 			}
 
 			facade.flush();
+			
+			//TODO - LOG - Nova resposta para um topico - OK
+			Log log = SystemActions.getLogUser(request);
+			log.setCodigo(Log.LOG_CODIGO_FORUM_POST);
+			log.setIdObjeto(msg.getId());
+			log.setTamanhoMensagem(msg.getBody().length());
+			facade.saveLog(log);
+			
 		} else {
 			forward = new SystemActions().showViewWelcome(mapping, form, request, response);
 		}
 		
 		return forward;
 	}
+
+	public ActionForward answerForumActivityWithMessage(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		ActionForward forward = null;
+
+		if (SystemActions.isLoggedUser(request)) {
+			DynaActionForm myForm = (DynaActionForm) form;
+			int idMessage = Integer.parseInt(request.getParameter("idMessage"));
+			int idForum = Integer.parseInt(request.getParameter("idForum"));
+			Forum forum = facade.getForumById(idForum);
+			Message messagereply = facade.getMessageById(idMessage);
+			AccessInfo loggedUser = (AccessInfo) request.getSession()
+					.getAttribute("user");
+			AccessInfo user = facade.searchUserById(loggedUser.getId());
+
+			Message msg = new Message();
+			msg.setMessageReply(messagereply);
+			msg.setBody(myForm.getString("answerBody"));
+
+			Date date = new Date();
+
+			msg.setDate(date);
+			msg.setAuthor(user.getPerson());
+
+			forum.getMessages().add(msg);
+			
+			PersonForum personForum = new PersonForum();
+			personForum.getPk().setForum(forum);
+			personForum.getPk().setPerson(user.getPerson());
+			
+			//se for o primeiro post do usuário
+			if(!user.getPerson().getForuns().contains(personForum)){
+				personForum.setLastTimeInForum(date);
+				user.getPerson().getForuns().add(personForum);				
+			}else{
+				user.getPerson().getForuns().remove(personForum);
+				this.facade.flush();
+				personForum.setLastTimeInForum(date);
+				user.getPerson().getForuns().add(personForum);
+			}
+
+			// se for a primeira resposta set a data como a atual.
+			if (forum.getMessages().size() < 2) {
+				forum.setCreationDate(date);
+			}
+
+			facade.flush();
+
+			// TODO - LOG - Nova resposta para um topico - OK
+			Log log = SystemActions.getLogUser(request);
+			log.setCodigo(Log.LOG_CODIGO_FORUM_POST);
+			log.setIdObjeto(msg.getId());
+			log.setTamanhoMensagem(msg.getBody().length());
+			facade.saveLog(log);
+
+		} else {
+			forward = new SystemActions().showViewWelcome(mapping, form,
+					request, response);
+		}
+
+		return forward;
+	}
+
 	
+
 }

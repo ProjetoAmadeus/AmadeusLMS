@@ -230,5 +230,9 @@ function ajaxLoadingConfig(div, innerHTML) {
  function saveModulePressEnter(event,idModule, idModuleBD) {
 	if (event.keyCode == 13) {
 		saveModule(idModule,idModuleBD);
-	}
+	}	
+ }
+ function showModuleGraphic (idModule, graphic){
+	 UtilDWR.getInclude('/module.do?method=getIdCourseByIdModule&idModule='+idModule,
+			 function(data) {});
  }
