@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans>
+
+		<form-bean name="logonForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="login" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="editPasswordForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="currentPassword" type="java.lang.String" />
+			<form-property name="newPassword" type="java.lang.String" />
+			<form-property name="newPasswordConfirmation" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="userNewForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="city" type="java.lang.String" />
+			<form-property name="state" type="java.lang.String" />
+			<form-property name="cpf" type="java.lang.String" />
+			<form-property name="phoneNumber" type="java.lang.String" />
+			<form-property name="birthDate" type="java.lang.String" />
+			<form-property name="gender" type="java.lang.String" />
+			<form-property name="image" type="org.apache.struts.upload.FormFile"/>
+			<form-property name="userType" type="java.lang.String" />
+			<form-property name="login" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+			<form-property name="email" type="java.lang.String" />
+			<form-property name="degree" type="java.lang.String" />
+			<form-property name="instituition" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="year" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="editUserFormInManagerUsers" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="city" type="java.lang.String" />
+			<form-property name="state" type="java.lang.String" />
+			<form-property name="cpf" type="java.lang.String" />
+			<form-property name="phoneNumber" type="java.lang.String" />
+			<form-property name="birthDate" type="java.lang.String" />
+			<form-property name="gender" type="java.lang.String" />
+			<form-property name="image" type="org.apache.struts.upload.FormFile"/>
+			<form-property name="userType" type="java.lang.String" />
+			<form-property name="login" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+			<form-property name="email" type="java.lang.String" />
+			<form-property name="degree" type="java.lang.String" />
+			<form-property name="instituition" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="year" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="editUserForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="cpf" type="java.lang.String" />
+			<form-property name="phoneNumber" type="java.lang.String" />
+			<form-property name="gender" type="java.lang.String" />
+			<form-property name="birthDate" type="java.lang.String" />
+			<form-property name="email" type="java.lang.String" />
+			<form-property name="state" type="java.lang.String" />
+			<form-property name="city" type="java.lang.String" />
+			<form-property name="degree" type="java.lang.String" />
+			<form-property name="year" type="java.lang.String" />
+			<form-property name="instituition" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="image" type="org.apache.struts.upload.FormFile"/>
+		</form-bean>
+
+		<form-bean name="formUserRegister"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="login" type="java.lang.String" />
+			<form-property name="email" type="java.lang.String" />
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+			<form-property name="passwordConfirmation" type="java.lang.String" />
+		</form-bean>
+
+		<form-bean name="remindPasswordForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="email" type="java.lang.String" />
+		</form-bean>
+
+		<form-bean
+            name="requestForm"
+            type="org.apache.struts.validator.DynaValidatorForm">
+            <form-property name="degree" type="java.lang.String"/>
+            <form-property name="year"	type="java.lang.String"/>
+            <form-property name="instituition" type="java.lang.String"/>
+            <form-property name="description" type="java.lang.String"/>
+            <form-property name="interest" type="java.lang.String"/>
+        </form-bean>
+
+		<form-bean
+            name="assistanceRequestForm"
+            type="org.apache.struts.validator.DynaValidatorForm">
+            <form-property name="degree" type="java.lang.String"/>
+            <form-property name="year"	type="java.lang.Integer"/>
+            <form-property name="instituition" type="java.lang.String"/>
+            <form-property name="description" type="java.lang.String"/>
+            <form-property name="interest" type="java.lang.String"/>
+        	<form-property name="courseId" type="java.lang.Integer"/>
+        </form-bean>
+        
+        <form-bean
+            name="teachingRequestForm"
+            type="org.apache.struts.validator.DynaValidatorForm">
+            <form-property name="degree" type="java.lang.String"/>
+            <form-property name="year"	type="java.lang.Integer"/>
+            <form-property name="instituition" type="java.lang.String"/>
+            <form-property name="description" type="java.lang.String"/>
+            <form-property name="interest" type="java.lang.String"/>
+        </form-bean>
+
+	</form-beans>
+	<global-exceptions />
+	<global-forwards>
+		<forward name="fShowViewClassMates" path="/jsp/user/userClassMates.jsp" />
+		<forward name="fShowViewInsertUser" path="/jsp/user/insertUser.jsp" />
+		<forward name="fProject" path="/fProject.do" />
+		<forward name="fCases" path="/fCases.do" />
+		<forward name="fCCTE" path="/fCCTE.do" />
+		<forward name="fReachUs" path="/fReachUs.do" />
+		<forward name="fLicense" path="/fLicense.do" />
+		<forward name="fRemindPassword" path="/fRemindPassword.do" />
+		<forward name="signOut" path="/signOut.do" />
+		<forward name="fShowViewEditPassword" path="/jsp/user/editPassword.jsp" />
+		<forward name="fShowViewMyProfile" path="/jsp/user/userPrivateData.jsp" />
+		<forward name="fShowViewPublicData" path="/jsp/user/userPublicData.jsp" />
+		<forward name="fNotAllowed" path="/fNotAllowed.do" />
+		<forward name="fShowViewTeachingRequest" path="/jsp/user/teachingRequest.jsp" />
+		<forward name="fShowViewAssistanceRequest" path="/jsp/user/assistanceRequest.jsp" />
+		<forward name="fMailBox" path="/fMailBox.do" />
+		<forward name="fContacts" path="/fContacts.do" />
+		<forward name="fOnlineContacts" path="/fOnlineContacts.do" />
+		<forward name="fClassmates" path="/fClassmates.do" />
+		<forward name="fEditUser" path="fEditUser.do" />
+		<forward name="fInsertCourseStepOne" path="fInsertCourseStepOne.do" />
+		<forward name="fReplicateCourseStepOne" path="fReplicateCourseStepOne.do" />
+        <forward name="assistanceRequestSuccess" path="/jsp/course/viewCourse.jsp"/>
+        <forward name="fShowViewAdminPendingTasks" path="/jsp/user/adminPendingTasks.jsp" />
+		<forward name="fShowViewTeacherPendingTasks" path="/jsp/user/teacherPendingTasks.jsp" />
+		<forward name="fShowViewStudentPendingTasks" path="/jsp/user/studentPendingTasks.jsp" />
+		<forward name="fViewEditUser" path="/jsp/user/editUser.jsp" />
+		<forward name="fShowDefaultPhoto" path="/themes/default/imgs/005.jpg" />
+		<forward name="fShowViewOnlineUsers" path="/jsp/user/onlineUsers.jsp" />
+		
+		<forward name="fShowViewAllUsersInManagerUsers" path="/jsp/user/manager/viewAllUsers.jsp" />
+		<forward name="fShowViewAllCoursesInManagerUsers" path="/jsp/user/manager/viewAllCourses.jsp" />
+		<forward name="fShowViewUserNewInManagerUsers" path="/jsp/user/manager/viewUserNew.jsp" />
+		<forward name="fShowViewEditUserInManagerUsers" path="/jsp/user/manager/viewEditUser.jsp" />
+		<forward name="fShowViewUserProfileInManagerUsers" path="/jsp/user/manager/viewUserProfile.jsp" />
+		<forward name="fShowViewSendMailInManagerUsers" path="/jsp/user/manager/viewSendMail.jsp" />
+		
+	</global-forwards>
+	<action-mappings>
+		
+		<action path="/user"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+		</action>
+		
+		<action path="/managerUser"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.manager.ManagerUserActions">
+		</action>
+		
+		<action name="formUserRegister" input="/jsp/user/insertUser.jsp"
+			parameter="insertUser" path="/insertUser" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions" />
+
+		<action path="/viewEditUser"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+		</action>
+		
+		<action path="/userReportError"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+		</action>
+		
+		<action path="/editUser" 
+				name="editUserForm" 
+				input="/viewEditUser.do?method=Editar Perfil"
+				parameter="editUser"  
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+			<forward name="cancel" path="/user.do?method=showViewMyProfile" redirect="true"/>
+		</action>
+
+		<action path="/userNewForm"
+				name="userNewForm"
+				input="/user.do?method=showViewUserNewInManagerUsers"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+		</action>
+
+		<action path="/editUserFormInManagerUsers"
+				name="editUserFormInManagerUsers"
+				input="/user.do?method=showViewEditUserInManagerUsers"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+		</action>
+		
+		<action name="logonForm" input="/system.do?method=showViewWelcome"
+			path="/validateLogin" parameter="logonForm" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+			<forward name="success" path="/system.do?method=showViewMenu" redirect="true" />
+		</action>
+		
+		<action name="editPasswordForm"
+				input="/jsp/user/editPassword.jsp" 
+				path="/editPassword"
+				parameter="editPassword" 
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions">
+				<forward name="success" path="/user.do?method=showViewMyProfile" redirect="true"/>
+		</action>
+
+		<action input="/jsp/user/RemindPassword.jsp"
+			path="/remindPassword" name="remindPasswordForm"
+			parameter="remindPassword"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions" />
+			
+		<action path="/signOut"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+			parameter="parameter" 
+			scope="request">
+			<forward name="success" path="/system.do?method=showViewWelcome" />
+		</action>
+		
+		<action
+			path="/teachingRequest"
+            type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+            parameter="teachingRequest"
+            name="teachingRequestForm"
+            scope="request"
+            input="/user.do?method=showViewTeachingRequest">				
+            <forward name="success" path="/user.do?method=showViewMyProfile" redirect="true"/>
+		</action>
+		
+		<action
+			path="/assistanceRequest"
+            type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+            parameter="assistanceRequest"
+            name="assistanceRequestForm"
+            scope="request"
+            input="/user.do?method=showViewAssistanceRequest">				
+            <forward name="success" path="/course.do?method=showViewCourse"/>
+		</action>
+		
+		<action
+			path="/disapprovedTeachingRequest"
+            type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+            parameter="parameter"
+            scope="request">
+		</action>
+		
+		<action
+			path="/approvedTeachingRequest"
+            type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+            parameter="parameter"
+            scope="request">
+		</action>
+		
+		<action
+			path="/disapproveAssistanceRequest"
+            type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+            parameter="parameter"
+            scope="request">
+		</action>
+		
+		<action
+			path="/approveAssistanceRequest"
+            type="br.ufpe.cin.amadeus.amadeus_web.struts.action.UserActions"
+            parameter="parameter"
+            scope="request">
+		</action>
+
+		<!-- ABAIXO ForwardAction -->
+		
+		<action parameter="/jsp/user/editUser.jsp" path="/fEditUser"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/user/RemindPassword.jsp"
+			path="/fRemindPassword"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/amadeus/institutional_menu/project.jsp"
+			path="/fProject" type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/amadeus/institutional_menu/cases.jsp"
+			path="/fCases" type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/amadeus/institutional_menu/ccte.jsp"
+			path="/fCCTE" type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/amadeus/institutional_menu/reachUs.jsp"
+			path="/fReachUs" type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/amadeus/institutional_menu/license.jsp"
+			path="/fLicense" type="org.apache.struts.actions.ForwardAction" />
+
+		<action parameter="/jsp/notAllowed.jsp" path="/fNotAllowed"
+			type="org.apache.struts.actions.ForwardAction" />
+			
+	</action-mappings>
+	<controller nocache="true" />
+	<message-resources
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources"
+		null="false" />
+</struts-config>

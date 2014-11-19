@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="searchCourseForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="courseName" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="advancedSearchCourseForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="professorName" type="java.lang.String" />
+			<form-property name="initialDate" type="java.lang.String" />
+			<form-property name="finalDate" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="viewCourseForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="id" type="java.lang.Integer" />
+		</form-bean>
+		
+		<form-bean name="formRegisterCourseStepOne"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="objectives" type="java.lang.String" />
+			<form-property name="content" type="java.lang.String" />
+			<form-property name="maxAmountStudents"
+				type="java.lang.String" />
+			<form-property name="initialRegistrationDay"
+				type="java.lang.String" />
+			<form-property name="initialRegistrationMonth"
+				type="java.lang.String" />
+			<form-property name="initialRegistrationYear"
+				type="java.lang.String" />
+			<form-property name="finalRegistrationDay"
+				type="java.lang.String" />
+			<form-property name="finalRegistrationMonth"
+				type="java.lang.String" />
+			<form-property name="finalRegistrationYear"
+				type="java.lang.String" />
+			<form-property name="initialCourseDay"
+				type="java.lang.String" />
+			<form-property name="initialCourseMonth"
+				type="java.lang.String" />
+			<form-property name="initialCourseYear"
+				type="java.lang.String" />
+			<form-property name="finalCourseDay"
+				type="java.lang.String" />
+			<form-property name="finalCourseMonth"
+				type="java.lang.String" />
+			<form-property name="finalCourseYear"
+				type="java.lang.String" />
+			<form-property name="courseId" type="java.lang.Integer" />
+			<form-property name="keywords" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="formRegisterCourseStepTwo"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="keywords" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="changeTeacher" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="teacher" type="java.lang.String"></form-property>
+		</form-bean>
+
+		<form-bean name="formEditCourse" 
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="id" type="java.lang.Integer" />
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="objectives" type="java.lang.String" />
+			<form-property name="content" type="java.lang.String" />
+			<form-property name="maxAmountStudents"
+				type="java.lang.String" />
+			<form-property name="initialRegistrationDay"
+				type="java.lang.String" />
+			<form-property name="initialRegistrationMonth"
+				type="java.lang.String" />
+			<form-property name="initialRegistrationYear"
+				type="java.lang.String" />
+			<form-property name="finalRegistrationDay"
+				type="java.lang.String" />
+			<form-property name="finalRegistrationMonth"
+				type="java.lang.String" />
+			<form-property name="finalRegistrationYear"
+				type="java.lang.String" />
+			<form-property name="initialCourseDay"
+				type="java.lang.String" />
+			<form-property name="initialCourseMonth"
+				type="java.lang.String" />
+			<form-property name="initialCourseYear"
+				type="java.lang.String" />
+			<form-property name="finalCourseDay"
+				type="java.lang.String" />
+			<form-property name="finalCourseMonth"
+				type="java.lang.String" />
+			<form-property name="finalCourseYear"
+				type="java.lang.String" />
+			<form-property name="courseId" type="java.lang.Integer" />
+			<form-property name="keywords" type="java.lang.String" />
+		</form-bean>
+
+	</form-beans>
+	<global-exceptions />
+	<global-forwards>
+		<forward name="fInsertCourseStepOne" path="/fInsertCourseStepOne.do" />
+		<forward name="fReplicateCourseStepOne" path="/fReplicateCourseStepOne.do" />
+		<forward name="fInsertCourseStepTwo" path="/fInsertCourseStepTwo.do" />
+		<forward name="fShowViewChangeTeacher" path="/jsp/course/viewChangeTeacher.jsp" />
+		<forward name="fShowViewEditCourse" path="/jsp/course/editCourse.jsp" />
+		<forward name="fViewDeleteConfirmation" path="/fViewDeleteConfirmation.do" />
+		<forward name="fProject" path="/fProject.do" />
+		<forward name="fCases" path="/fCases.do" />
+		<forward name="fCCTE" path="/fCCTE.do" />
+		<forward name="fReachUs" path="/fReachUs.do" />
+		<forward name="fLicense" path="/fLicense.do" />
+		<forward name="fRemindPassword" path="/fRemindPassword.do" />
+		<forward name="fSearchCourse" path="/fSearchCourse.do" />
+		<forward name="fShowViewCourse" path="/jsp/course/viewCourse.jsp" />
+		<forward name="fShowViewCourseNotLogged" path="/jsp/course/viewCourseNotLogged.jsp" />
+		<forward name="fShowViewCourseParticipants" path="/jsp/course/viewCourseParticipants.jsp" />
+		<forward name="signOut" path="/signOut.do" />
+		<forward name="fShowViewShowModules" path="/jsp/course/content_management/showModules.jsp"/>
+		
+		<forward name="fShowViewCourseEvaluations" path="/jsp/course/viewCourseEvaluations.jsp"/>
+		<forward name="fShowViewSendMail" path="/jsp/course/viewSendMail.jsp"/>
+		
+	</global-forwards>
+	<action-mappings>
+	
+		<action path="/courseMenu"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions"
+			parameter="method" scope="request" />
+		
+		<action path="/course"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions"
+			parameter="method" scope="request" />
+			
+		<action path="/advancedCourse" name="advancedSearchCourseForm"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.manager.ManagerUserActions"
+			parameter="method" scope="request" />
+		
+		<action input="/system.do?method=showViewMenu" name="searchCourseForm"
+			parameter="searchCourse" path="/searchCourse" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions"/>
+		
+		<action parameter="/jsp/course/viewCourses.jsp"
+			path="/fSearchCourse"
+			type="org.apache.struts.actions.ForwardAction" />
+		
+		<action name="formChangeTeacher"
+			input="/course.do?method=changeTeacher"
+			path="/changeTeacher" parameter="method"
+			scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions" />	
+			
+		<action name="formRegisterCourseStepOne"
+			input="/jsp/course/insertCourseStepOne.jsp"
+			path="/insertCourseStepOne" parameter="insertCourseStepOne"
+			scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions" />
+			
+		<action name="formRegisterCourseStepOne"
+			input="/jsp/course/replicateCourseStepOne.jsp"
+			path="/replicateCourseStepOne" parameter="replicateCourseStepOne"
+			scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions" />	
+		
+		<action name="viewCourseForm"
+			input="/jsp/course/viewCourse.jsp"
+			path="/viewCourse" parameter="viewCourse"
+			scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions" />
+			
+		<action parameter="/jsp/course/insertCourseStepOne.jsp"
+			path="/fInsertCourseStepOne"
+			type="org.apache.struts.actions.ForwardAction" />
+			
+		<action parameter="/jsp/course/replicateCourseStepOne.jsp"
+			path="/fReplicateCourseStepOne"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action name="formRegisterCourseStepTwo"
+			input="/jsp/course/insertCourseStepTwo.jsp"
+			path="/insertCourseStepTwo" parameter="insertCourseStepTwo"
+			scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions" />
+
+		<action parameter="/jsp/course/insertCourseStepTwo.jsp"
+			path="/fInsertCourseStepTwo"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action name="formEditCourse" input="/course.do?method=showViewEditCourse"
+			path="/editCourse" parameter="editCourse" scope="request"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.CourseActions">
+			</action>
+
+		<action path="/fViewDeleteConfirmation"
+			parameter="/jsp/course/viewCourseDeleteConfirmation.jsp"
+			scope="request"
+			type="org.apache.struts.actions.ForwardAction" />
+
+	</action-mappings>
+	<controller nocache="true"  />
+	<message-resources null="false"
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources" />
+</struts-config>

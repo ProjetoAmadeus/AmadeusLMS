@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans>
+
+	</form-beans>
+	<global-exceptions />
+	<global-forwards>
+		<forward name="fURLLoggedUser" path="/system.do?method=showViewMenu" />
+		
+		<forward name="fShowViewManagerOpenIDs" path="/jsp/openid/managerOpenIDs.jsp" />
+		<forward name="fManagerOpenIDs" path="/openIDActions.do?method=showViewManagerOpenIDs" />
+	</global-forwards>
+	<action-mappings>
+		<action path="/openIDActions"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.openid.OpenIDActions">
+		</action>	
+	</action-mappings>
+	<controller nocache="true" />
+</struts-config>

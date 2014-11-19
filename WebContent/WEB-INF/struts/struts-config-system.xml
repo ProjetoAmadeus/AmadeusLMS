@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans />
+	<global-exceptions />
+	
+	<global-forwards>
+		<forward name="fShowViewWelcome" path="/jsp/welcome.jsp" />
+		<forward name="fShowViewMenu" path="/jsp/menu.jsp" />
+		<forward name="fShowViewPageNotFound" path="/jsp/error/viewPageNotFound.jsp" />
+		<forward name="fShowViewException" path="/jsp/error/viewException.jsp" />
+		<forward name="fShowViewAccessDenied" path="/jsp/error/viewAccessDenied.jsp" />
+	</global-forwards>
+	
+	<action-mappings>
+		<action path="/system"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.SystemActions">
+		</action>				
+	</action-mappings>
+	
+	<controller nocache="true" />
+	<message-resources
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources"
+		null="false" />
+</struts-config>

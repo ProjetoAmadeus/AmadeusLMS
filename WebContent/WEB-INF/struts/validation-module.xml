@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+                                 "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+<form-validation>
+	<formset>
+		<form name="gameActivity">
+			<field property="nameGame"
+                depends="required">
+                    <arg key="activities.game.name"/>                    
+            </field>
+			<field property="descriptionGame"
+                depends="required">
+                    <arg key="activities.game.description"/>
+            </field>
+			<field property="urlGame"
+                depends="required">
+                    <arg key="activities.game.url"/>
+            </field>
+            <field property="maxUsers"
+                depends="required">
+                    <arg key="activities.game.maxUsers"/>
+            </field>
+            <field property="minUsers"
+                depends="required">
+                    <arg key="activities.game.minUsers"/>
+            </field>
+            
+		</form>
+		
+		<form name="questionForm">
+			<field property="questionDescription"
+                depends="required">
+                    <arg key="activities.evaluations.questions.description"/>                    
+            </field>
+			<field property="alternativesDescription"
+                depends="required">
+                    <arg key="activities.evaluations.questions.alternatives"/>
+            </field>
+			<field property="alternativesDescription2"
+                depends="required">
+                    <arg key="activities.evaluations.questions.alternatives"/>
+            </field>
+		</form>
+		
+		<!--  <var>
+					<var-name>mask</var-name>
+					<var-value>^http://[?:-/0-9a-zA-Z]*jsp$</var-value>
+					</var> -->
+		
+		<form name="messageForum">
+			<field property="answerBody" depends="required,maxlength">
+                <arg key="activities.forum.message"/>
+                <arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>2000</var-value>
+				</var>
+            </field>
+		</form>
+		
+		<form name="forumActivity">
+			<field property="topicForum"
+                depends="required">
+                    <arg key="activities.forum.topic"/>                    
+            </field>
+			<field property="descriptionForum"
+                depends="required">
+                    <arg key="activities.forum.description"/>
+            </field>
+		</form>
+		
+		<form name="evaluationActivity">
+			<field property="descriptionEvaluation"
+                depends="required">
+                    <arg key="activities.evaluation.description"/>                    
+            </field>
+            <field property="startEvaluation"
+                depends="required,date">
+                    <arg key="activities.evaluation.start"/>     
+               	<var>
+            		<var-name>datePattern</var-name>
+            		<var-value>dd/MM/yyyy</var-value>
+        		</var>               
+            </field>
+            <field property="finishEvaluation"
+                depends="required,date">
+                    <arg key="activities.evaluation.end"/>  
+                <var>
+                	<var-name>datePattern</var-name>
+            		<var-value>dd/MM/yyyy</var-value>
+        		</var>                  
+            </field>
+            <field property="afterdeadlineachievedEvaluation"
+                depends="required">
+                    <arg key="activities.evaluation.allowPeriod"/>                    
+            </field>
+		</form>
+		
+		<form name="videoIrizForm">
+			<field property="videoIrizName"
+                depends="required">
+                    <arg key="activities.video.name"/>                    
+            </field>
+			<field property="choice"
+                depends="required">
+                    <arg key="activities.video.choice"/>
+            </field>
+            <field property="url"
+                depends="required,mask">
+                    <arg key="activities.video.url"/>
+                  	<var>
+					<var-name>mask</var-name>
+					<var-value>^http://(br.youtube.com|www.youtube.com)/watch?v=[0-9a-zA-Z]*$</var-value>
+					</var>
+            </field>
+            <field property="videoDescription"
+                depends="required">
+                    <arg key="activities.video.description"/>
+            </field>
+		</form>
+		
+		<form name="materialRequestActivity">
+			<field property="nameMaterial"
+                depends="required">
+                    <arg key="activities.materialRequest.name"/>                    
+            </field>
+			<field property="descriptionMaterial"
+                depends="required">
+                    <arg key="activities.materialRequest.description"/>
+            </field>
+			<field property="dayMaterial"
+                depends="required,mask">
+                    <arg key="activities.materialRequest.dayToDelivery"/>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*$</var-value>
+				</var>
+            </field>
+			<field property="monthMaterial"
+                depends="required,mask">
+                    <arg key="activities.materialRequest.monthToDelivery"/>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*$</var-value>
+				</var>
+            </field>
+			<field property="yearMaterial"
+                depends="required,mask,minlength">
+                    <arg key="activities.materialRequest.yearToDelivery"/>
+                    <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*$</var-value>
+				</var>
+                <var>
+      				<var-name>minlength</var-name>
+       				<var-value>4</var-value>
+      			</var>
+            </field>
+		</form>
+				
+		<form name="pollActivity">
+			<field property="namePoll"
+                depends="required">
+                    <arg key="activities.poll.name"/>                    
+            </field>
+			<field property="questionPoll"
+                depends="required">
+                    <arg key="activities.poll.question"/>
+            </field>
+			<field property="optionsPoll"
+                depends="required">
+                    <arg key="activities.poll.option"/>
+            </field>
+			<field property="dayPoll"
+                depends="required,mask">
+                    <arg key="activities.poll.dayToDelivery"/>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*$</var-value>
+				</var>
+            </field>
+			<field property="monthPoll"
+                depends="required,mask">
+                    <arg key="activities.poll.monthToDelivery"/>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*$</var-value>
+				</var>
+            </field>
+			<field property="yearPoll"
+                depends="required,mask,minlength">
+                    <arg key="activities.poll.yearToDelivery"/>
+                    <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*$</var-value>
+				</var>
+                <var>
+      				<var-name>minlength</var-name>
+       				<var-value>4</var-value>
+      			</var>
+            </field>
+		</form>
+		
+		<form name="learningObjectActivity">
+			<field property="nameLearningObject"
+                depends="required">
+                    <arg key="activities.learningObject.name"/>                    
+            </field>
+			<field property="descriptionLearningObject"
+                depends="required">
+                    <arg key="activities.learningObject.description"/>
+            </field>
+			<field property="urlLearningObject"
+                depends="required">
+                    <arg key="activities.learningObject.url"/>
+            </field>
+		</form>
+		
+		<form name="externalLink">
+			<field property="nameExternalLink"
+                depends="required">
+                    <arg key="material.externalLink.name"/>                    
+            </field>
+			<field property="urlExternalLink"
+                depends="required">
+                    <arg key="material.externalLink.url"/>
+            </field>
+		</form>
+
+	</formset>
+
+</form-validation>

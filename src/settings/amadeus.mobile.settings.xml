@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mobile>
+	<database-connection>
+		<driver-class>org.postgresql.Driver</driver-class>
+		<url>jdbc:postgresql://localhost:5432/amadeus_mobile_teste</url>
+		<username>amadeus</username>
+		<password>amadeus</password>
+	</database-connection>
+	<sms-data>
+		<login>login</login>
+		<email>username@email.com.br</email>
+		<password>password</password>
+		<sms-material>on</sms-material>
+		<sms-poll>on</sms-poll>
+		<sms-forum>off</sms-forum>
+		<sms-learningobject>off</sms-learningobject>
+		<sms-game>off</sms-game>
+		<sms-video>off</sms-video>
+	</sms-data>
+</mobile>
+

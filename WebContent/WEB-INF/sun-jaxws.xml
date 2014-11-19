@@ -1,0 +1,4 @@
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+		<endpoint name="courseList" implementation="br.ufpe.cin.amadeus.amadeus_web.webservices.services.CourseServiceWS"
+			url-pattern="/courseWS"></endpoint>
+</endpoints>  

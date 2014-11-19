@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="formWebSettingMailSender" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="server" type="java.lang.String" />
+			<form-property name="port" type="java.lang.String" />
+			<form-property name="userName" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+			<form-property name="securityConnection" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	
+	<global-exceptions />
+	
+	<global-forwards>
+		<forward name="fShowViewAdminSettins" path="/jsp/settings/admin/adminSettings.jsp" />
+		<forward name="fShowViewWebSecuritySettings" path="/jsp/settings/admin/web/security.jsp" />
+		<forward name="fShowViewWebMailSenderSettings" path="/jsp/settings/admin/web/mailSender.jsp" />
+		<forward name="fShowViewMobileSettings" path="/jsp/settings/admin/mobile/mobileSettings.jsp" />
+	</global-forwards>
+	
+	<action-mappings>
+		<action path="/settingsActions"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.SettingsActions">
+		</action>
+		
+		<action name="formWebSettingMailSender"
+				path="/webSettingMailSender"
+				input="/settingsActions.do?method=showViewWebMailSenderSettings"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.SettingsActions">
+		</action>				
+	</action-mappings>
+	
+	<controller nocache="true" />
+	<message-resources
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources"
+		null="false" />
+</struts-config>

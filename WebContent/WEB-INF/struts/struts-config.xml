@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+                               
+<struts-config>
+	<data-sources />
+	<form-beans />
+	<global-exceptions />
+	<global-forwards />
+	<action-mappings />
+	<controller nocache="true" maxFileSize="100000000" multipartClass="org.apache.struts.upload.CommonsMultipartRequestHandler" />
+	<message-resources parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources_pt_BR" null="false"/>
+	<!-- =================================================== Validator plugin -->
+
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property
+        property="pathnames"
+        value= "/WEB-INF/struts/validator-rules.xml,
+        		/WEB-INF/struts/validation-user.xml,
+        		/WEB-INF/struts/validation-course.xml,
+        		/WEB-INF/struts/validation-module.xml,
+        		/WEB-INF/struts/validation-settings.xml"/>
+  </plug-in>
+  
+</struts-config>

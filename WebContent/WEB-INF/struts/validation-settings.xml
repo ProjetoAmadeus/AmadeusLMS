@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+                                 "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+<form-validation>
+	<formset>
+		<form name="formWebSettingMailSender">
+			<field property="description" depends="required,maxlength">
+				<arg key="settings.web.mailSender.description" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="server" depends="required,maxlength">
+				<arg key="settings.web.mailSender.server" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="port" depends="required,maxlength">
+				<arg key="settings.web.mailSender.port" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>8</var-value>
+				</var>
+			</field>
+			<field property="userName" depends="maxlength">
+				<arg key="settings.web.mailSender.userName" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+		  	<field property="password"  depends="maxlength">
+                <arg key="settings.web.mailSender.password"/>
+                <arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20</var-value>
+				</var>
+            </field>
+            <field property="securityConnection"  depends="required">
+                <arg key="settings.web.mailSender.securityConnection"/>
+            </field>
+		</form>
+	</formset>
+</form-validation>

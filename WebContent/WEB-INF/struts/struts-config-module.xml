@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+
+
+	<form-beans>
+		<form-bean name="courceModule"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="order" type="java.lang.String" />
+			<form-property name="idModuleBD" type="java.lang.String" />
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="visible" type="java.lang.String" />
+		</form-bean>
+
+		<form-bean name="gameActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="nameGame" type="java.lang.String" />
+			<form-property name="maxUsers" type="java.lang.String" />
+			<form-property name="minUsers" type="java.lang.String" />
+			<form-property name="descriptionGame" type="java.lang.String" />
+			<form-property name="urlGame" type="java.lang.String" />
+			<form-property name="idGame" type="java.lang.String" />
+			<form-property name="image" type="org.apache.struts.upload.FormFile"/>
+			
+		</form-bean>
+
+		<form-bean name="forumActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="topicForum" type="java.lang.String"  />
+			<form-property name="descriptionForum"
+				type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="evaluationActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="descriptionEvaluation" type="java.lang.String" />
+			<form-property name="startEvaluation" type="java.lang.String" />
+			<form-property name="finishEvaluation" type="java.lang.String" />
+			<form-property name="afterdeadlineachievedEvaluation" type="java.lang.Boolean" initial="false"/>
+		</form-bean>
+
+		<form-bean name="messageForum" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="answerBody" type="java.lang.String" />
+		</form-bean>
+
+		<form-bean name="materialActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="nameMaterial" type="java.lang.String" />
+			<form-property name="archive" type="org.apache.struts.upload.FormFile" />
+		</form-bean>
+		
+		<form-bean name="materialRequestActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="nameMaterial" type="java.lang.String" />
+			<form-property name="dayMaterial" type="java.lang.String" />
+			<form-property name="monthMaterial" type="java.lang.String" />
+			<form-property name="yearMaterial" type="java.lang.String" />
+			<form-property name="allowMaterial" type="java.lang.Boolean" />
+			<form-property name="descriptionMaterial" type="java.lang.String" />
+			<form-property name="deliveryDate" type="java.util.Date" />
+			
+		</form-bean>
+		
+		<form-bean name="pollActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="namePoll" type="java.lang.String" />
+			<form-property name="questionPoll" type="java.lang.String" />
+			<form-property name="optionsPoll" type="java.lang.String" />
+			<form-property name="dayPoll" type="java.lang.String" />
+			<form-property name="monthPoll" type="java.lang.String" />
+			<form-property name="yearPoll" type="java.lang.String" />
+		</form-bean>
+
+		<form-bean name="alternativePoll"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="alternative" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="videoIrizForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="videoIrizName" type="java.lang.String" />
+			<form-property name="choice" type="java.lang.String" initial="url" />
+			<form-property name="url" type="java.lang.String" />
+			<form-property name="videoDescription" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="learningObjectActivity"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="nameLearningObject" type="java.lang.String" />
+			<form-property name="urlLearningObject" type="java.lang.String" />
+			<form-property name="descriptionLearningObject" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="questionForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="questionDescription" type="java.lang.String" />
+			<form-property name="alternativesDescription" type="java.lang.String" />
+			<form-property name="alternativesDescription2" type="java.lang.String" />
+			<form-property name="alternativesNumber" type="java.lang.Integer" />
+		</form-bean>
+		
+		<form-bean name="externalLink"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="idExternalLink" type="java.lang.String" />
+			<form-property name="nameExternalLink" type="java.lang.String" />
+			<form-property name="descriptionExternalLink" type="java.lang.String" />
+			<form-property name="urlExternalLink" type="java.lang.String" />
+		</form-bean>
+
+	</form-beans>
+
+	<global-forwards>
+		<!-- Forward Evaluation -->
+		<forward name="fShowViewEditEvaluation" path="/jsp/course/content_management/activities/evaluation/editEvaluationActivities.jsp" />
+		<forward name="fShowViewNewEvaluation" path="/jsp/course/content_management/activities/evaluation/evaluationActivities.jsp" />
+		<forward name="fShowViewListEvaluation" path="/jsp/course/content_management/activities/evaluation/listEvaluation.jsp" />
+		<forward name="fShowViewListStutendsFromEvaluation" path="/jsp/course/content_management/activities/evaluation/listStudentsFromEvaluation.jsp" />
+		<forward name="fShowViewEvaluationActivity" path="/jsp/course/content_management/activities/evaluation/viewEvaluationActivities.jsp" />
+		<forward name="fShowViewRealizeEvaluationActivity" path="/jsp/course/content_management/activities/evaluation/realizeEvaluation.jsp" />
+		
+		<!-- Forward Evaluation Questions -->
+		
+		<forward name="fShowViewNewMultipleChoiceQuestion" path="/jsp/course/content_management/activities/evaluation/questions/multipleChoiceQuestion.jsp" />
+		<forward name="fShowViewNewTrueFalseQuestion" path="/jsp/course/content_management/activities/evaluation/questions/trueFalseQuestion.jsp" />
+		<forward name="fShowViewNewCollumAssociationQuestion" path="/jsp/course/content_management/activities/evaluation/questions/collumnAssociationQuestion.jsp" />
+		<forward name="fShowViewNewGapFillingQuestion" path="/jsp/course/content_management/activities/evaluation/questions/gapFillingQuestion.jsp" />
+		<forward name="fShowViewNewDiscursiveQuestion" path="/jsp/course/content_management/activities/evaluation/questions/discursiveQuestion.jsp" />
+		
+		<forward name="fShowViewEditMultipleChoiceQuestion" path="/jsp/course/content_management/activities/evaluation/questions/editMultipleChoiceQuestion.jsp" />
+		<forward name="fShowViewEditTrueFalseQuestion" path="/jsp/course/content_management/activities/evaluation/questions/editTrueFalseQuestion.jsp" />
+		<forward name="fShowViewEditCollumAssociationQuestion" path="/jsp/course/content_management/activities/evaluation/questions/editCollumnAssociationQuestion.jsp" />
+		<forward name="fShowViewEditGapFillingQuestion" path="/jsp/course/content_management/activities/evaluation/questions/editGapFillingQuestion.jsp" />
+		<forward name="fShowViewEditDiscursiveQuestion" path="/jsp/course/content_management/activities/evaluation/questions/editDiscursiveQuestion.jsp" />
+		
+		<forward name="fShowViewDeleteConfirmationQuestion" path="/jsp/course/content_management/activities/evaluation/questions/deleteConfirmationQuestion.jsp" />
+		
+		<!-- Forward Poll -->
+		<forward name="fShowViewNewPoll" path="/jsp/course/content_management/activities/poll/pollActivities.jsp" />
+		
+		<!-- Forward Forum -->
+		<forward name="fShowViewForumActivity" path="/jsp/course/content_management/activities/forum/viewForumActivities.jsp" />
+		<forward name="fShowViewNewForumActivity" path="/jsp/course/content_management/activities/forum/forumActivities.jsp" />
+		<forward name="fShowViewEditForumActivity" path="/jsp/course/content_management/activities/forum/editForumActivities.jsp" />
+		<forward name="fShowViewNewAnswerForumActivity" path="/jsp/course/content_management/activities/forum/answerForumActivity.jsp" />
+		<forward name="fShowViewListMessagesForumActivity" path="/jsp/course/content_management/activities/forum/listMessageForumActivity.jsp" />
+		
+		<!-- Forward Material Delivery -->
+		<forward name="fShowViewNewMaterialActivity" path="/jsp/course/content_management/activities/material/delivery/materialActivity.jsp" />
+		<forward name="fShowViewEditMaterialActivity" path="/jsp/course/content_management/activities/material/delivery/editMaterialActivity.jsp" />
+		<forward name="fShowViewUploadMaterialActivity" path="/jsp/course/content_management/activities/material/delivery/uploadMaterialActivity.jsp" />
+		<forward name="fShowViewEditUploadMaterialActivity" path="/jsp/course/content_management/activities/material/delivery/editUploadMaterialActivity.jsp" />
+		<forward name="fAddMaterialName" path="/jsp/course/content_management/activities/material/delivery/addMaterialName.jsp" />
+		
+		<!-- Forward Material Request -->
+		<forward name="fShowViewNewMaterialRequestActivity" path="/jsp/course/content_management/activities/material/request/materialRequestActivities.jsp" />
+		<forward name="fEditMaterialRequest" path="/jsp/course/content_management/activities/material/request/editMaterialRequestActivities.jsp" />
+		<forward name="fViewMaterialRequestFileUpload" path="/jsp/course/content_management/activities/material/request/materialDeliveryUpload.jsp" />
+		<forward name="fShowMaterialRequest" path="/jsp/course/content_management/activities/material/request/viewMaterialRequestActivities.jsp" />
+		<forward name="fShowMaterialRequestTeacher" path="/jsp/course/content_management/activities/material/request/viewMaterialRequestTeacherActivities.jsp" />	
+		
+		<!-- Forward Video -->
+		<forward name="fShowViewYoutubeChooseVideoOrigin" path="/jsp/course/content_management/activities/video/youtubeChooseVideoOrigin.jsp" />
+		<forward name="fShowViewEditVideoActivity" path="/jsp/course/content_management/activities/video/youtubeEditVideo.jsp" />
+		
+		<!-- Forward Learning Object -->
+		<forward name="fShowViewNewLearningObject" path="/jsp/course/content_management/activities/learning_object/learningObjectActivities.jsp" />
+		<forward name="fShowViewEditLearningObject" path="/jsp/course/content_management/activities/learning_object/editLearningObjectActivities.jsp" />
+		<forward name="fLearningObjectStatus" path="/jsp/course/content_management/activities/learning_object/learningObjectShowStatus.jsp" />
+		
+		<!-- Forward External Link -->
+		<forward name="fShowViewNewExternalLink" path="/jsp/course/content_management/activities/material/external_link/addExternalLink.jsp" />
+		<forward name="fShowViewEditExternalLink" path="/jsp/course/content_management/activities/material/external_link/editExternalLink.jsp" />
+		<forward name="fExternalLinkStatus" path="/jsp/course/content_management/activities/material/external_link/externalLinkActivity.jsp" />
+		
+		
+		
+		<!-- Forward Game -->
+		<forward name="fShowViewNewGameActivity" path="/jsp/course/content_management/activities/game/gameActivities.jsp" />
+		
+		<forward name="fCancelShowListActivity"
+			path="/jsp/course/content_management/activities/cancelShowListActivity.jsp" />
+
+		<forward name="fVideoStatus"
+			path="/jsp/course/content_management/activities/video/youtubeShowVideoStatus.jsp" />	
+		<forward name="fVideoUploadToYoutube"
+			path="/jsp/course/content_management/activities/video/youtubeUpload.jsp" />
+		<forward name="fVideoURL"
+			path="/jsp/course/content_management/activities/video/youtubeNewURL.jsp" />
+		<forward name="fChooseVideoOrigin"
+			path="/jsp/course/content_management/activities/video/youtubeChooseVideoOrigin.jsp" />
+						
+		<forward name="fShowViewScoreGames"
+			path="/fShowViewScoreGames.do" />
+		<forward name="fshowPlayerGame" 
+			path="/fshowPlayerGame.do" />
+		<forward name="fShowGame" 
+			path="/jsp/course/content_management/activities/game/viewGameActivities.jsp" />
+				
+			
+		<forward name="fCourseContent" 
+			path="/fCourseContent.do" />
+		<forward name="fShowIriz" 
+			path="/jsp/course/content_management/activities/video/iriz.jsp" />
+		
+		<forward name="fOpenLearningObject" 
+			path="fOpenLearningObject.do"></forward>
+		
+		<forward name="fShowViewEditModule"
+			path="/jsp/course/content_management/editModule.jsp" />	
+		<forward name="fShowViewListModules"
+			path="/jsp/course/content_management/listModules.jsp"/>
+		<forward name="fShowViewModule"
+			path="/jsp/course/content_management/module.jsp"/>
+		<forward name="fShowViewClickNewModule" 
+			path="/jsp/course/content_management/clickNewModule.jsp"/>
+		
+	</global-forwards>
+
+	<action-mappings>
+		<!--
+			Action do controle dos Módulos
+		-->
+		<action path="/module"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.ModuleActions"
+			parameter="method" scope="request" />
+
+		<action path="/saveModule"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.ModuleActions"
+			name="courceModule"
+			input="/jsp/course/content_management/editModule.jsp"
+			parameter="method" scope="request" />
+
+		<action path="/fListActivities"
+			parameter="/jsp/course/content_management/activities/listActivities.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+			
+		<action path = "/fListMaterials"
+			parameter="/jsp/course/content_management/activities/listMaterials.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+
+		<!--
+			Action das Atividades
+		-->
+
+
+		<!--
+			Action das Atividades Game
+		-->
+		<action path="/gameActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions"
+			parameter="method" scope="request" />
+			
+		<action path="/gameActions"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions"
+			parameter="method" scope="session" />
+
+		<action path="/newGameActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.game.GameActions"
+			name="gameActivity"
+			input="/jsp/course/content_management/activities/game/gameActivities.jsp"
+			parameter="method" scope="request" />
+
+		<action path="/editGame"
+			parameter="/jsp/course/content_management/activities/game/editGameActivities.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action path="/fShowViewScoreGames"
+			parameter="/jsp/course/content_management/activities/game/viewGameActivitiesScore.jsp"
+			input="/jsp/course/content_management/activities/game/viewGameActivities.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action path="/fshowPlayerGame"
+			parameter="/jsp/course/content_management/activities/game/viewGamePlayer.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<!--
+			Action das Atividades Forum
+		-->
+		<action path="/forumActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.forum.ForumActions"
+			parameter="method" scope="request" />
+			
+		<action path="/newForumActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.forum.ForumActions"
+			name="forumActivity"
+			input="/forumActivity.do?method=showViewNewForumActivity"
+			parameter="method" scope="request" />
+
+		<action path="/editForumActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.forum.ForumActions"
+			name="forumActivity"
+			input="/forumActivity.do?method=showViewEditForumActivity"
+			parameter="method" scope="request" />
+
+		<action path="/answerForumActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.forum.ForumActions"
+			name="messageForum"
+			input="/forumActivity.do?method=showViewNewAnswerForumActivity"
+			parameter="method" scope="request" />
+
+		<!--
+			Action das Atividades Evaluation
+		-->
+		<action path="/newEvaluation"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.EvaluationActions"
+			name="evaluationActivity"
+			input="/evaluation.do?method=showViewNewEvaluation"
+			parameter="method" scope="request" />
+		
+		<action path="/editEvaluation"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.EvaluationActions"
+			name="evaluationActivity"
+			input="/evaluation.do?method=showViewEditEvaluation"
+			parameter="method" scope="request" />
+		
+		<action path="/evaluation"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.EvaluationActions"
+			parameter="method" scope="request" />
+			
+		<action path="/saveRealizedEvaluation"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.EvaluationRealizedActions"
+			parameter="method" scope="request" >
+		</action>
+			
+		<!--
+			Action das Atividades Question
+		-->	
+		
+		<action path="/questionsEvaluationActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.QuestionActions"
+			parameter="method" scope="request" />
+		
+		<action path="/fShowCreateQuestion"
+			parameter="/jsp/course/content_management/activities/evaluation/viewQuestions.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+			
+		<action path="/newQuestion"
+			input="/jsp/course/content_management/activities/evaluation/viewQuestions.jsp"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.QuestionActions"
+			parameter="method" scope="request" />
+
+		<action path="/editQuestion"
+			input="/questionsEvaluationActivity.do?method=showViewEditQuestion"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.QuestionActions"
+			parameter="method" scope="request" />
+		
+		<action path="/questionsOpen"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.evaluation.QuestionActions"
+			parameter="method" scope="request" />
+
+		<!--
+			Action das Atividade de Entrega de Material
+		-->
+		
+		<action path="/materialActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.material.MaterialActions"
+			parameter="method" scope="request"/>
+		
+		<action path="/newMaterialRequestActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.material.MaterialActions"
+			name="materialRequestActivity"
+			input="/materialActivity.do?method=showViewNewMaterialRequestActivity"
+			parameter="method" scope="request"/>
+			
+		<action path="/editMaterialRequestActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.material.MaterialActions"
+			name="materialRequestActivity"
+			input="/materialActivity.do?method=showViewEditMaterialRequestActivity"
+			parameter="method" scope="request"/>
+			
+			<!-- 
+				Action da Atividade Material
+			 -->
+		<action path="/newMaterial"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.material.MaterialActions"
+			name="materialActivity"
+			parameter="method" scope="request" />
+				
+		<action path="/editMaterial"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.material.MaterialActions"
+			name="materialActivity"
+			input="/materialActivity.do?method=showViewEditUploadMaterialActivity"
+			parameter="method" scope="request" />
+	
+		<action path="/showMaterial"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.material.MaterialActions"
+			input="/jsp/course/content_management/activities/material/request/materialRequestActivities.jsp"
+			parameter="method" scope="request" />	
+			
+		<!--
+			Action das Atividades Enquete
+		-->
+		<action path="/poll"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.poll.PollActions"
+			parameter="method"
+			scope="request" />
+
+		<action path="/newPoll"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.poll.PollActions"
+			name="pollActivity"
+			input="/poll.do?method=showViewNewPoll"
+			parameter="method" scope="request" />
+			
+			
+
+		<action path="/savePoll"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.poll.PollActions"
+			name="pollActivity"
+			input="/jsp/course/content_management/activities/poll/editPollActivities.jsp"
+			parameter="method" scope="request" />
+
+		<action path="/editPoll"
+			parameter="/jsp/course/content_management/activities/poll/editPollActivities.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action path="/fShowViewPoll"
+			parameter="/jsp/course/content_management/activities/poll/viewPollActivities.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action path="/answerPoll"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.poll.PollActions"
+			name="alternativePoll"
+			input="/jsp/course/content_management/activities/poll/viewPollActivities.jsp"
+			parameter="method" scope="request" />
+
+		<action path="/viewResultsPoll"
+			parameter="/jsp/course/content_management/activities/poll/viewResultPoll.jsp"
+			type="org.apache.struts.actions.ForwardAction" />
+
+		<action path="/deletePoll"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.poll.PollActions"
+			input="/jsp/course/content_management/activities/poll/editPollActivities.jsp"
+			parameter="method" scope="request" />
+
+	<!-- Action das Atividades Video Em grupo -->
+		
+		<action path="/videoActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.VideoActions"
+			parameter="method" scope="request" />
+			
+		<action path="/youtubeAction"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.VideoActions"
+			name="videoIrizForm"
+			validate="true"
+			parameter="method" scope="request" />
+				
+		<action path="/newVideoIrizUploadStep1"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.NewVideoIrizUploadStep1Action"
+			scope="request" />	
+			
+		<action path="/newVideoIrizUploadStep2"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.NewVideoIrizUploadStep2Action"
+			scope="request" />	
+		
+		<action path="/newVideoIrizFromURL"
+			input="/jsp/course/content_management/activities/video/youtubeNewURL.jsp"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.NewVideoIrizFromURLAction"
+			scope="request" parameter="method"/>		
+			
+		<action path="/showVideoIrizStatus"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.ShowVideoIrizStatusAction"
+			scope="request" />
+		
+		<action path="/editVideoActivity"
+			input="/videoActivity.do?method=showViewEditVideoActivity"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.VideoActions"
+			scope="request" parameter="method" />
+		
+		<action path="/openEditVideoIriz"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.OpenEditVideoIrizAction"
+			scope="request" />
+			
+		<action path="/videoChat"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.video.VideoChatAction"
+			parameter="method" scope="request" />			
+
+		
+		<!--
+			Action das Atividades Learning Objects
+		-->
+		
+		<action path="/learningObject"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.learning_object.LearningObjectActions"
+			parameter="method" scope="request"/>	
+		
+		<action path="/newLearningObject"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.learning_object.LearningObjectActions"
+			name="learningObjectActivity"
+			input="/learningObject.do?method=showViewNewLearningObject"
+			parameter="method" scope="request"/>
+		
+		<action path="/editLearningObject"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.learning_object.LearningObjectActions"
+			name="learningObjectActivity"
+			input="/learningObject.do?method=showViewEditLearningObject"
+			parameter="method" scope="request"/>
+				
+		<action path="/openLearningObject"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.learning_object.LearningObjectActions"
+			parameter="method" scope="request" />
+			
+		<action path="/fOpenLearningObject"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="/jsp/course/content_management/activities/learning_object/learningObject.jsp" />
+		
+		
+		<action path="/endSessionLearningObject"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.learning_object.HistoryLearningObjectActions"
+			parameter="method" scope="request"/>		
+	
+	
+		<!--
+			Action das Atividades EXTERNAL LINKS
+		-->
+		
+		<action path="/externalLink"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.external_link.ExternalLinkActions"
+			parameter="method" scope="request"/>
+			
+		<action path="/newExternalLink"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.external_link.ExternalLinkActions"
+			name="externalLink"
+			input="/externalLink.do?method=showViewNewExternalLink"
+			parameter="method" scope="request" />
+		
+		<action path="/editExternalLink"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.external_link.ExternalLinkActions"
+			name="externalLink"
+			input="/externalLink.do?method=showViewEditExternalLink"
+			parameter="method" scope="request" />
+			
+		<action path="/saveExternalLink"
+			type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.external_link.ExternalLinkActions"
+			parameter="method" scope="request" >
+		</action>
+		
+		
+	</action-mappings>
+	<controller nocache="true"  />
+	<message-resources
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources"
+		null="false" />
+</struts-config>

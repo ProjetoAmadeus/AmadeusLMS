@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+                               "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="logonFormMobile" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="loginMobile" type="java.lang.String" />
+			<form-property name="passwordMobile" type="java.lang.String" />
+		</form-bean>
+		
+		<form-bean name="insertCellNumber" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="cellNumber" type="java.lang.String" />
+		</form-bean>
+		
+	</form-beans>
+	<global-exceptions />
+	
+	<global-forwards>
+		<forward name="fShowViewLoggedMobile" path="/mobile2/viewLogged.jsp" />
+		<forward name="fShowViewWelcomeMobile" path="/mobile2/index.jsp" />
+		<forward name="fShowViewManagementMobile" path="/mobile2/management/viewManagementHome.jsp" />
+		<forward name="fShowManagementCellPhone" path="/mobile2/management/viewCellPhoneNumberManagement.jsp" />
+		<forward name="fShowManagementCourse" path="/mobile2/management/viewCourseManagement.jsp" />
+		<forward name="fShowManagementCourseColor" path="/mobile2/management/viewCourseColorManagement.jsp" />
+		
+		<forward name="fShowHomeCourse" path="/mobile2/course/viewCourse.jsp" />
+		<forward name="fShowCourseInformation" path="/mobile2/course/viewCourseInformation.jsp" />
+		<forward name="fShowHomeModules" path="/mobile2/course/viewCourseModules.jsp"></forward>
+		<forward name="fShowHomeModule" path="/mobile2/course/viewModule.jsp"></forward>
+		<forward name="fShowAllCourses" path="/mobile2/course/viewAllCourses.jsp"></forward>
+		
+		<forward name="fShowCourseActivities" path="/mobile2/activities/viewCourseActivities.jsp"></forward>
+		<forward name="fShowModuleActivities" path="/mobile2/activities/viewModuleActivities.jsp"></forward>
+		<forward name="fShowViewPoll" path="/mobile2/activities/viewPoll.jsp"></forward>
+		<forward name="fShowViewLearningObject" path="/mobile2/activities/viewLearningObject.jsp"></forward>
+		<forward name="fShowViewHomework" path="/mobile2/activities/viewHomework.jsp"></forward>
+		
+		<forward name="fShowCourseMaterials" path="/mobile2/materials/viewCourseMaterials.jsp"></forward>
+		<forward name="fShowModuleMaterials" path="/mobile2/materials/viewModuleMaterials.jsp"></forward>
+		
+		<!-- 
+		<forward name="fShowViewWelcomeMobile" path="/jsp/welcome.jsp" />
+		<forward name="fShowViewPageNotFoundMobile" path="/jsp/error/viewPageNotFound.jsp" />
+		<forward name="fShowViewExceptionMobile" path="/jsp/error/viewException.jsp" />
+		 -->
+	</global-forwards>
+	
+	<action-mappings>
+		<action path="/mobile"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.mobile.MobileActions">
+		</action>
+		
+		<action path="/mobile"
+				name="logonFormMobile"
+				parameter="method"
+				scope="request"
+				type="br.ufpe.cin.amadeus.amadeus_web.struts.action.content_management.mobile.MobileActions">
+		</action>				
+	</action-mappings>
+	
+	<controller nocache="true" />
+	<message-resources
+		parameter="br.ufpe.cin.amadeus.amadeus_web.struts.messages.MessageResources"
+		null="false" />
+</struts-config>

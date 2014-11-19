@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<web>
+	<system>
+		<general.version>00.95.00</general.version>
+    	<general.language>Português-Brasil</general.language>
+    	<general.encoding>UTF-8</general.encoding>
+    	<general.themes>default</general.themes>
+    </system>
+    <mailsender>
+    	<mail.description>Conta de e-mail padrão</mail.description>
+    	<mail.from>projetoamadeus@gmail.com</mail.from>
+    	<mail.password>Joplin05</mail.password>
+    	<mail.smtp.host>smtp.gmail.com</mail.smtp.host>
+    	<mail.smtp.auth>true</mail.smtp.auth>
+    	<mail.debug>false</mail.debug>
+    	<mail.smtp.port>465</mail.smtp.port>
+    	<mail.smtp.socketFactory.port>465</mail.smtp.socketFactory.port>
+    	<mail.smtp.socketFactory.class>javax.net.ssl.SSLSocketFactory</mail.smtp.socketFactory.class>
+    	<mail.smtp.socketFactory.fallback>false</mail.smtp.socketFactory.fallback>
+    	<mail.smtp.ssl.enable>true</mail.smtp.ssl.enable>
+    	<mail.smtp.starttls.enable>false</mail.smtp.starttls.enable>
+		<mail.smtp.starttls.required>false</mail.smtp.starttls.required>
+    </mailsender>
+    <bug>
+    	<report.to>projetoamadeus@gmail.com</report.to>
+    </bug>
+    <security>
+    	<cryptography>
+    		<key>EAlGeEen3/m8/YkO</key>
+    	</cryptography>
+    	<autoSigning>true</autoSigning>
+    </security>
+</web>
