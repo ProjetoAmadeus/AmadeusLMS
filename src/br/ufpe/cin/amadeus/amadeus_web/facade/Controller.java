@@ -107,12 +107,9 @@ import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidVideoException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.RequestException;
 import br.ufpe.cin.amadeus.amadeus_web.struts.messages.Messages;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.Archive;
-<<<<<<< HEAD
-=======
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.LogVisualizacao;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import br.ufpe.cin.amadeus.amadeus_web.util.Cryptography;
 import br.ufpe.cin.amadeus.amadeus_web.util.DateConstructor;
 import br.ufpe.cin.amadeus.amadeus_web.util.MailSender;
@@ -674,15 +671,10 @@ public class Controller {
 		if (this.existEmail(person.getEmail()) && !(this.getPersonByID(person.getId()).getEmail().equals(person.getEmail()))) {
 			throw new InvalidUserException("errors.email.alreadyExists");
 		}
-		System.out.println("CHAMOUUUUU");
+
 		try {
 			
 			if (person.getResume().getYear() == null || yearTitulation <= yearNowadays) {			
-<<<<<<< HEAD
-				System.out.println("CHAMOUUUUU2");
-=======
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				PersonDAO personDAO = factory.getPersonDAO();
 				personDAO.merge(person);
 			} else {
@@ -1871,14 +1863,11 @@ public class Controller {
 		return forum.findById(forumId, false);
 	}
 	
-<<<<<<< HEAD
 	public Message getMessageById(int idMessage) {
 		MessageDAO messageDao = factory.getMessageDAO();
 		return messageDao.findById(idMessage, false);
 	}
 	
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> getListForum(){
 		List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> listForum = new ArrayList<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum>();
 		ForumDAO forum = factory.getForumDAO();
@@ -3610,6 +3599,8 @@ public class Controller {
 	@SuppressWarnings("unchecked")
 	public String getJSONArrayGameOpen(int idModule, int idAluno)
 	{
+		// TODO Analisar "AND l.person_id =  " + 130 +" " +
+		
 		List logs = HibernateUtil.getSessionFactory().getCurrentSession().
 		createSQLQuery(
 				"SELECT nome, sum(count) as jogadas " +
@@ -3618,11 +3609,7 @@ public class Controller {
 				"WHERE " +
 				"l.codigo =  7 " +
 				"AND l.idobjeto =   g.id " +
-<<<<<<< HEAD
-				"AND l.person_id =  " + 130 +" " +
-=======
 				"AND l.person_id =  " + idAluno +" " +
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				"AND g.module_id =  " + idModule +" " +
 				"AND prc.person_id = l.person_id " +
 				"AND prc.role_id = 1 " +
@@ -3650,11 +3637,10 @@ public class Controller {
 		
 		return array;
 	}
-<<<<<<< HEAD
 
 	/**
-	 * Método criado para persistir as mensagens enviadas, como primeira mensagem (não resposta a outra)
-	 * Recebe como parâmetro a mensagem, o pessoa que enviou e a pessoa que vai receber a mensagem.
+	 * Metodo criado para persistir as mensagens enviadas, como primeira mensagem (nÃ£o resposta a outra)
+	 * Recebe como parametro a mensagem, o pessoa que enviou e a pessoa que vai receber a mensagem.
 	 * @param message
 	 * @param from
 	 * @param to
@@ -3684,10 +3670,10 @@ public class Controller {
 	}
 
 	/**
-	 * Método que retorna a lista de mensagens não ligas de uma determinada pessoa
+	 * Mï¿½todo que retorna a lista de mensagens nï¿½o ligas de uma determinada pessoa
 	 * @author Nailson Cunha
-	 * @param person A pessoa que solicita as mensagens não lidas.
-	 * @return retorna a lista de mensagens ainda não lidas.
+	 * @param person A pessoa que solicita as mensagens nï¿½o lidas.
+	 * @return retorna a lista de mensagens ainda nï¿½o lidas.
 	 */
 	public List<MessengerMessage> getAllUnreadByPerson(Person person) {
 		MessengerMessageDAO mmd = factory.getMessengerMessageDAO();
@@ -3695,7 +3681,7 @@ public class Controller {
 	}
 
 	/**
-	 * Método que retorna uma mensagem com base em seu ID
+	 * Mï¿½todo que retorna uma mensagem com base em seu ID
 	 * @param idMensagemLida
 	 * @return A mensagem encontrada
 	 */
@@ -3711,7 +3697,7 @@ public class Controller {
 	}
 
 	/**
-	 * Método que exclui a mensagem recebida como parametro
+	 * Mï¿½todo que exclui a mensagem recebida como parametro
 	 * @param message
 	 */
 	public void deleteMessengerMessage(MessengerMessage message) {
@@ -3725,7 +3711,7 @@ public class Controller {
 	}
 
 	/**
-	 * Método que retorna todas as Mensagems de uma determinada pessoa
+	 * Mï¿½todo que retorna todas as Mensagems de uma determinada pessoa
 	 * @param person
 	 * @return
 	 */
@@ -3752,9 +3738,8 @@ public class Controller {
 		return factory.getTweetDAO().getTweetBetweenDates(inicio,fim);
 	}
 
-=======
 	/*
-	 * TODO - Métodos para recuperar grupo
+	 * TODO - MÃ©todos para recuperar grupo
 	 */
 	public List<Groups> getGroups(int id) {
 		List<Groups> grupo = null;
@@ -4048,5 +4033,4 @@ public List<TimelineItem> listarTimelinePerson(Person p, Groups g){
 		GameDAO gameDAO = factory.getGameDAO();
 		return gameDAO.verificarStatusPorGame(alunos, game);
 	}
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }

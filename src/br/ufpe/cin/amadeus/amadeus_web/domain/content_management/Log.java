@@ -34,7 +34,6 @@ public class Log implements Serializable{
 	@Column(name="metaalternativa")
 	private Integer metaAlternativa;
 
-<<<<<<< HEAD
 	public static int LOG_CODIGO_LOGIN = 1; //Ok
 	public static int LOG_CODIGO_LOGOUT = 2; //Ok
 	public static int LOG_CODIGO_FORUM_POST = 3; //Ok - postagens em foruns
@@ -45,18 +44,6 @@ public class Log implements Serializable{
 	public static int LOG_CODIGO_JOGAR = 8; //Ok
 	public static int LOG_CODIGO_ENTREGAR_MATERIAL = 9; //Ok
 	public static int LOG_CODIGO_VISUALIZACAO_VIDEO = 10;
-=======
-	public final static int LOG_CODIGO_LOGIN = 1; //Ok
-	public final static int LOG_CODIGO_LOGOUT = 2; //Ok
-	public final static int LOG_CODIGO_FORUM_POST = 3; //Ok - postagens em foruns
-	public final static int LOG_CODIGO_FORUM_TOPICO = 4; //Ok - visualizacoes de topicos
-	public final static int LOG_CODIGO_VISUALIZACAO_MATERIAL = 5; //Ok - abertura de materias dos modulos
-	public final static int LOG_CODIGO_RESPOSTA_ENQUETE = 6; //Ok
-	public final static int LOG_CODIGO_ABRIR_JOGO = 7; //Ok
-	public final static int LOG_CODIGO_JOGAR = 8; //Ok
-	public final static int LOG_CODIGO_ENTREGAR_MATERIAL = 9; //Ok
-	public final static int LOG_CODIGO_VISUALIZACAO_VIDEO = 10;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 	public Log (){
 		

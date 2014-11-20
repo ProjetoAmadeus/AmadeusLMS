@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
- <display-name>AmadeusLMS</display-name>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>AmadeusLMS</display-name>
 	<filter>
-  		<filter-name>AmadeusCharSetFilter</filter-name>
-  		<filter-class>br.ufpe.cin.amadeus.amadeus_web.util.AmadeusCharSetFilter</filter-class>
- 	 	<init-param>
-            <param-name>requestEncoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>AmadeusCharSetFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
- 
- <filter>
-  <filter-name>HibernateSessionRequestFilter</filter-name>
-  <filter-class>br.ufpe.cin.amadeus.amadeus_web.util.HibernateSessionRequestFilter</filter-class>
- </filter>
- <filter>
-  <filter-name>XSS</filter-name>
-  <filter-class>br.ufpe.cin.amadeus.amadeus_web.util.CrossScriptingFilter</filter-class>
- </filter>
- <filter-mapping>
-  <filter-name>HibernateSessionRequestFilter</filter-name>
-  <url-pattern>/*</url-pattern>
- </filter-mapping>
+		<filter-name>AmadeusCharSetFilter</filter-name>
+		<filter-class>br.ufpe.cin.amadeus.amadeus_web.util.AmadeusCharSetFilter</filter-class>
+		<init-param>
+			<param-name>requestEncoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>AmadeusCharSetFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
- <filter-mapping>
-  <filter-name>XSS</filter-name>
-  <url-pattern>/*</url-pattern>
- </filter-mapping>
- <listener>
-  <listener-class>br.ufpe.cin.amadeus.amadeus_web.util.AmadeusSessionListener</listener-class>
- </listener>
-  
- <!-- Action Servlet Configuration -->
- <servlet>
-  <servlet-name>action</servlet-name>
-  <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-  <init-param>
-   <param-name>config</param-name>
-   <param-value>/WEB-INF/struts/struts-config.xml,
+	<filter>
+		<filter-name>HibernateSessionRequestFilter</filter-name>
+		<filter-class>br.ufpe.cin.amadeus.amadeus_web.util.HibernateSessionRequestFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>XSS</filter-name>
+		<filter-class>br.ufpe.cin.amadeus.amadeus_web.util.CrossScriptingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HibernateSessionRequestFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>XSS</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>br.ufpe.cin.amadeus.amadeus_web.util.AmadeusSessionListener</listener-class>
+	</listener>
+
+	<!-- Action Servlet Configuration -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/struts/struts-config.xml,
    						 /WEB-INF/struts/struts-config-system.xml,
    					  	 /WEB-INF/struts/struts-config-user.xml,
    						 /WEB-INF/struts/struts-config-course.xml,
@@ -50,145 +51,135 @@
    						 /WEB-INF/struts/struts-config-mobile.xml,
    						 /WEB-INF/struts/struts-config-openid.xml,
    						 /WEB-INF/struts/struts-config-settings.xml,
-<<<<<<< HEAD
    						 /WEB-INF/struts/struts-config-log.xml,
    						 /WEB-INF/struts/struts-config-messenger.xml,
-   						 /WEB-INF/struts/struts-config-twittertool.xml</param-value>
-=======
+   						 /WEB-INF/struts/struts-config-twittertool.xml
    						 /WEB-INF/struts/struts-config-log.xml</param-value>
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
-  </init-param>
-  <load-on-startup>2</load-on-startup>
- </servlet>
- 
- <!-- JAXWS Servlet Configuration -->
- <!-- <servlet>
-    <description>Cadastro de Pessoa JAX-WS</description>
-    <display-name>courseWS</display-name>
-    <servlet-name>courseWS</servlet-name>
-    <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>  -->
- <!-- Listener JAXWS Configuration -->
- <!-- <listener>
-    <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
- </listener>  -->
- <!-- Mapping JAXWS Configuration -->
- <!-- <servlet-mapping>
-    <servlet-name>courseWS</servlet-name>
-    <url-pattern>/courseWS</url-pattern>
- </servlet-mapping> -->
- 
- <!-- REST Servlet Configuration  -->
- <servlet>
-    <servlet-name>Jersey REST Service</servlet-name>
-    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>br.ufpe.cin.amadeus.amadeus_web.services</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 
-<!-- Mapping REST Configuration -->
-<servlet-mapping>
-    <servlet-name>Jersey REST Service</servlet-name>
-    <url-pattern>/ws/*</url-pattern>
-  </servlet-mapping>
-  
-  
- <!-- DWR Configuration-->
- <servlet>
-  <description>dwr-invoker</description>
-  <servlet-name>dwr-invoker</servlet-name>
-  <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-  <init-param>
-   <param-name>debug</param-name>
-   <param-value>false</param-value>
-  </init-param>
-  <init-param>
-   <param-name>activeReverseAjaxEnabled</param-name>
-   <param-value>true</param-value>
-  </init-param>
-  <init-param>
-   <param-name>initApplicationScopeCreatorsAtStartup</param-name>
-   <param-value>true</param-value>
-  </init-param>
-  <init-param>
-   <param-name>classes</param-name>
-   <param-value>br.ufpe.cin.amadeus.amadeus_web.util.UtilDWR</param-value>
-  </init-param>
- </servlet>
- <!-- Action Servlet Mapping -->
- <servlet-mapping>
-  <servlet-name>action</servlet-name>
-  <url-pattern>*.do</url-pattern>
- </servlet-mapping>
- 
- <!-- DWR Mapping -->
- 	 <listener>
-    	<listener-class>org.directwebremoting.servlet.DwrListener</listener-class>
-  	</listener>
+	<!-- JAXWS Servlet Configuration -->
+	<!-- <servlet> <description>Cadastro de Pessoa JAX-WS</description> <display-name>courseWS</display-name> 
+		<servlet-name>courseWS</servlet-name> <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class> 
+		<load-on-startup>1</load-on-startup> </servlet> -->
+	<!-- Listener JAXWS Configuration -->
+	<!-- <listener> <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class> 
+		</listener> -->
+	<!-- Mapping JAXWS Configuration -->
+	<!-- <servlet-mapping> <servlet-name>courseWS</servlet-name> <url-pattern>/courseWS</url-pattern> 
+		</servlet-mapping> -->
+
+	<!-- REST Servlet Configuration -->
+	<servlet>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>br.ufpe.cin.amadeus.amadeus_web.services</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- Mapping REST Configuration -->
 	<servlet-mapping>
-  		<servlet-name>dwr-invoker</servlet-name>
-  		<url-pattern>/dwr/*</url-pattern>
- 	</servlet-mapping>
- 	<session-config>
-  		<session-timeout>20</session-timeout>
- 	</session-config>
- <!-- The Usual Welcome File List -->
- <welcome-file-list>
-  <welcome-file>index.jsp</welcome-file>
-  
- </welcome-file-list>
- <error-page>
-  <error-code>404</error-code>
-  <location>/system.do?method=showViewPageNotFound</location>
- </error-page>
- <error-page>
-  <exception-type>java.lang.Exception</exception-type>
-  <location>/system.do?method=showViewException</location>
- </error-page>
- <jsp-config>
-  <taglib>
-   <taglib-uri>/WEB-INF/struts-bean</taglib-uri>
-   <taglib-location>/WEB-INF/tags/struts-bean.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/struts-logic</taglib-uri>
-   <taglib-location>/WEB-INF/tags/struts-logic.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/struts-html</taglib-uri>
-   <taglib-location>/WEB-INF/tags/struts-html.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/struts-tiles</taglib-uri>
-   <taglib-location>/WEB-INF/tags/struts-tiles.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/struts-nested</taglib-uri>
-   <taglib-location>/WEB-INF/tags/struts-nested.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/c</taglib-uri>
-   <taglib-location>/WEB-INF/tags/c.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/fmt</taglib-uri>
-   <taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/sql</taglib-uri>
-   <taglib-location>/WEB-INF/tags/sql.tld</taglib-location>
-  </taglib>
-  <taglib>
-   <taglib-uri>/WEB-INF/x</taglib-uri>
-   <taglib-location>/WEB-INF/tags/x.tld</taglib-location>
-  </taglib>
- </jsp-config>
- <login-config>
-  <auth-method>BASIC</auth-method>
- </login-config>
- 
+		<servlet-name>Jersey REST Service</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- DWR Configuration -->
+	<servlet>
+		<description>dwr-invoker</description>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>activeReverseAjaxEnabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>initApplicationScopeCreatorsAtStartup</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>classes</param-name>
+			<param-value>br.ufpe.cin.amadeus.amadeus_web.util.UtilDWR</param-value>
+		</init-param>
+	</servlet>
+	<!-- Action Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- DWR Mapping -->
+	<listener>
+		<listener-class>org.directwebremoting.servlet.DwrListener</listener-class>
+	</listener>
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+	<!-- The Usual Welcome File List -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/system.do?method=showViewPageNotFound</location>
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/system.do?method=showViewException</location>
+	</error-page>
+	<jsp-config>
+		<taglib>
+			<taglib-uri>/WEB-INF/struts-bean</taglib-uri>
+			<taglib-location>/WEB-INF/tags/struts-bean.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/struts-logic</taglib-uri>
+			<taglib-location>/WEB-INF/tags/struts-logic.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/struts-html</taglib-uri>
+			<taglib-location>/WEB-INF/tags/struts-html.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/struts-tiles</taglib-uri>
+			<taglib-location>/WEB-INF/tags/struts-tiles.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/struts-nested</taglib-uri>
+			<taglib-location>/WEB-INF/tags/struts-nested.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/c</taglib-uri>
+			<taglib-location>/WEB-INF/tags/c.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/fmt</taglib-uri>
+			<taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/sql</taglib-uri>
+			<taglib-location>/WEB-INF/tags/sql.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/x</taglib-uri>
+			<taglib-location>/WEB-INF/tags/x.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
 </web-app>

@@ -13,16 +13,13 @@ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o tï¿
 
 package br.ufpe.cin.amadeus.amadeus_web.dao.hibernate.register;
 
-<<<<<<< HEAD
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-=======
 import java.math.BigInteger;
 import java.util.ArrayList;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -38,13 +35,10 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Status;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.AccessInfo;
-<<<<<<< HEAD
+import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 
 public class PersonHibernateDAO extends GenericHibernateDAO<Person, Integer>
 		implements PersonDAO {
-=======
-import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 	public PersonHibernateDAO() {
 		super();
@@ -86,22 +80,12 @@ import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 
 	@Override
 	public Person getPersonByLogin(String login) {
-<<<<<<< HEAD
-
 		StringBuilder hql = new StringBuilder();
 		hql.append("select p from Person p " + "where p.accessInfo.login = '"
 				+ login + "'");
 
 		Person person = (Person) getSession().createQuery(hql.toString())
 				.uniqueResult();
-=======
-		
-		StringBuilder hql = new StringBuilder();
-		hql.append("select p from Person p " +
-				   "where p.accessInfo.login = '" + login + "'");
-		
-		Person person = (Person) getSession().createQuery(hql.toString()).uniqueResult();
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		return person;
 	}
 
@@ -109,7 +93,7 @@ import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 	public Person getPersonByUserName(String userName) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select p from Person p where p.name = '" + userName + "'");
-<<<<<<< HEAD
+
 		Person person = (Person) getSession().createQuery(hql.toString())
 				.uniqueResult();
 		return person;
@@ -135,9 +119,6 @@ import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 			e.printStackTrace();
 		}
 		return 0;
-=======
-		Person person = (Person) getSession().createQuery(hql.toString()).uniqueResult();
-		return person;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -186,7 +167,6 @@ import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
 		
 		List<Log>  list = getSession().createSQLQuery(sqlQuery).addEntity("l", Log.class).list();
 		return list;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	}
 
 }

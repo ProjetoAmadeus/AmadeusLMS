@@ -34,8 +34,5 @@ public interface PersonRoleCourseDAO extends GenericDAO<PersonRoleCourse, Intege
 	public List<PersonRoleCourse> getByRoleInCourse(Person person, Course course, Role role);
 	public List<PersonRoleCourse> getStudentRolesCourses(int studentId);
 	public List<PersonRoleCourse> getStudentByUser(AccessInfo accessInfo);
-<<<<<<< HEAD
-=======
 	public List<StudentHaveGroup> getStudentHaveGroupByCourse(Course course, Person person);
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 }

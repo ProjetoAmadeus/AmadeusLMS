@@ -3,25 +3,16 @@
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
-<hibernate-configuration> 
+<hibernate-configuration>
 	<session-factory name="org.hibernate.transaction.JDBCTransactionFactory">
-	
+
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/amadeus_web</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">postgres</property>
-<<<<<<< HEAD
-		<property name="hibernate.current_session_context_class">thread</property>		
-		
-			<property name="hibernate.hbm2ddl.auto">update</property>		
-=======
 		<property name="hibernate.current_session_context_class">thread</property>
-<!--	Senha de Paulo	-->
-<!--	<property name="hibernate.connection.password">mcplparp</property> -->
-		
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
-		
+		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="hibernate.c3p0.max_size">10</property>
 		<property name="hibernate.c3p0.min_size">2</property>
 		<property name="hibernate.c3p0.timeout">5000</property>
@@ -33,70 +24,115 @@
 		<property name="use_outer_join">true</property>
 		<property name="hibernate.generate_statistics">true</property>
 		<property name="hibernate.use_sql_comments">true</property>
-		<property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</property> 
-		
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.AccessInfo" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.Image" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.Person" />
 		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.OpenID" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.Resume"/>
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.UserRequest"/>
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.MessengerMessage"/>
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.Tweet"/>
-		
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Answer" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Choice" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Commentary" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.CourseEvaluation" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.CourseScores" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Criterion" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.CriterionAnswers" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Homework" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.VideoIriz" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Poll" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role"/>
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse"/>
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Delivery" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.VideoIriz" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.HistoryLearningObject" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum" />
-		
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Evaluation" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Alternative" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Question" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionGap" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionDiscursive" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionMultiple" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionTrueFalse" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionAssociation" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.EvaluationRealized" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.AlternativeRealized" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionRealized" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionGapRealized" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionDiscursiveRealized" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionAlternativableRealized" /> 
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionAssociationRealized" /> 
-	
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log" />
-<<<<<<< HEAD
-=======
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups" />
-		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Person_Groups" />
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
-	
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.Resume" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.UserRequest" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.register.MessengerMessage" />
+		<mapping class="br.ufpe.cin.amadeus.amadeus_web.domain.register.Tweet" />
+
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Answer" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Choice" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Commentary" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.CourseEvaluation" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.CourseScores" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Criterion" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.CriterionAnswers" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Forum" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Game" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Homework" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Keyword" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Material" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.VideoIriz" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.MaterialRequest" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Message" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Module" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Poll" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonRoleCourse" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Delivery" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Archive" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.VideoIriz" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.LearningObject" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.HistoryLearningObject" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum" />
+
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Evaluation" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Alternative" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.Question" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionGap" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionDiscursive" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionMultiple" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionTrueFalse" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.QuestionAssociation" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.EvaluationRealized" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.AlternativeRealized" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionRealized" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionGapRealized" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionDiscursiveRealized" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionAlternativableRealized" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.evaluation.realized.QuestionAssociationRealized" />
+
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Groups" />
+		<mapping
+			class="br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Person_Groups" />
 	</session-factory>
 </hibernate-configuration>

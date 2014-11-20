@@ -208,10 +208,9 @@ public class HibernateDAOFactory extends DAOFactory {
 	public LogDAO getLogDAO() {
 		return (LogDAO) instantiateDAO(LogHibernateDAO.class);
 	}
-<<<<<<< HEAD
 
 	/**
-	 * Método que retorna o MessengerMessageDAO
+	 * Mï¿½todo que retorna o MessengerMessageDAO
 	 * @author Nailson Cunha
 	 */
 	@Override
@@ -223,14 +222,12 @@ public class HibernateDAOFactory extends DAOFactory {
 	public TweetDAO getTweetDAO() {
 		return (TweetDAO) instantiateDAO(TweetHibernateDAO.class);
 	}
-	
-=======
-	
+		
 	@Override
 	public GroupsDAO getGroupsDAO() {
 		return (GroupsDAO) instantiateDAO(GroupsHibernateDAO.class);
 	}
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
+
 }
 
 

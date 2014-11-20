@@ -23,12 +23,9 @@ import javax.mail.MessagingException;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
-<<<<<<< HEAD
-=======
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.ForumDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.GroupsDAO;
 import br.ufpe.cin.amadeus.amadeus_web.dao.content_managment.PersonRoleCourseDAO;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.AmadeusDroidHistoric;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Course;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.ExternalLink;
@@ -73,12 +70,9 @@ import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidUserException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.InvalidVideoException;
 import br.ufpe.cin.amadeus.amadeus_web.exception.RequestException;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.Archive;
-<<<<<<< HEAD
-=======
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.LogVisualizacao;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.StudentHaveGroup;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 public class Facade {
 	
@@ -533,13 +527,10 @@ public class Facade {
 		return this.controller.getForumById(forumId);
 	}
 	
-<<<<<<< HEAD
 	public Message getMessageById(int idMessage){
 		return this.controller.getMessageById(idMessage);
 	}
 	
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	public List<br.ufpe.cin.amadeus.amadeus_web.syncronize.Forum> getListForumSyncronize(){
 		return this.controller.getListForum();
 	}
@@ -851,7 +842,6 @@ public class Facade {
 	
 	public String getJSONArrayGameGridByUser(int idGame, int idUser) {
 		return this.controller.getJSONArrayGameGridByUser(idGame, idUser);
-<<<<<<< HEAD
 	}
 	
 	public String getJSONArrayTagCloudForum(int idModule){
@@ -915,8 +905,8 @@ public class Facade {
 	}
 
 	/**
-	 * Método criado para persistir as mensagens enviadas, como primeira mensagem (não resposta a outra)
-	 * Recebe como parâmetro a mensagem, o pessoa que enviou e a pessoa que vai receber a mensagem.
+	 * Mï¿½todo criado para persistir as mensagens enviadas, como primeira mensagem (nï¿½o resposta a outra)
+	 * Recebe como parï¿½metro a mensagem, o pessoa que enviou e a pessoa que vai receber a mensagem.
 	 * @author Nailson Cunha
 	 * @param message
 	 * @param from
@@ -928,10 +918,10 @@ public class Facade {
 	}
 
 	/**
-	 * Método que retorna a lista de mensagens não ligas de uma determinada pessoa
+	 * Mï¿½todo que retorna a lista de mensagens nï¿½o ligas de uma determinada pessoa
 	 * @author Nailson Cunha
-	 * @param person A pessoa que solicita as mensagens não lidas.
-	 * @return retorna a lista de mensagens ainda não lidas.
+	 * @param person A pessoa que solicita as mensagens nï¿½o lidas.
+	 * @return retorna a lista de mensagens ainda nï¿½o lidas.
 	 */
 	public List<MessengerMessage> getAllUnreadByPerson(Person person) {
 		return this.controller.getAllUnreadByPerson(person);
@@ -955,7 +945,7 @@ public class Facade {
 	}
 
 	/**
-	 * Método que retorna todas as Persons do banco de dados
+	 * Mï¿½todo que retorna todas as Persons do banco de dados
 	 * @return A lista de pessoas.
 	 */
 	public List<Person> getAllPersons() {
@@ -972,68 +962,6 @@ public class Facade {
 
 	public List<Tweet> getTweetBetweenDates(Date inicio, Date fim) {
 		return this.controller.getTweetBetweenDates(inicio,fim);
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
-	}
-	
-	public String getJSONArrayTagCloudForum(int idModule){
-		return this.controller.getJSONArrayTagCloudForum(idModule);
-	}
-	
-	public String getJSONArrayPostsPerModule(int idModule){
-		return this.controller.getJSONArrayPostsPerModule(idModule);
-	}
-	
-	public String getJSONArraySizeMessagePerModule(int idModule){
-		return this.controller.getJSONArraySizeMessagePerModule(idModule);
-	}
-	
-	public String getJSONArrayPersonGameTimePerModule(int idPerson, int idModule){
-		return this.controller.getJSONArrayPersonGameTimePerModule(idPerson, idModule);
-	}
-	
-	public String getJSONObjectTempoLevelPontuacao(int idGame)
-	{
-		return this.controller.getJSONObjectTempoLevelPontuacao(idGame);
-	}
-	
-	public String getJSONObjectTempoQuantidadePartidas(int idGame)
-	{
-		return this.controller.getJSONObjectTempoQuantidadePartidas(idGame);
-	}
-	
-	public String getJSONObjectQuantidadeTamanhoMSG(int idModule)
-	{
-		return this.controller.getJSONObjectQuantidadeTamanhoMSG(idModule);
-	}
-	
-	public String getJSONObjectLevelPontuacao(int idGame)
-	{
-		return this.controller.getJSONObjectLevelPontuacao(idGame);
-	}
-	
-	public String getJSONArrayGameMeta(int idGame){
-		return this.controller.getJSONArrayGameMeta(idGame);
-	}
-	
-	public String getJSONArrayPersonTimeOnline(int idPerson){
-		return this.controller.getJSONArrayPersonTimeOnline(idPerson);
-	}
-	
-	public String getJSONArrayForumVisualizacao(int idModule, int idAluno){
-		return this.controller.getJSONArrayForumVisualizacao(idModule, idAluno);
-	}
-	public String getJSONArrayPostsPerUser(int idModule, int idUser){
-		return this.controller.getJSONArrayPostsPerUser(idModule, idUser);
-	}
-	public String getJSONArrayMaterialView(int idUsuario, int idModule){
-		return this.controller.getJSONArrayMaterialView(idUsuario, idModule);
-	}
-	public String getJSONArrayPollAnswered(int moduleID, int idAluno){
-		return this.controller.getJSONArrayPollAnswered(moduleID, idAluno);
-	}
-	public String getJSONArrayGameOpen(int idModule, int idAluno){
-		return this.controller.getJSONArrayGameOpen(idModule, idAluno);
 	}
 	
 	public List<Groups> getGroups(int idCourse){

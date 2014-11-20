@@ -29,15 +29,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
-<<<<<<< HEAD
 
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
 import org.hibernate.annotations.Cascade;
 
-
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 /**
  * Classe que encapsula os dados de um forum
  * 

@@ -29,13 +29,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-<<<<<<< HEAD
 
 import org.hibernate.annotations.Cascade;
 
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.PersonForum;
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 /**
  * Classe que encapsula os dados de um usuário do sistema

@@ -202,7 +202,6 @@ function showScoreGameGrupo(type,idMMJogos){
 	UtilDWR.getInclude('/changeOrderGame.do?method=changeOrderGame&type='+type+'&idMMJogos='+idMMJogos,
  		function(data) {
 			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
-<<<<<<< HEAD
 		}
   	);
 }
@@ -211,8 +210,6 @@ function showScoreGameIndividual(type,idMMJogos,idUser){
 	UtilDWR.getInclude('/changeOrderGame.do?method=changeOrderGame&type='+type+'&idMMJogos='+idMMJogos+'&idUser='+idUser,
  		function(data) {
 			dwr.util.setValue('percepcao'+idMMJogos, data, { escapeHtml:false });
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		}
   	);
 }

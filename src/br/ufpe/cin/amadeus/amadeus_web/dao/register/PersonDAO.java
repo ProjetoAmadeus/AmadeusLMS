@@ -21,10 +21,7 @@ import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Log;
 import br.ufpe.cin.amadeus.amadeus_web.domain.content_management.Role;
 import br.ufpe.cin.amadeus.amadeus_web.domain.register.Person;
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.AccessInfo;
-<<<<<<< HEAD
-=======
 import br.ufpe.cin.amadeus.amadeus_web.syncronize.TimelineItem;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 public interface PersonDAO extends GenericDAO<Person, Integer> {
 	
@@ -33,10 +30,8 @@ public interface PersonDAO extends GenericDAO<Person, Integer> {
 	public List<String> getAllEmails();
 	public Person getPersonByLogin(String login);
 	public Person getPersonByUserName(String userName);
-<<<<<<< HEAD
 	public int getPersonByTwitterLogin(String screenName);
-=======
 	public List<TimelineItem> getTimelineByPersonID(int personID, int groupID);
 	public List<Log> getLogsByDayAndPerson(String data, int groupID, int personID);
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
+
 }

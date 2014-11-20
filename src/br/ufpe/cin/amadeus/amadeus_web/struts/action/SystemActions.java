@@ -180,15 +180,12 @@ public class SystemActions extends LookupDispatchAction {
 		boolean canViewCourseEvaluations = CoursePermissions.userCanShowViewCourseEvaluations(request, course);
 		boolean canAssistanceRequest = false;
 		boolean canViewCourseContent = false;
-<<<<<<< HEAD
 		boolean canViewGraphic = true;
 		boolean canMonitoringHashtag = false;
 		boolean canSendToClassmates = false;
-=======
-		boolean canViewGraphic = false;
+
 		boolean canViewGroups = false;
 		boolean canViewEnableGroups = false;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		
 		AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 		
@@ -200,23 +197,19 @@ public class SystemActions extends LookupDispatchAction {
 			canEditCourse = true;
 			canDeleteCourse = true;
 			canViewCourseContent = true;
-<<<<<<< HEAD
+
 			canMonitoringHashtag = true;
 			canSendToClassmates = true;
+			
+			canViewEnableGroups = true;
+			canViewGroups = true;
+			canViewGraphic = true;
 			
 		} else if (userRoleInCourse != null) {
 			if(	userProfileType == ProfileType.PROFESSOR) {
 				canInsertCourse = true;
 				canMonitoringHashtag = true;
 				canSendToClassmates = true;
-=======
-			canViewEnableGroups = true;
-			canViewGroups = true;
-			canViewGraphic = true;
-		} else if (userRoleInCourse != null) {
-			if(	userProfileType == ProfileType.PROFESSOR) {
-				canInsertCourse = true;				
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			}
 			
 			if(	userRoleInCourse.getRoleType() == RoleType.TEACHER || 
@@ -226,12 +219,11 @@ public class SystemActions extends LookupDispatchAction {
 			
 			if( userRoleInCourse.getRoleType() == RoleType.TEACHER) {
 				canDeleteCourse = true;
-<<<<<<< HEAD
+
 				canMonitoringHashtag = true;
 				canSendToClassmates = true;
-=======
+
 				canViewEnableGroups = true;
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			}
 			
 			if( userRoleInCourse.getRoleType() == RoleType.TEACHER ||
@@ -254,12 +246,11 @@ public class SystemActions extends LookupDispatchAction {
 		request.setAttribute("canViewCourseContent", canViewCourseContent);
 		request.setAttribute("canAssistanceRequest", canAssistanceRequest);
 		request.setAttribute("canViewGraphic", canViewGraphic);
-<<<<<<< HEAD
+
 		request.setAttribute("canMonitoringHashtag", canMonitoringHashtag);
 		request.setAttribute("canSendToClassmates", canSendToClassmates);
-=======
+
 		request.setAttribute("canViewGroups", canViewGroups);
 		request.setAttribute("canViewEnableGroups", canViewEnableGroups);
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	}
 }

@@ -108,10 +108,8 @@ public class CourseActions extends SystemActions {
 	private final String FORWARD_SHOW_VIEW_NEW_EXTERNAL_LINK = "fshowViewNewExternalLink";
 	private final String FORWARD_SHOW_VIEW_REPLICATE_COURSE = "fReplicateCourseStepOne";
 	private final String FORWARD_SHOW_VIEW_GRAPHIC = "fShowViewGraphic";
-<<<<<<< HEAD
 	private final String FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING = "fShowViewSocialInteractionMonitoring";
 	private final String FORWARD_SHOW_VIEW_SOCIAL_INTERACTION_MONITORING_REPORTS = "fShowViewSocialInteractionMonitoringReports";
-=======
 	private final String FORWARD_SHOW_VIEW_GROUPS = "fShowViewGroups";
 	private final String FORWARD_SHOW_VIEW_GROUPS_RELATORIO = "fShowViewGroupsRelatorio";
 	private final String FORWARD_SHOW_GROUP_DAY_TIMELINE = "fShowGroupDayTimeline";
@@ -119,7 +117,6 @@ public class CourseActions extends SystemActions {
 	private final String FORWARD_SHOW_VIEW_GROUP_TIMELINE = "fShowViewGroupTimeline";
 	private final String FORWARD_SHOW_VIEW_PERSON_TIMELINE = "fShowViewPersonTimeline";
 	private final String FORWARD_SHOW_VIEW_ONE_GROUP = "fShowViewOneGroup";
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 	@Override
 	protected Map<String, String> getKeyMethodMap() {
@@ -151,14 +148,13 @@ public class CourseActions extends SystemActions {
 		map.put("course.showViewShowModules", "showViewShowModules");
 		map.put("course.showViewCourseEvaluations", "showViewCourseEvaluations");
 		map.put("course.showViewGraphic", "showViewGraphic");
-<<<<<<< HEAD
+
 		map.put("course.showViewSendMail", "showViewSendMail");
 		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
 		map.put("course.changeTeacher", "changeTeacher");
 		map.put("course.viewChangeTeacher", "viewChangeTeacher");
 		map.put("course.sendMailForCourseParticipants", "sendMailForCourseParticipants");
 		
-=======
 		map.put("course.showViewGroups", "showViewGroups");
 		map.put("course.showViewOneGroup", "showViewOneGroup");
 		map.put("course.habilitarDesabilitarCriarGrupos", "habilitarDesabilitarCriarGrupos");
@@ -174,7 +170,6 @@ public class CourseActions extends SystemActions {
 		map.put("course.showViewPersonTimeline", "showViewPersonTimeline");
 		map.put("course.showViewGroupsRelatorio", "showViewRelatorioAtividade");
 
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		return map;
 	}
 
@@ -1210,36 +1205,26 @@ public class CourseActions extends SystemActions {
 			Course course = facade.getCoursesById(courseId);
 			List<Person> teachers = facade.getTeachersByCourse(course);
 			List<Person> assistants = facade.listAssistantsByCourse(course);
-<<<<<<< HEAD
 			List<Person> participants = facade.listStudentsByCourse(course); //added by Nailson
 			List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 			
-=======
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			int studentsNumber = facade.getNumberOfStudentsInCourse(course);
 			course.setNumberOfStudentsInCourse(studentsNumber);
 
 			Set<Keyword> keywords = course.getKeywords();
 
 			boolean canRegisterUser = false;
-<<<<<<< HEAD
+
 			boolean canMonitorSocialInteractions = false;
 			
 			if (facade.canRegisterUser(user, course)) {
 				canRegisterUser = true;
 			}
+			
 			if(course.getProfessor().equals(user.getPerson())){
 				canMonitorSocialInteractions = true;
 			}
 			
-=======
-
-			if (facade.canRegisterUser(user, course)) {
-				canRegisterUser = true;
-			}
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
 
 			SystemActions.setMenuPermissionsForUserInRequest(request, course);
@@ -1302,26 +1287,16 @@ public class CourseActions extends SystemActions {
 			List<Person> participants = facade.listStudentsByCourse(course);
 			List<Person> teachers = facade.listTeachersByCourse(course);
 			List<Person> assistants = facade.listAssistantsByCourse(course);
-<<<<<<< HEAD
 			List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 			
-			
-=======
-
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			SystemActions.setMenuPermissionsForUserInRequest(request, course);
 			request.setAttribute("course", course);
 			request.setAttribute("participants", participants);
 			request.setAttribute("teachers", teachers);
 			request.setAttribute("assistants", assistants);
 			request.setAttribute("userRoleInCourse", userRoleInCourse);
-<<<<<<< HEAD
 			request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 			
-=======
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 			forward = mapping.findForward(FORWARD_SHOW_VIEW_COURSE_PARTICIPANTS);
 		} else {
 			forward = showViewWelcome(mapping, form, request, response);
@@ -1404,7 +1379,6 @@ public class CourseActions extends SystemActions {
 
 		return forward;
 	}
-<<<<<<< HEAD
 	
 	public ActionForward showViewSocialInteractionMonitoring(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1479,9 +1453,6 @@ public class CourseActions extends SystemActions {
 		return forward;
 	}
 	
-=======
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 	public ActionForward showViewShowModules(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -1499,7 +1470,6 @@ public class CourseActions extends SystemActions {
 				Role userRoleInCourse = Facade.getInstance().getRoleByPersonInCourse(user.getPerson(), course);
 
 				List<Module> modules = course.getModules();
-<<<<<<< HEAD
 				
 				List<PersonForum> forunsperson = user.getPerson().getForuns();
 				
@@ -1508,27 +1478,17 @@ public class CourseActions extends SystemActions {
 				List<Person> participants = facade.listStudentsByCourse(course); //added by Nailson
 				List<MessengerMessage> messagesUnread = facade.getAllUnreadByPerson(facade.getPersonByLogin(user.getLogin())); //added by Nailson
 		
-=======
-
-				List<Person> assistances = facade.getAssistanceInCourse(course);
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				SystemActions.setMenuPermissionsForUserInRequest(request, course);
 				request.setAttribute("userRoleInCourse", ( userRoleInCourse != null) ? userRoleInCourse.getRoleType() : null );
 				request.setAttribute("course", course);
 				request.setAttribute("modules", modules);
 				request.setAttribute("forunsperson",forunsperson);
 				request.setAttribute("assistants", assistances);
-<<<<<<< HEAD
 				
 				request.setAttribute("teachers", teachers); //added by Nailson
 				request.setAttribute("participants", participants); //added by Nailson
 				request.setAttribute("messagesUnread", messagesUnread); //added by Nailson
 				
-				
-=======
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 				forward = mapping.findForward(FORWARD_SHOW_VIEW_SHOW_MODULES);
 			} else {
 				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
@@ -1704,7 +1664,7 @@ public class CourseActions extends SystemActions {
 					if (viewCreateGroup.equals("1")){					
 						request.setAttribute("viewCreateGroup", "1");
 						//codigo alocado no lugar errado
-						//pregui�a de mapear uma nova fun��o
+						//pregui�a de mapear uma nova fun��o
 						AccessInfo user = (AccessInfo) request.getSession().getAttribute("user");
 						List<StudentHaveGroup> list = facade.getStudentsHaveGroup(course, user.getPerson());
 						request.setAttribute("students", list);
@@ -2426,332 +2386,6 @@ public class CourseActions extends SystemActions {
 		}
 		return forward;	
 	}
-<<<<<<< HEAD
-
-	public ActionForward showViewGraphic(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		ActionForward forward = null;
-
-		if(SystemActions.isLoggedUser(request)) {
-
-			int courseId = Integer.parseInt(request.getParameter("courseId"));
-			Course course = facade.getCoursesById(courseId);
-
-
-			if(CoursePermissions.userCanViewGraphic(request, course)) {
-				SystemActions.setMenuPermissionsForUserInRequest(request, course);
-
-				String graphic = request.getParameter("graphic");
-				Integer moduleSel = Integer.parseInt(request.getParameter("moduleSel"));
-				Integer idAluno = Integer.parseInt(request.getParameter("idAluno"));
-				Integer idGame = Integer.parseInt(request.getParameter("idGame"));
-				Integer idForum;// = Integer.parseInt(request.getParameter("idForum"));
-
-				request.setAttribute("course", course);
-				request.setAttribute("graphic", graphic);
-				request.setAttribute("moduleSel", moduleSel);
-				request.setAttribute("idAluno", idAluno);
-				request.setAttribute("idGame", idGame);
-				//request.setAttribute("idForum", idForum);
-
-				if(graphic.equals("g1"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						String data = facade.getJSONArrayModuleGameTotalTime(moduleSel);
-						request.setAttribute("xml", data);
-					}
-				}
-				else if(graphic.equals("g2"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						String data = facade.getJSONArrayModuleGameTimePerDay(moduleSel);
-						request.setAttribute("xml", data);
-					}
-				}
-				else if(graphic.equals("g3"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						String data = facade.getJSONArrayTagCloudForum(moduleSel);
-						request.setAttribute("xml", data);
-					}
-				}
-				else if(graphic.equals("g4"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						String data = facade.getJSONArrayPostsPerModule(moduleSel);
-						request.setAttribute("xml", data);
-					}
-				}
-				else if(graphic.equals("g5"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						String data = facade.getJSONArraySizeMessagePerModule(moduleSel);
-						request.setAttribute("xml", data);
-					}
-				}
-				else if(graphic.equals("g6"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);						
-
-						if(idAluno!=-1)
-						{
-							String data = facade.getJSONArrayPersonGameTimePerModule(idAluno, moduleSel);
-							//							String data = "[{\"Aluno\":\"GameTest\",\"Tempo\":18}]";
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//Código dos Gráficos de Danilo Começa aqui
-				//Tempo de permanência no sistema - Diferença entre os horários de login e logout.
-				else if(graphic.equals("g7"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);						
-
-						if(idAluno!=-1)
-						{
-							String data = facade.getJSONArrayPersonGameTimePerModule(idAluno, moduleSel);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//Quantidade de visualizações dos fóruns - Número de vezes que o usuário abriu um fórum de determinado módulo.
-				else if(graphic.equals("g8"))
-				{
-					request.setAttribute("modules", course.getModules());
-					
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);						
-
-						if(idAluno!=-1)
-						{						
-							String data = facade.getJSONArrayForumVisualizacao(moduleSel, idAluno);
-							request.setAttribute("xml", data);							
-						}
-					}
-
-				}
-				//Quantidade de posts em um fórum - Número de vezes que o usuário respondeu ao fórum.
-				else if(graphic.equals("g9"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);
-
-						if(idAluno!=-1)
-						{
-							String data = facade.getJSONArrayPostsPerUser(moduleSel, idAluno);
-							request.setAttribute("xml", data);						
-						}						
-					}
-				}
-				//Quantidade de acessos à materiais - Número de vezes que o usuário abriu um material presente no módulo.
-				else if(graphic.equals("g10"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);						
-
-						if(idAluno!=-1)
-						{
-							String data = facade.getJSONArrayMaterialView(idAluno, moduleSel);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//Quantidade de enquetes respondidas - Número de repostas a enquetes de um módulo feitas pelo usuário.
-				else if(graphic.equals("g11"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);						
-
-						if(idAluno!=-1)
-						{
-							String data = facade.getJSONArrayPollAnswered(moduleSel, idAluno);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//Quantidade de acesso aos jogos - Número de vezes que o usuário abriu um jogo do módulo.
-				else if(graphic.equals("g12"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						List<Person> participants = facade.listStudentsByCourse(course);
-						request.setAttribute("alunos", participants);						
-
-						if(idAluno!=-1)
-						{
-							String data = facade.getJSONArrayGameOpen(moduleSel, idAluno);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				else if(graphic.equals("g13"))
-				{
-					request.setAttribute("modules", course.getModules());					
-
-					if(moduleSel!=-1)
-					{
-						String data = facade.getJSONObjectQuantidadeTamanhoMSG(moduleSel);
-						request.setAttribute("xml", data);
-					}
-				}
-				//Graficos do jogo
-				//Pontuação
-				else if(graphic.equals("g14")||graphic.equals("g15"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						Module module = facade.getModuleById(moduleSel.intValue());
-						request.setAttribute("games", module.getGames());						
-
-						if(idGame!=-1)
-						{
-							String data = facade.getJSONArrayGameScore(idGame);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//Level
-				else if(graphic.equals("g16")||graphic.equals("g17"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						Module module = facade.getModuleById(moduleSel.intValue());
-						request.setAttribute("games", module.getGames());						
-
-						if(idGame!=-1)
-						{
-							String data = facade.getJSONArrayGameLevel(idGame);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//tempo X level X pontuacao
-				else if(graphic.equals("g18"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						Module module = facade.getModuleById(moduleSel.intValue());
-						request.setAttribute("games", module.getGames());						
-
-						if(idGame!=-1)
-						{
-							String data = facade.getJSONObjectTempoLevelPontuacao(idGame);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				// tempo X quantidade de partidas
-				else if(graphic.equals("g19"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						Module module = facade.getModuleById(moduleSel.intValue());
-						request.setAttribute("games", module.getGames());						
-
-						if(idGame!=-1)
-						{
-							String data = facade.getJSONObjectTempoQuantidadePartidas(idGame);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-				}
-				//level X pontuacao
-				else if(graphic.equals("g20"))
-				{
-					request.setAttribute("modules", course.getModules());
-
-					if(moduleSel!=-1)
-					{
-						Module module = facade.getModuleById(moduleSel.intValue());
-						request.setAttribute("games", module.getGames());						
-
-						if(idGame!=-1)
-						{
-							String data = facade.getJSONObjectLevelPontuacao(idGame);
-							request.setAttribute("xml", data);							
-						}
-
-					}
-
-				}
-				
-				request.setAttribute("domain", SystemActions.webSettings.getSystemGeneralDomain());
-				forward = mapping.findForward(FORWARD_SHOW_VIEW_GRAPHIC);
-			} else {
-				forward = SystemActions.showViewAccessDenied(mapping, form, request, response);
-			}
-		} else {
-			forward = this.showViewWelcome(mapping, form, request, response);
-		}
-
-		return forward;
-
-	}	 
 
 }
-=======
-}
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
+

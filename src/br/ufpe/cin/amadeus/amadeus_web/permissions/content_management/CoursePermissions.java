@@ -131,8 +131,6 @@ public class CoursePermissions {
 		
 		return userCanViewGraphic; 
 	}
-<<<<<<< HEAD
-=======
 	
 	public static boolean userCanViewGroups(HttpServletRequest request, Course course) {
 		boolean userCanViewGroups = false;
@@ -173,7 +171,6 @@ public class CoursePermissions {
 		}		
 		return userCanCreateGroups; 
 	}
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 
 	
 }
