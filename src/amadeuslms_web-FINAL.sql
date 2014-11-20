@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
- 
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 --
 -- PostgreSQL database dump
 --
@@ -12,10 +8,6 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 --
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
@@ -74,7 +66,6 @@ CREATE TABLE alternativerealized (
 ALTER TABLE public.alternativerealized OWNER TO postgres;
 
 --
-<<<<<<< HEAD
 -- Name: amadeus_droid_historic; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -91,8 +82,6 @@ CREATE TABLE amadeus_droid_historic (
 ALTER TABLE public.amadeus_droid_historic OWNER TO postgres;
 
 --
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 -- Name: answer; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -398,11 +387,7 @@ ALTER TABLE public.externallink OWNER TO postgres;
 
 CREATE TABLE forum (
     id integer NOT NULL,
-<<<<<<< HEAD
     description character varying(9000),
-=======
-    description character varying(255),
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
     creationdate timestamp without time zone,
     name character varying(255),
     module_id integer NOT NULL
@@ -424,19 +409,10 @@ CREATE TABLE game (
     minusers integer NOT NULL,
     name character varying(255),
     url character varying(255),
-<<<<<<< HEAD
     module_id integer NOT NULL,
     linkexterno boolean DEFAULT false
 );
 
-
-=======
-    module_id integer NOT NULL
-);
-
-
-
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 ALTER TABLE public.game OWNER TO postgres;
 
 --
@@ -552,7 +528,6 @@ CREATE TABLE learningobject (
 ALTER TABLE public.learningobject OWNER TO postgres;
 
 --
-<<<<<<< HEAD
 -- Name: log; Type: TABLE; Schema: public; Owner: amadeus; Tablespace: 
 --
 
@@ -573,8 +548,6 @@ CREATE TABLE log (
 ALTER TABLE public.log OWNER TO postgres;
 
 --
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 -- Name: material; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -618,11 +591,7 @@ ALTER TABLE public.materialrequest OWNER TO postgres;
 
 CREATE TABLE message (
     id integer NOT NULL,
-<<<<<<< HEAD
     body character varying(9000),
-=======
-    body character varying(2000),
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
     date timestamp without time zone,
     forum_id integer NOT NULL,
     author_id integer,
@@ -680,13 +649,9 @@ CREATE TABLE person (
     state character varying(255),
     access_info_id integer,
     image_id integer,
-<<<<<<< HEAD
     resume_id integer,
 	twitterlogin character varying(255),
 	facebooklogin character varying(255)
-=======
-    resume_id integer
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 );
 
 
@@ -847,7 +812,6 @@ ALTER TABLE ONLY alternativerealized
 
 
 --
-<<<<<<< HEAD
 -- Name: amadeus_droid_historic_pkey; Type: CONSTRAINT; Schema: public; Owner: amadeus; Tablespace: 
 --
 
@@ -856,8 +820,6 @@ ALTER TABLE ONLY amadeus_droid_historic
 
 
 --
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 -- Name: answer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1130,7 +1092,6 @@ ALTER TABLE ONLY learningobject
 
 
 --
-<<<<<<< HEAD
 -- Name: log_primary_key; Type: CONSTRAINT; Schema: public; Owner: amadeus; Tablespace: 
 --
 
@@ -1139,8 +1100,6 @@ ALTER TABLE ONLY log
 
 
 --
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 -- Name: material_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1757,7 +1716,6 @@ ALTER TABLE ONLY courseevaluation_criterion
 
 
 --
-<<<<<<< HEAD
 -- Name: log_person_foreign_key; Type: FK CONSTRAINT; Schema: public; Owner: amadeus
 --
 
@@ -1766,8 +1724,6 @@ ALTER TABLE ONLY log
 
 
 --
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
@@ -1781,8 +1737,6 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 -- PostgreSQL database dump complete
 --
 
-<<<<<<< HEAD
-=======
 ALTER TABLE game ADD COLUMN linkexterno boolean DEFAULT false;
 
 CREATE TABLE log
@@ -1802,4 +1756,3 @@ CREATE TABLE log
       REFERENCES person (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
