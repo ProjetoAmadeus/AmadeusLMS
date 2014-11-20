@@ -100,14 +100,11 @@ function selectGame()
 		<div id="pLeftMenu" class="pLeftMenu">
 			<c:set var="selectedPosition" value="5" scope="request" />
 			<jsp:include page="/jsp/conf/courseMenu.jsp" />
-<<<<<<< HEAD
 			
 			<!-- Added By Nailson Cunha -->
 			<div id="twitter-container">
 				<jsp:include page="/jsp/twittertool/userTwitter.jsp" />
 			</div>
-=======
->>>>>>> 661708b07f533da1f47ab2b8c362cb287fdf4631
 		</div>
 		<div id="pContent" class="pContent2">
 
