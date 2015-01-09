@@ -1,7 +1,7 @@
 AMADEUS
 =======
 O AMADEUS é um sistema de gestão de aprendizagem desenvolvido pelo Ciências Cognitivas e Tecnologia Educacional do Centro de 
-Informática da UFPE.
+Informática da UFPE...
 
 Instalação
 ----------
