@@ -22,7 +22,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 </div>
 <div>
 	<div class="cmGamePicture">
-		<img src="/amadeuslms/viewImage.do?method=viewImage&gameId=${game.id}" width="150" height="150"/> 
+		<img src="viewImage.do?method=viewImage&gameId=${game.id}" width="150" height="150"/> 
 	</div>
 	<div class="cmGameInfo">
 		<h1>${game.name}</h1>

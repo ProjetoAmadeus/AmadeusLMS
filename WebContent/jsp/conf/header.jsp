@@ -41,16 +41,13 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 	
 	<script type="text/javascript" src="js/jqueryNyroModal/jquery.nyroModal.custom.min.js"></script>
 	<script type="text/javascript" src="js/jqueryNyroModal/jquery.nyroModal-ie6.min.js"></script>
-	
-	
+
 	<script type="text/javascript" src="js/jqueryui/jquery-ui-1.7.1.custom.min.js"></script>
 	<script type="text/javascript" src="js/openid.js"></script>
 	<script type="text/javascript" src="js/amadeus.js"></script>
 	<script type="text/javascript" src="js/messenger.js"></script>
 	<script type="text/javascript" src="js/twittertool.js"></script>
-	<script type="text/javascript">		
-	
-	
+	<script type="text/javascript">			
 	function getData()
 	{
 		var stringData = document.getElementById("gridData").value;
@@ -72,6 +69,5 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		setTimeout(function() {window.location.reload();},3000);
 	  	document.gameActivity.submit();	  	
 	}
-	
 	</script>
 	<script type="text/javascript" src="js/Log.js"></script>

@@ -62,7 +62,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 			</div>
 		</div>						
 			<div id="content">
-				<form action="/amadeuslms/course.do?method=changeTeacher">
+				<form action="course.do?method=changeTeacher">
 					<input type="hidden" name="method" value="changeTeacher"/>
 					<input type="hidden" name="courseId" value="${courseId}" >
 					<dt><bean:message key="courseForm.teacherName"/></dt>
