@@ -22,12 +22,16 @@
 	background: #E7E7E7;
 }
 
+#tabelaParticipantesGrupos {
+	min-height: 56px;
+}
+
 input.button_add {
-	background-image: url(../imgs/icons/button_cancel-15.png);
+	background-image: url(../imgs/icons/button_cancel-15.png) !important;
 	/* 16px x 16px */
-	background-color: transparent;
-	background-repeat: no-repeat;
-	border: none;
+	background-color: transparent !important;
+	background-repeat: no-repeat !important;
+	border: none !important;
 	cursor: pointer;
 	/* make the cursor like hovering over an <a> element */
 	height: 16px;
@@ -37,6 +41,7 @@ input.button_add {
 
 table th {
 	background: #AED1AD;
+	height: 14px;
 }
 
 table td {
@@ -57,13 +62,14 @@ table.criarGrupos {
 }
 
 th.criarGrupos {
-	padding-bottom: 5px;
+	padding-bottom: 0px;
 }
 
 tr.criarGrupos, td.criarGrupos {
 	border: none;
 	padding-left: 10px;
 	padding-right: 10px;
+	vertical-align: top;
 }
 
 td.disable {
@@ -82,15 +88,19 @@ input.groupsName {
 }
 
 input.convidarRetirar {
-	width: 70px;
 	text-align: center;
 }
 
-input {
+input[type="button"], input[type="submit"] {
 	cursor: pointer;
-	background: #ffffff;
-	color: #000000;
-	border: solid 1px #999999;
+	background: #AED1AD;
+	color: #000;
+	border: solid 1px #35784C;
+	border-radius: 1px;
+}
+
+.groupsName {
+	margin-bottom: 10px;
 }
 
 input.class1 {
@@ -134,7 +144,7 @@ input.class10 {
 }
 
 div.cloud {
-	border: 1px solid grey;
+	/*border: 1px solid grey;*/
 }
 
 div.cloud input {

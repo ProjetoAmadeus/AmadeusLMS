@@ -10,7 +10,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Time Line - Grupo ${nomeGroup}</title>
 	<link href="themes/default/css/css.css" rel="stylesheet" type="text/css" />
-	<link href="themes/default/css/amadeus.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/css/groups.css" rel="stylesheet" type="text/css"></link>
 	<script type="text/javascript">
 		function openJ(date)

@@ -8,7 +8,6 @@
 	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
 	<link href="themes/default/css/displaytag.css" rel="stylesheet" type="text/css"></link>
 	<link href="themes/default/css/css.css" rel="stylesheet" type="text/css" />
-	<link href="themes/default/css/amadeus.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/css/groups.css" rel="stylesheet" type="text/css"></link>
 	<script> 
 		function resize()
