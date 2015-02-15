@@ -8,6 +8,10 @@
 <head>
 	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
 	<link href="themes/default/css/displaytag.css" rel="stylesheet" type="text/css"></link>
+	<link href="themes/default/css/css.css" rel="stylesheet" type="text/css" />
+	<link href="themes/default/css/amadeus.css" rel="stylesheet" type="text/css" />
+	<link href="themes/default/css/groups.css" rel="stylesheet" type="text/css"></link>
+	
 	<style type="text/css">
 		table
 		{
@@ -33,8 +37,8 @@
 		<div>
 			<input type="button" value="<< Voltar" onClick="history.back(-1);"/>
 			<p/>
-			<table border="1" cellpadding="5" cellspacing="0">
-				<tr bgcolor="#AAAAAA">
+			<table border="0" cellpadding="5" cellspacing="0" class="viewOnePerson">
+				<tr>
 					<th>Hora</th>
 					<th>Atividade</th>
 				</tr>

@@ -7,12 +7,9 @@
 <head>
 	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
 	<link href="themes/default/css/displaytag.css" rel="stylesheet" type="text/css"></link>
-	<style type="text/css">
-		table
-		{
-			width: 400px;
-		}
-	</style>
+	<link href="themes/default/css/css.css" rel="stylesheet" type="text/css" />
+	<link href="themes/default/css/amadeus.css" rel="stylesheet" type="text/css" />
+	<link href="themes/default/css/groups.css" rel="stylesheet" type="text/css"></link>
 	<script> 
 		function resize()
 		{
@@ -30,8 +27,8 @@
 <body onload="resize();">
 		<input id="inputHiddenIdGroup" type="hidden" value="${group.id}"/>
 		<div>
-			<table border="1" cellpadding="5" cellspacing="0">
-				<tr bgcolor="#AAAAAA">
+			<table border="0" cellpadding="5" cellspacing="0" class="viewOneGroup">
+				<tr>
 					<th>Nome do Integrante</th>
 					<th>Função</th>
 					<th>Atividades</th>
@@ -46,10 +43,10 @@
 						</td>
 						<td align="center">
 							<c:if test="${aluno.status}">
-								<img src = "/amadeuslms/themes/default/imgs/icons/green.png" />
+								<img src = "themes/default/imgs/icons/green.png" />
 							</c:if>
 							<c:if test="${!aluno.status}">
-								<img src = "/amadeuslms/themes/default/imgs/icons/red.png" />
+								<img src = "themes/default/imgs/icons/red.png" />
 							</c:if>
 						</td>
 					</tr>

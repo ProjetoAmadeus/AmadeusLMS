@@ -13,79 +13,28 @@ Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA
 Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título "LICENCA.txt", junto com este programa, se não, escreva para a Fundação do Software Livre (FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
 -->
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="/WEB-INF/struts-bean" prefix="bean" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/struts-bean" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-logic" prefix="logic"%>
 <%@ taglib uri="/WEB-INF/struts-html" prefix="html"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="display" uri="http://displaytag.sf.net/el" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net/el"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-
-
-<logic:notPresent name="user"> 
-	<logic:redirect action="system.do?method=showViewWelcome"/> 
+<logic:notPresent name="user">
+	<logic:redirect action="system.do?method=showViewWelcome" />
 </logic:notPresent>
 
-
 <%@page import="br.ufpe.cin.amadeus.amadeus_web.syncronize.*"%>
-<%@page import="antlr.collections.List"%><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<%@page import="antlr.collections.List"%><html
+	xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
-	<jsp:include page="/jsp/conf/header.jsp" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store" />
+<jsp:include page="/jsp/conf/header.jsp" />
 	<link href="themes/default/css/displaytag.css" rel="stylesheet" type="text/css"></link>
-	<style type="text/css">
-	 	input.button_add {
-		    background-image: url(<%=request.getContextPath()%>/themes/default/imgs/icons/button_cancel-15.png); /* 16px x 16px */
-		    background-color: transparent;
-		    background-repeat: no-repeat;
-		    border: none;
-		    cursor: pointer;        /* make the cursor like hovering over an <a> element */
-		    height: 16px;
-		    padding-left: 16px;     /* make text start to the right of the image */
-		    vertical-align: middle; /* align the text vertically centered */
-		}	 	
-		table.visualizarGrupo
-		{
-			width: 450px;
-		}
-		table.criarGrupos
-		{
-			border-collapse:collapse;
-			border:1px solid grey;
-		}
-		th.criarGrupos
-		{
-			padding-bottom: 5px;
-		}
-		tr.criarGrupos, td.criarGrupos
-		{
-			border:none;
-			padding-left: 10px;
-			padding-right: 10px;
-		}
-		td.disable
-		{
-			border:none;
-			padding-left: 10px;
-			padding-right: 10px;
-			color:grey;	
-		}
-		input.groups
-		{
-			border: none;
-		}
-		input.groupsName
-		{
-			width: 129px;
-		}
-		input.convidarRetirar
-		{
-			width: 70px;
-			text-align: center;
-		}
-	</style>
+	<link href="themes/default/css/groups.css" rel="stylesheet" type="text/css"></link>
 	<script>
 		function habilitarDesabilitarCriarGrupo()
 		{
@@ -178,7 +127,6 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 				}
 			}
 		}
-
 		
 		function montarLista()
 		{			
@@ -226,34 +174,37 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 				document.getElementById("formCreateGroup").action = stringAction;
 			}
 		}
+		
+		var ctx = "${pageContext.request.contextPath}";
 
 		function openOneGroup(groupID)
 		{
 			var courseId = document.getElementById("inputCourseID").value;
-			var external = window.open("http://"+'localhost:8080/amadeuslms' + "/course.do?method=showViewOneGroup&courseId="+courseId+"&groupID="+groupID,'Grupo',
+			var external = window.open(ctx + "/course.do?method=showViewOneGroup&courseId="+courseId+"&groupID="+groupID,'Grupo',
 				'height=400,width=480,toolbar=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no ,modal=yes');
 		}
 
 		function openTimeline(groupID)
 		{
-			var external = window.open("http://"+'localhost:8080/amadeuslms' + "/course.do?method=showViewGroupTimeline&groupID="+groupID,'Grupo',
+			var external = window.open(ctx + "/course.do?method=showViewGroupTimeline&groupID="+groupID,'Grupo',
 			'height=480,width=600,toolbar=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no ,modal=yes');
 		}
 
 		function openRelatorio()
 		{
 			var courseId = document.getElementById("inputCourseID").value;
-			var external = window.open("http://"+'localhost:8080/amadeuslms' + "/course.do?method=showViewRelatorioAtividade&courseId="+courseId,'Grupo',
+			var external = window.open(ctx + "/course.do?method=showViewRelatorioAtividade&courseId="+courseId,'Grupo',
 			'height=400,width=480,toolbar=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no ,modal=yes');
 		}		
 	</script>
 </head>
 <body>
-<input id="inputCourseFlag_habilitar_grupo" type="hidden" value="${course.flag_habilitar_grupo}"/>
-<input id="inputCourseID" type="hidden" value="${course.id}"/>
+	<input id="inputCourseFlag_habilitar_grupo" type="hidden"
+		value="${course.flag_habilitar_grupo}" />
+	<input id="inputCourseID" type="hidden" value="${course.id}" />
 	<div id="pBody" class="pBody">
 		<div id="pHeader" class="pHeader">
-			<jsp:include page="/jsp/conf/login.jsp" />      
+			<jsp:include page="/jsp/conf/login.jsp" />
 		</div>
 		<jsp:include page="/jsp/conf/logo.jsp" />
 		<div id="pTitle" class="pTitle">
@@ -261,8 +212,13 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		</div>
 		<div id="pBreadCrumbs" class="pBreadCrumbs">
 			<ul id="breadcrumb">
-				<li><html:link action="system.do?method=showViewMenu"><bean:message key="menu.name"/></html:link></li>
-				<li><html:link action="course.do?method=showViewCourse&courseId=${course.id}"><bean:write name="course" property="name"/></html:link></li>
+				<li><html:link action="system.do?method=showViewMenu">
+						<bean:message key="menu.name" />
+					</html:link></li>
+				<li><html:link
+						action="course.do?method=showViewCourse&courseId=${course.id}">
+						<bean:write name="course" property="name" />
+					</html:link></li>
 				<li>Grupos</li>
 			</ul>
 		</div>
@@ -271,30 +227,39 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 			<jsp:include page="/jsp/conf/courseMenu.jsp" />
 		</div>
 		<div id="pContent" class="pContent2">
-			<div id="comboBoxGroupsContent">
-				<c:if test="${canViewEnableGroups}">
-					<c:if test="${course.flag_habilitar_grupo}">
-							<li><a href="#" onclick="habilitarDesabilitarCriarGrupo();">Desabilitar Criar Grupos</a></li>
+			<div id="comboBoxGroupsContent" class="horizontal-menu">
+				<ul>
+					<c:if test="${canViewEnableGroups}">
+						<c:if test="${course.flag_habilitar_grupo}">
+							<li><a href="#" onclick="habilitarDesabilitarCriarGrupo();">Desabilitar
+									Criar Grupos</a></li>
+						</c:if>
+						<c:if test="${!course.flag_habilitar_grupo}">
+							<li><a href="#" onclick="habilitarDesabilitarCriarGrupo();">Habilitar
+									Criar Grupos</a></li>
+						</c:if>
 					</c:if>
-					<c:if test="${!course.flag_habilitar_grupo}">
-							<li><a href="#" onclick="habilitarDesabilitarCriarGrupo();">Habilitar Criar Grupos</a></li>
+					<c:if
+						test="${canCreateGroups && (canViewEnableGroups || course.flag_habilitar_grupo)}">
+						<li><html:link
+								action="course.do?method=showViewGroups&courseId=${course.id}&viewCreateGroup=1">Criar Grupo</html:link></li>
 					</c:if>
-				</c:if>
-				<c:if test="${canCreateGroups && (canViewEnableGroups || course.flag_habilitar_grupo)}">
-					<li><html:link action="course.do?method=showViewGroups&courseId=${course.id}&viewCreateGroup=1">Criar Grupo</html:link></li>
-				</c:if>
-				<li><html:link action="course.do?method=showViewGroups&courseId=${course.id}&viewCreateGroup=2">Visualizar Grupos</html:link></li>
-				<c:if test="${canViewEnableGroups}">
-							<li><a href="#" onclick="openRelatorio();">Relatório das Atividades</a></li>
+					<li><html:link
+							action="course.do?method=showViewGroups&courseId=${course.id}&viewCreateGroup=2">Visualizar Grupos</html:link></li>
+					<c:if test="${canViewEnableGroups}">
+						<li><a href="#" onclick="openRelatorio();">Relatório das
+								Atividades</a></li>
 					</c:if>
+				</ul>
 			</div>
-			<p/>
-			<p/>
+			<p />
+			<p />
 			<c:choose>
 				<c:when test="${viewCreateGroup == '2'}">
 					<div>
-						<table border="1" cellpadding="5" cellspacing="0" class="visualizarGrupo">
-							<tr bgcolor="#AAAAAA">
+						<table border="0" cellpadding="5" cellspacing="0"
+							class="visualizarGrupo">
+							<tr>
 								<th>Nome do Grupo</th>
 								<th>Integrantes</th>
 								<th>Timeline</th>
@@ -305,14 +270,11 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 									<td><a href="#" onclick="openOneGroup(${group.id})">${group.name}</a></td>
 									<td>${group.qtdMembros}</td>
 									<td><a href="#" onclick="openTimeline(${group.id})">Visualizar</a></td>
-									<td align="center">
-										<c:if test="${group.status}">
-											<img src = "/amadeuslms/themes/default/imgs/icons/green.png" />
-										</c:if>
-										<c:if test="${!group.status}">
-											<img src = "/amadeuslms/themes/default/imgs/icons/red.png" />
-										</c:if>
-									</td>
+									<td align="center"><c:if test="${group.status}">
+											<img src="themes/default/imgs/icons/green.png" />
+										</c:if> <c:if test="${!group.status}">
+											<img src="themes/default/imgs/icons/red.png" />
+										</c:if></td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -320,68 +282,77 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 				</c:when>
 				<c:when test="${canCreateGroups && viewCreateGroup == '1'}">
 					<div id="criarGrupos">
-						<form id="formCreateGroup" method="post" action="" onsubmit="return montarLista();">
-							<table border=1 class="criarGrupos">
+						<form id="formCreateGroup" method="post" action=""
+							onsubmit="return montarLista();">
+							<table border="0" class="criarGrupos">
 								<tr class="criarGrupos">
-									<td class="criarGrupos">	
+									<td class="criarGrupos">
 										<div>
 											<b>Nome do Grupo:</b>
 										</div>
-										<div>	
-											<input id="inputNameGroup" class="groupsName" type="text" name="nomeGrupo"/>
+										<div>
+											<input id="inputNameGroup" class="groupsName" type="text"
+												name="nomeGrupo" />
 										</div>
 									</td>
 								</tr>
 								<tr class="criarGrupos">
 									<td class="criarGrupos">
-										<table id="tabelaParticipantesGrupos" border=1 class="criarGrupos">
+										<table id="tabelaParticipantesGrupos" border=1
+											class="criarGrupos">
 											<tr class="criarGrupos">
-												<th class="criarGrupos"  colspan="2">
-													Participantes do Grupo:
-												</th>
+												<th class="criarGrupos" colspan="2">Participantes do
+													Grupo:</th>
 											</tr>
 											<tr>
 												<c:if test="${!canViewEnableGroups}">
-													<td>
-														<input id='inputAlunoGrupo-1' class='groups' type='hidden' value='${user.person.id}'/>${user.person.name}
+													<td><input id='inputAlunoGrupo-1' class='groups'
+														type='hidden' value='${user.person.id}' />${user.person.name}
 													</td>
 												</c:if>
 											</tr>
 										</table>
 									</td>
-									<td class="criarGrupos">
-										<input class='convidarRetirar' type="button" value="Convidar" onclick="convidarPerson();"/>
+									<td class="criarGrupos"><input class='convidarRetirar'
+										type="button" value="&lt; Adicionar" onclick="convidarPerson();" />
 									</td>
 									<td class="criarGrupos">
 										<div>
 											<table border=1 class="criarGrupos">
 												<tr class="criarGrupos">
-													<th class="criarGrupos">
-														Participantes do Curso:
-														<input id="inputCountAlunosCourse" type="hidden" value="${fn:length(students)}"/>
+													<th class="criarGrupos">Participantes do Curso: <input
+														id="inputCountAlunosCourse" type="hidden"
+														value="${fn:length(students)}" />
 													</th>
 												</tr>
-													<c:forEach var="student" items="${students}" varStatus="status">
-														<tr>
-															<input id="inputhiddennamealuno${student.position}" type="hidden" value="${student.name}">
-															<c:if test="${student.haveGroup}">
-																<td id="tdAlunoCourse${student.position}" class="disable"><input id="inputAlunoCourse${student.position}" class="groups" type="checkbox" disabled="disabled" value="${student.id}"/>${student.name}*</td>
+												<c:forEach var="student" items="${students}"
+													varStatus="status">
+													<tr>
+														<input id="inputhiddennamealuno${student.position}"
+															type="hidden" value="${student.name}"> <c:if
+																test="${student.haveGroup}">
+																<td id="tdAlunoCourse${student.position}"
+																	class="disable"><input
+																	id="inputAlunoCourse${student.position}" class="groups"
+																	type="checkbox" disabled="disabled"
+																	value="${student.id}" />${student.name}*</td>
+															</c:if> <c:if test="${!student.haveGroup}">
+																<td class="criarGrupos"
+																	id="tdAlunoCourse${student.position}"><input
+																	id="inputAlunoCourse${student.position}" class="groups"
+																	type="checkbox" value="${student.id}" />${student.name}</td>
 															</c:if>
-															<c:if test="${!student.haveGroup}">
-																<td class="criarGrupos" id="tdAlunoCourse${student.position}"><input id="inputAlunoCourse${student.position}" class="groups" type="checkbox" value="${student.id}"/>${student.name}</td>
-															</c:if>
-														</tr>
+													</tr>
 												</c:forEach>
-	
+
 											</table>
 										</div>
 									</td>
 								</tr>
 								<tr class="criarGrupos">
-									<td class="criarGrupos">
-										<input type="submit" value="Concluir"/>
-									</td>
-								</tr>												
+									<td class="criarGrupos"><input type="submit"
+										value="Concluir" /></td>
+								</tr>
 							</table>
 						</form>
 					</div>

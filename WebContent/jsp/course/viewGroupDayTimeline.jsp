@@ -7,19 +7,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
 	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
+	<link href="themes/default/css/css.css" rel="stylesheet" type="text/css" />
+	<link href="themes/default/css/amadeus.css" rel="stylesheet" type="text/css" />
 	<link href="themes/default/css/displaytag.css" rel="stylesheet" type="text/css"></link>
-	<style type="text/css">
-		table
-		{
-			width: 400px;
-		}
-		input
-		{
-			border: 1px solid grey;
-			border-radius: 0;
-			cursor: pointer;
-		}
-	</style>
+	<link href="themes/default/css/groups.css" rel="stylesheet" type="text/css"></link>
+
 	<script> 
 		function resize()
 		{
@@ -33,8 +25,8 @@
 		<div>
 			<input type="button" value="<< Voltar" onClick="history.back(-1);"/>
 			<p/>
-			<table border="1" cellpadding="5" cellspacing="0">
-				<tr bgcolor="#AAAAAA">
+			<table border="0" cellpadding="5" cellspacing="0" class="viewOneGroup">
+				<tr>
 					<th>Hora</th>
 					<th>Atividade</th>
 				</tr>
