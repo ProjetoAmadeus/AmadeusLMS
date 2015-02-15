@@ -37,7 +37,7 @@ import br.ufpe.cin.amadeus.amadeus_web.util.SocialInteractions;
 import br.ufpe.cin.amadeus.amadeus_web.util.TweetInteractionType;
 
 /**
- * Classe responsável por centralizar as ações referentes ao monitoramento da
+ * Classe responsï¿½vel por centralizar as aï¿½ï¿½es referentes ao monitoramento da
  * ferramenta do twitter
  * 
  * @author Nailson Cunha
@@ -48,10 +48,10 @@ public class TwitterActions extends SystemActions {
 	private final String FORWARD_SHOW_VIEW_SOCIAL_NETWORK_MONITORING = "fshowViewSocialNetworkMonitoring";
 	private final String FORWARD_SHOW_VIEW_SOCIAL_TEST_TOOLS = "fshowViewTestTools";
 
-	private final String CONSUMER_KEY = "lZJGjiuAdYjiRvuNqBp5kg";
-	private final String CONSUMER_SECRET = "ygeVV2WVXjYMyL8HkH065WmVC985RtSufYUpSA";
-	private final String ACESS_TOKEN = "248676552-gaRX2FU7IGcqXxLoGZfFROQ9jTymfYWySoWtHhBG";
-	private final String ACESS_TOKEN_SECRET = "7MxIfOc2lfn9NP2TaIQaIDl9A6kEqtc3J5myLgJfRY";
+	private final String CONSUMER_KEY = "ERHBlUYrxgYCrWxAWWMq7COtv";
+	private final String CONSUMER_SECRET = "XmbsO9aOXPaA0j7gcB9arCYMXsNbDZDjJthxuUgJiyQP8Yba5d";
+	private final String ACESS_TOKEN = "37861885-wdk6sIq38Yy5VlJshAQgwbf2Q41mrOvEF8B1eGCBi";
+	private final String ACESS_TOKEN_SECRET = "FJ38O1JA9GU32CxyhiBnSdtIZcUqqRx3WDuyfiD9jZGEC";
 	private final String ACESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
 	private final String ACESS_TOKEN_AUTHORIZATION = "https://api.twitter.com/oauth/authorize";
 
@@ -72,8 +72,8 @@ public class TwitterActions extends SystemActions {
 	}
 
 	/**
-	 * Action que retorna a visualização da página de Monitoramento de
-	 * Interações Sociais do Twitter.
+	 * Action que retorna a visualizaï¿½ï¿½o da pï¿½gina de Monitoramento de
+	 * Interaï¿½ï¿½es Sociais do Twitter.
 	 * 
 	 * @param mapping
 	 * @param form
@@ -143,7 +143,7 @@ public class TwitterActions extends SystemActions {
 	}
 
 	/**
-	 * Método que inicia o monitoramento do twitter
+	 * Mï¿½todo que inicia o monitoramento do twitter
 	 * 
 	 * @param mapping
 	 * @param form
@@ -218,7 +218,7 @@ public class TwitterActions extends SystemActions {
 	}
 
 	/**
-	 * Método que para as threads que estão monitorando alguma hashtag no twitter.
+	 * Mï¿½todo que para as threads que estï¿½o monitorando alguma hashtag no twitter.
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -250,17 +250,17 @@ public class TwitterActions extends SystemActions {
 	}
 
 	/**
-	 * Método que salva os tweets como retweet
+	 * Mï¿½todo que salva os tweets como retweet
 	 * @param status
 	 */
 	private void saveAsRetweet(Status status) {
 		JdbcDAO jd = new JdbcDAO();
 
-		// Se o dono do tweet não estiver cadastrado
+		// Se o dono do tweet nï¿½o estiver cadastrado
 		if (!jd.userTwitterExists(status.getUser().getScreenName()))
 			return;
 
-		// Se o usuario retweetado não estiver cadastrado
+		// Se o usuario retweetado nï¿½o estiver cadastrado
 		int idUserRetweeted = jd.getUserIdByScreenName(status
 				.getRetweetedStatus().getUser().getScreenName());
 		if (idUserRetweeted == 0)
@@ -278,7 +278,7 @@ public class TwitterActions extends SystemActions {
 	}
 
 	/**
-	 * Método que salva os tweets como reply
+	 * Mï¿½todo que salva os tweets como reply
 	 * @param status
 	 */
 	private void saveAsReply(Status status) {
@@ -316,7 +316,7 @@ public class TwitterActions extends SystemActions {
 	}
 
 	/**
-	 * Método que salva os tweets como mention
+	 * Mï¿½todo que salva os tweets como mention
 	 * @param status
 	 */
 	private void saveAsMention(Status status) {
@@ -346,9 +346,9 @@ public class TwitterActions extends SystemActions {
 	}
 	
 	
-	//Métodos de testes das ferramentas de Interações Sociais
+	//Mï¿½todos de testes das ferramentas de Interaï¿½ï¿½es Sociais
 	/**
-	 * Redireciona para a página de teste das ferramentas.
+	 * Redireciona para a pï¿½gina de teste das ferramentas.
 	 */
 	public ActionForward showViewTestTools(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
@@ -365,7 +365,7 @@ public class TwitterActions extends SystemActions {
 	}
 	
 	/**
-	 * Método criado pra teste do método getSocialInteractions da ferramenta de mensagens
+	 * Mï¿½todo criado pra teste do mï¿½todo getSocialInteractions da ferramenta de mensagens
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -396,7 +396,7 @@ public class TwitterActions extends SystemActions {
 	
 	
 	/**
-	 * Método criado pra teste do método getSocialInteractions da ferramenta do twitter
+	 * Mï¿½todo criado pra teste do mï¿½todo getSocialInteractions da ferramenta do twitter
 	 * @param mapping
 	 * @param form
 	 * @param request

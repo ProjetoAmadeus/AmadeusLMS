@@ -28,7 +28,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 <div id="user-twitter">
 	<c:if test="${ empty user.person.twitterLogin }">
 		<p class="no-user-twitter">
-			Adicione seu Twitter ao seu perfil <a href="/amadeuslms/user.do?method=showViewIntegrationSocialNetworks"><b>aqui</b></a>.
+			Adicione seu Twitter ao seu perfil <a href="user.do?method=showViewIntegrationSocialNetworks"><b>aqui</b></a>.
 		</p>
 	</c:if>
 	<c:if test="${ ! empty user.person.twitterLogin }">

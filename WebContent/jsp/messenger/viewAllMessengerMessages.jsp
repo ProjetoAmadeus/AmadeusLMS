@@ -39,7 +39,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		</div>
 		<jsp:include page="/jsp/conf/logo.jsp" />
 		<div id="pTitle" class="pTitle">
-			<h2><bean:message key="viewCourse.heading"/></h2>
+			<h2>Mensagens</h2>
 		</div>
 		<div id="pBreadCrumbs" class="pBreadCrumbs">
 			<ul id="breadcrumb">

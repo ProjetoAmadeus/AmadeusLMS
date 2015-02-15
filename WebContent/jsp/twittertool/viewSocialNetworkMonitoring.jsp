@@ -39,7 +39,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 		</div>
 		<jsp:include page="/jsp/conf/logo.jsp" />
 		<div id="pTitle" class="pTitle">
-			<h2><bean:message key="viewCourse.heading"/></h2>
+			<h2>Monitorar Redes Sociais</h2>
 		</div>
 		<div id="pBreadCrumbs" class="pBreadCrumbs">
 			<ul id="breadcrumb">
@@ -60,7 +60,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 			<div id="social-network-monitoring">
 				<h2>Social Network Monitoring</h2>
 				<div id="social-network-monitoring-content">
-					<img src="themes/default/img/twitter_icon.jpg" /><br />
+					<div class="social-icon"><img src="themes/default/imgs/twitter.png" /></div>
 					<label for="ipt-hashtag" id="lbl-hashtag" class="lbl-hashtag">Hashtag:&nbsp;</label><small id="hash-alert"></small><br />
 					<input type="text" id="ipt-hashtag" name="ipt-hashtag" class="ipt-hashtag" /><br />	
 					

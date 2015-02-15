@@ -34,6 +34,10 @@ div#seemessages{
 	padding: 5px;
 }
 
+h1 {
+	margin-bottom: 10px;
+}
+
 div#seemessages h2{
 	margin: 9px 0;
 	font-size: 12px;
@@ -126,7 +130,7 @@ p.the-message-content a.message-delete-link{
 p.the-message-content a.message-reply-link, 
 p.the-message-content a.message-delete-link,
 p.the-message-content a.reply-to-all-link{
-	color: #00f;
+	color: #000;
 }
 
 p.the-message-content a.reply-to-all-link{
@@ -149,9 +153,9 @@ div.the-message .message-date, div.the-message .from-user{
 div#all-messages-unread,
 p.the-message-content
 {
-	-webkit-border-radius: 5px;
+	/*-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
-	border-radius: 5px;
+	border-radius: 5px;*/
 }
 
 p.the-message-content{
@@ -171,7 +175,7 @@ h3.the-message-title{
 }
 
 h3.the-message-title a{
-	color: #00f;
+	color: #000;
 }
 
 h3.the-message-title a.lida, h3.the-message-title a.lida-true{
@@ -184,7 +188,7 @@ h3.the-message-title:HOVER {
 
 .reply-assunto{
 	width: 232px;
-	margin-left: 11px;
+	margin-left: 16px;
 	margin-bottom: 10px;
 }
 
@@ -201,10 +205,14 @@ h3.the-message-title:HOVER {
 }
 
 a.link-see-all-messages{
-	color: #00f;
+	color: #000;
 }
 
 div#div-link-see-all-messages{
 	text-align: center;
 	margin-top: 10px;
+}
+
+fieldset {
+	border: none;
 }

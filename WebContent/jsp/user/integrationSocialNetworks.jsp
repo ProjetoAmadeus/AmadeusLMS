@@ -36,7 +36,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
            </div>
 		<jsp:include page="/jsp/conf/logo.jsp" />
 		<div id="pTitle" class="pTitle">
-			<h2><bean:message key="editPassword.heading"/></h2>
+			<h2>Integração com Redes Sociais</h2>
 		</div>
 		<div id="pBreadCrumbs" class="pBreadCrumbs">
 			<ul id="breadcrumb">
@@ -76,7 +76,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o título
 			<html:form action="/integrationSocialNetworks" focus="twitterLogin">	
 			<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 				<tr>
-					<td class="formAttribute"><img src="themes/default/imgs/twitter.png" style="padding-right: 20px;" border="0" height="32px" width="32px" title="Social Accounts"/><bean:message key="integrationSocialNetworks.twitterLogin"/>:</td>
+					<td class="formAttribute"><img src="themes/default/imgs/twitter.png" style="padding-right: 25px;" border="0" height="32px" width="32px" title="Social Accounts"/><bean:message key="integrationSocialNetworks.twitterLogin"/>:</td>
 					<td>
 						<html:text name="socialProfiles" property="twitterLogin" style="width: 100%;" />
 					</td>

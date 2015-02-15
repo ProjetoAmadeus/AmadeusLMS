@@ -13,7 +13,7 @@ $(document).ready(function(){
 	function checkStatus(){
 		$('ul.all-participants li').each(function(index,element){
 			if( $(this).hasClass('participant-name') )
-				$.get('/amadeuslms/user.do?method=userStatus&accessInfoId='+ element.id, function(data){
+				$.get('user.do?method=userStatus&accessInfoId='+ element.id, function(data){
 					if(data == 1){
 						$(element).removeClass('offlineUser').addClass('onlineUser');
 					} else {
@@ -243,7 +243,7 @@ $(document).ready(function(){
 	
 	//Funcao que exibe o dialog de resposta
 	function showReplyDialog(title,href){
-		$('#form-reply-to').load('/amadeuslms/jsp/messenger/form-reply.jsp', function(){
+		$('#form-reply-to').load('jsp/messenger/form-reply.jsp', function(){
 			if($('#reply-assunto').length){
 				$('#reply-assunto').val(title);
 				$('#reply-content').focus();

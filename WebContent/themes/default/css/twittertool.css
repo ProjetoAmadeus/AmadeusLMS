@@ -73,12 +73,12 @@
  */
 
 div#social-network-monitoring{
-	border: 1px solid black;
+	border: none;
 	background: #edf5ea;
 }
 
 div#social-network-monitoring h2{
-	border-bottom: 1px solid black;
+	border-bottom: none;
 	padding: 7px 0 7px 15px;
 	background: #b6d7a8;
 	font-size: 12px; 
@@ -105,8 +105,18 @@ div#social-network-monitoring-content .monitoring-start-disabled{
 	border: 0;
 }
 
-div##waiting {
-	align:center;
+div.social-icon {
+	height: 80px;
+	float: left;
+	margin-right: 10px;
+}
+
+div.social-icon img {
+	width: 30px;
+}
+
+div#waiting {
+	text-align: center;
 }
 
 p.no-user-twitter{
@@ -116,5 +126,5 @@ p.no-user-twitter{
 }
 
 p.no-user-twitter a{
-	color: #00f; 
+	color: #000; 
 }

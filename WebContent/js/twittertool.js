@@ -62,9 +62,9 @@ $(document).ready(function(){
 		$('#hash-alert').html('');
 	});
 	
-	
+	var ctx = "${pageContext.request.contextPath}";
 	// Controle do monitoramento do twitter
-	var urlToCheck = 'http://localhost:8080/amadeuslms/social.do?method=showViewSocialNetworkMonitoring&courseId=18';
+	var urlToCheck = ctx + 'social.do?method=showViewSocialNetworkMonitoring&courseId=18';
 	if(window.location == urlToCheck){
 		$(window).bind('beforeunload', function(){
 			if($('#monitoring-start').attr('disabled') == 'disabled'){
